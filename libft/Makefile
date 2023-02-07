@@ -6,7 +6,7 @@
 #    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/09 17:10:15 by moel-asr          #+#    #+#              #
-#    Updated: 2023/02/05 19:12:35 by moel-asr         ###   ########.fr        #
+#    Updated: 2023/02/07 16:24:43 by moel-asr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,6 @@ CFLAGS = -Wall -Wextra -Werror
 
 OBJS = $(SRCS:.c=.o)
 
-OBJSB = $(SRCSB:.c=.o)
-
 SRCS = ft_atoi.c \
 	ft_bzero.c  \
 	ft_calloc.c \
@@ -26,6 +24,11 @@ SRCS = ft_atoi.c \
 	ft_isascii.c \
 	ft_isdigit.c \
 	ft_isprint.c \
+	ft_lstadd_back.c \
+	ft_lstadd_front.c \
+	ft_lstnew.c \
+	ft_lstlast.c \
+	ft_lstsize.c \
 	ft_itoa.c \
 	ft_memchr.c \
 	ft_memcmp.c \
@@ -53,26 +56,17 @@ SRCS = ft_atoi.c \
 	ft_tolower.c \
 	ft_toupper.c
 
-SRCSB = ft_lstnew_bonus.c \
-	ft_lstadd_front_bonus.c \
-	ft_lstsize_bonus.c \
-	ft_lstlast_bonus.c \
-	ft_lstadd_back_bonus.c
-
 all : $(NAME)
 
 $(NAME) : $(OBJS)
 	ar -rc $(NAME) $(OBJS)
 
 clean :
-	$(RM) $(OBJS) $(OBJSB)
+	$(RM) $(OBJS)
 
 fclean : clean
 	$(RM) $(NAME)
 
 re : fclean all
 
-bonus : $(OBJSB)
-	ar -rc $(NAME) $(OBJSB)
-
-.PHONY : clean fclean bonus
+.PHONY : clean fclean
