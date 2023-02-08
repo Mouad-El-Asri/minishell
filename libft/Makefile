@@ -6,7 +6,7 @@
 #    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/09 17:10:15 by moel-asr          #+#    #+#              #
-#    Updated: 2023/02/07 16:55:52 by moel-asr         ###   ########.fr        #
+#    Updated: 2023/02/07 19:33:30 by moel-asr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ SRCS = ft_atoi.c \
 all : $(NAME)
 
 $(NAME) : $(OBJS)
-	ar -rc $(NAME) $(OBJS)
+	$(AR) -rc $(NAME) $(OBJS)
 
 clean :
 	$(RM) $(OBJS)
