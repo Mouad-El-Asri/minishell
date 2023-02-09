@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/09 22:31:30 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/09 22:59:55 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv, char **env)
 	while (str)
 	{
 		lexer = init_lexer(str);
-		if (check_errors(lexer))
+		if (parser_check_errors(lexer))
 		{
 			str = readline("minishell$ ");
 			continue ;
