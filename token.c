@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:26:46 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/09 18:51:42 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/12 16:15:20 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ void	token_add_back(t_token **token, t_token *new)
 {
 	t_token	*tmp;
 
-	tmp = *token;
-	if (!*token)
+	tmp = (*token);
+	if (!new)
+		return ;
+	if (!(*token))
 		*token = new;
 	else
 	{
@@ -46,13 +48,21 @@ t_token	*create_token_list(t_lexer *lexer)
 	t_token	*tmp;
 
 	token = NULL;
-	tmp = token;
 	token_add_back(&token, lexer_get_token(lexer));
+	tmp = token;
 	while (tmp)
 	{
-		printf("TOKEN(%d, %s)\n", tmp->e_token_type, tmp->token_value);
 		token_add_back(&token, lexer_get_token(lexer));
 		tmp = tmp->next;
 	}
+	return (token);
+}
+
+t_token	*token_last(t_token *token)
+{
+	if (!token)
+		return (NULL);
+	while (token->next)
+		token = token->next;
 	return (token);
 }

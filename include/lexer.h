@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 18:11:03 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/09 22:32:26 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/11 22:57:44 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*lexer_expand_variable(t_lexer *lexer);
 t_token	*lexer_advance_with_token(t_lexer *lexer, t_token *token);
 char	*lexer_get_char_as_string(t_lexer *lexer);
 t_token	*create_token_list(t_lexer *lexer);
-int		lexer_is_special_char(char c);
+int		lexer_is_not_special_char(char c);
 t_token	*lexer_get_operator(t_lexer *lexer, int token_type);
 t_token	*lexer_get_string(t_lexer *lexer);
 

@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:12:47 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/09 22:32:08 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/11 22:46:06 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ t_token	*lexer_get_token(t_lexer *lexer)
 			return (lexer_get_string_in_quotes(lexer, lexer->c));
 		if (lexer->c == '|')
 			return (lexer_get_operator(lexer, TOKEN_PIPE));
-		else if (lexer->c == '$')
-			return (init_token(lexer_expand_variable(lexer), TOKEN_STRING));
 		else if (lexer->c == '>' && lexer->content[lexer->i + 1] == '>')
 			return (lexer_get_operator(lexer, TOKEN_APPEND));
 		else if (lexer->c == '<' && lexer->content[lexer->i + 1] == '<')
@@ -56,9 +54,36 @@ t_token	*lexer_advance_with_token(t_lexer *lexer, t_token *token)
 	return (token);
 }
 
-int	lexer_is_special_char(char c)
+int	lexer_is_not_special_char(char c)
 {
-	if (c && c != '|' && c != '>' && c != '<')
+	if (c && c != ' ' && c != '|' && c != '>' && \
+		c != '<' && c != '"' && c != '\'')
 		return (1);
 	return (0);
+}
+
+t_token	*lexer_get_operator(t_lexer *lexer, int token_type)
+{
+	char	*s;
+	char	*c;
+	t_token	*token;
+
+	if ((lexer->c == '>' && lexer->content[lexer->i + 1] == '>') || \
+		(lexer->c == '<' && lexer->content[lexer->i + 1] == '<'))
+	{
+		c = lexer_get_char_as_string(lexer);
+		lexer_advance(lexer);
+		s = lexer_get_char_as_string(lexer);
+		s = ft_free(ft_strjoin(c, s), s);
+		token = init_token(s, token_type);
+		free(c);
+		// free(s);
+	}
+	else
+	{
+		s = lexer_get_char_as_string(lexer);
+		token = init_token(s, token_type);
+		// free(s);
+	}
+	return (lexer_advance_with_token(lexer, token));
 }

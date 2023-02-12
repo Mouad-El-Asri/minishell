@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 18:22:29 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/09 22:42:31 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/12 16:39:42 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,18 @@ t_token	*lexer_get_string_in_quotes(t_lexer *lexer, char character)
 	char	*str;
 	char	*c;
 	t_token	*token;
+	int		dollar_sign_count;
 
-	str = NULL;
+	str = ft_strdup("");
+	dollar_sign_count = 0;
 	lexer_advance(lexer);
-	while (lexer->c != character)
+	while (lexer->c && lexer->c != character)
 	{
-		if (lexer->c == '$' && character == '"')
+		if (lexer->c == '$')
+			dollar_sign_count++;
+		if (lexer->c == '$' && (dollar_sign_count % 2) && character == '"' && \
+			(ft_isalnum(lexer->content[lexer->i + 1]) || \
+			lexer->content[lexer->i + 1] == '_'))
 			str = ft_free(ft_strjoin(str, lexer_expand_variable(lexer)), str);
 		else
 		{
@@ -60,8 +66,8 @@ t_token	*lexer_get_string_in_quotes(t_lexer *lexer, char character)
 		}
 	}
 	lexer_advance(lexer);
-	token = init_token(str, TOKEN_STRING);
-	free(str);
+	token = init_token(str, TOKEN_STRING_IN_QUOTES);
+	// free(str);
 	return (token);
 }
 
@@ -69,9 +75,10 @@ char	*lexer_expand_variable(t_lexer *lexer)
 {
 	char	*c;
 	char	*str;
+	char	*dollars;
 
-	lexer_advance(lexer);
 	str = NULL;
+	lexer_advance(lexer);
 	while (lexer->c && (ft_isalnum(lexer->c) || lexer->c == '_'))
 	{
 		c = lexer_get_char_as_string(lexer);

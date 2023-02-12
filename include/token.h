@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:26:02 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/09 18:45:09 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/12 16:15:30 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ typedef struct s_token {
 	enum
 	{
 		TOKEN_STRING,
+		TOKEN_STRING_IN_QUOTES,
 		TOKEN_PIPE,
 		TOKEN_REDRECT_OUT,
 		TOKEN_REDRECT_IN,
@@ -29,5 +30,6 @@ typedef struct s_token {
 
 t_token	*init_token(char *token_value, int token_type);
 void	token_add_back(t_token **token, t_token *new);
+t_token	*token_last(t_token *token);
 
 #endif

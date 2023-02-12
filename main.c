@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/09 22:59:55 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/12 17:08:27 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,31 @@ int	main(int argc, char **argv, char **env)
 	char	*str;
 	t_lexer	*lexer;
 	t_token	*token;
-	t_token	*tmp;
 
+	token = NULL;
 	str = readline("minishell$ ");
 	while (str)
 	{
-		lexer = init_lexer(str);
-		if (parser_check_errors(lexer))
+		if (*str)
+			add_history(str);
+		if (parser_check_quotes(str))
 		{
 			str = readline("minishell$ ");
 			continue ;
 		}
+		lexer = init_lexer(str);
 		token = create_token_list(lexer);
+		if (parser_check_string_syntax_errors(token) || \
+			parser_check_syntax_errors(token))
+		{
+			str = readline("minishell$ ");
+			continue ;
+		}
 		while (token)
 		{
 			printf("TOKEN(%d, %s)\n", token->e_token_type, token->token_value);
-			token_add_back(&token, lexer_get_token(lexer));
 			token = token->next;
 		}
-		if (*str)
-			add_history(str);
 		free(str);
 		free(lexer);
 		str = readline("minishell$ ");
