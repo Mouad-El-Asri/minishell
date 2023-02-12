@@ -6,56 +6,94 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:58:30 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/09 22:59:48 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/12 17:10:57 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
 
-int	parser_check_errors(t_lexer *lexer)
+int	parser_check_quotes(char *str)
 {
-	if (parser_check_quotes(lexer) || parser_check_syntax_errors(lexer))
-		return (1);
-	return (0);
-}
-
-int	parser_check_quotes(t_lexer *lexer)
-{
-	int	i;
-	int	single_quote;
-	int	double_quote;
+	int		i;
+	char	quote;
+	int		is_valid;
 
 	i = 0;
-	single_quote = 0;
-	double_quote = 0;
-	while (lexer->content[i])
+	is_valid = 0;
+	while (str[i])
 	{
-		if (lexer->content[i] == '\'')
-			single_quote++;
-		else if (lexer->content[i] == '"')
-			double_quote++;
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			is_valid = 1;
+			quote = str[i];
+			i++;
+			while (str[i])
+			{
+				if (str[i] == quote)
+				{
+					is_valid = 0;
+					break ;
+				}
+				i++;
+			}
+			if (is_valid)
+				return (ft_perror("syntax error: unclosed quote\n"));
+		}
 		i++;
 	}
-	if (single_quote % 2)
-		return (ft_perror("Unclosed quote\n"));
-	else if (double_quote % 2)
-		return (ft_perror("Unclosed quote\n"));
 	return (0);
 }
 
-int	parser_check_syntax_errors(t_lexer *lexer)
+int	parser_check_string_syntax_errors(t_token *token)
 {
-	int	i;
-
-	i = 0;
-	// if (lexer->content[0] == '|' || \
-	// 	lexer->content[ft_strlen(lexer->content)] == '|')
-		//return (ft_perror("invalid pipe placement\n"));
-	while (lexer->content[i])
+	while (token)
 	{
-		if (lexer->content[i] == '|' && lexer->content[i + 1] == '|')
-			return (ft_perror("invalid use of multiple pipes\n"));
-		i++;
+		if (token->e_token_type == 0)
+		{
+			if (ft_strnstr(token->token_value, "(null)", ft_strlen(token->token_value)))
+				return (ft_perror("syntax error: unexpected token 'null'\n"));
+			if (ft_strchr(token->token_value, '('))
+				return (ft_perror("syntax error: unexpected token '('\n"));
+			if (ft_strchr(token->token_value, ')'))
+				return (ft_perror("syntax error: unexpected token ')'\n"));
+		}
+		token = token->next;
+	}
+	return (0);
+}
+
+int	parser_check_syntax_errors(t_token *token)
+{
+	if (token_last(token)->e_token_type == 3 || \
+		token_last(token)->e_token_type == 4)
+		return (ft_perror("syntax error: target file or device not specified for redirection\n"));
+	if (token->e_token_type == 2 || token_last(token)->e_token_type == 2)
+		return (ft_perror("syntax error: invalid pipe placement\n"));
+	while (token->next)
+	{
+		if ((token->e_token_type == 3 || token->e_token_type == 4 || \
+			token->e_token_type == 5 || token->e_token_type == 6) \
+			&& token->next->e_token_type == 5)
+			return (ft_perror("syntax error: unexpected token '>>'\n"));
+		if ((token->e_token_type == 3 || token->e_token_type == 4 || \
+			token->e_token_type == 6 || token->e_token_type == 5) \
+			&& token->next->e_token_type == 6)
+			return (ft_perror("syntax error: unexpected token '<<'\n"));
+		if ((token->e_token_type == 3 || token->e_token_type == 4 || \
+			token->e_token_type == 5 || token->e_token_type == 6) \
+			&& token->next->e_token_type == 3)
+			return (ft_perror("syntax error: unexpected token '>'\n"));
+		if ((token->e_token_type == 3 || token->e_token_type == 4 || \
+			token->e_token_type == 5 || token->e_token_type == 6) \
+			&& token->next->e_token_type == 4)
+			return (ft_perror("syntax error: unexpected token '<'\n"));
+		if ((token->e_token_type == 3 || token->e_token_type == 4 || \
+			token->e_token_type == 5 || token->e_token_type == 6) \
+			&& token->next->e_token_type == 2)
+			return (ft_perror("syntax error: unexpected token '|'\n"));
+		if (token->e_token_type == 2 && token->next->e_token_type == 2)
+			return (ft_perror("syntax error: invalid use of multiple pipes\n"));
+		token = token->next;
 	}
 	return (0);
 }
