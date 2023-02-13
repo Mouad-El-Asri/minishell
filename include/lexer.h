@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 18:11:03 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/11 22:57:44 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/13 21:35:37 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ t_token	*create_token_list(t_lexer *lexer);
 int		lexer_is_not_special_char(char c);
 t_token	*lexer_get_operator(t_lexer *lexer, int token_type);
 t_token	*lexer_get_string(t_lexer *lexer);
+int		lexer_skip_whitespace_backwards(t_lexer *lexer);
 
 #endif
