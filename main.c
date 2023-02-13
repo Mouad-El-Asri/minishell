@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/12 17:08:27 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/13 16:21:45 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	char	*str;
-	t_lexer	*lexer;
-	t_token	*token;
+	char		*str;
+	t_lexer		*lexer;
+	t_token		*token;
+	t_parser	*parser;
+	int			i;
 
 	token = NULL;
+	parser = NULL;
 	str = readline("minishell$ ");
 	while (str)
 	{
@@ -37,10 +40,24 @@ int	main(int argc, char **argv, char **env)
 			str = readline("minishell$ ");
 			continue ;
 		}
-		while (token)
+		// while (token)
+		// {
+		// 	printf("TOKEN(%d, %s)\n", token->e_token_type, token->token_value);
+		// 	token = token->next;
+		// }
+		parser = parse_and_store_command(token);
+		while (parser)
 		{
-			printf("TOKEN(%d, %s)\n", token->e_token_type, token->token_value);
-			token = token->next;
+			i = 0;
+			printf("%d  ", parser->in);
+			printf("%d  ", parser->out);
+			while (parser->command[i])
+			{
+				printf("%s  ", parser->command[i]);
+				i++;
+			}
+			printf("\n");
+			parser = parser->next;
 		}
 		free(str);
 		free(lexer);

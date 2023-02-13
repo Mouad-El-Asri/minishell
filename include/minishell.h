@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:07:39 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/09 22:26:07 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/12 17:54:45 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "lexer.h"
 # include "parser.h"
-# include "../libft/libft.h"
+# include "../minilibft/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>

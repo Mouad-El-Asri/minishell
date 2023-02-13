@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:26:46 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/12 16:15:20 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/12 21:51:46 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_token	*token_last(t_token *token)
 {
 	if (!token)
 		return (NULL);
-	while (token->next)
+	while (token->next && token->next->token_value != NULL)
 		token = token->next;
 	return (token);
 }
