@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 12:25:37 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/15 12:29:35 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/15 12:40:36 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,10 @@ int	parser_check_string_syntax_errors(t_token *token)
 				return (ft_perror("syntax error: unexpected token '('"));
 			if (ft_strchr(token->token_value, ')'))
 				return (ft_perror("syntax error: unexpected token ')'"));
+			if (ft_strchr(token->token_value, ';'))
+				return (ft_perror("syntax error: unexpected token ';'"));
+			if (ft_strchr(token->token_value, '\\'))
+				return (ft_perror("syntax error: unexpected token '\\'"));
 		}
 		token = token->next;
 	}

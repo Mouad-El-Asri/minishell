@@ -6,13 +6,13 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:58:30 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/15 12:30:04 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/15 15:06:44 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
 
-char	*parser_expand_heredoc_variable(char *str)
+char	*parser_heredoc_variable_expansion(char *str)
 {
 	char	*heredoc_str;
 	char	*character;
@@ -64,8 +64,8 @@ t_parser	*parse_and_store_command(t_token *token)
 	int			j;
 	int			in;
 	int			out;
-	int 		commands_count;
-	int 		heredocs_count;
+	int			commands_count;
+	int			heredocs_count;
 	int			pipe_fd[2];
 	char		*heredoc;
 	int			pid;
@@ -129,10 +129,10 @@ t_parser	*parse_and_store_command(t_token *token)
 			}
 			else if (token->e_token_type == 6)
 			{
-				heredocs_count--;
-				if (heredocs_count == 0)
+				// heredocs_count--;
+				token = token->next;
+				if (heredocs_count)
 				{
-					token = token->next;
 					if (pipe(pipe_fd) < 0)
 					{
 						ft_perror("pipe system call error: failed to create pipe");
@@ -152,7 +152,7 @@ t_parser	*parse_and_store_command(t_token *token)
 							if (token->e_token_type == 0)
 							{
 								if (ft_strchr(heredoc, '$'))
-									heredoc = ft_free(parser_expand_heredoc_variable(heredoc), heredoc);
+									heredoc = ft_free(parser_heredoc_variable_expansion(heredoc), heredoc);
 							}
 							write(pipe_fd[1], heredoc, ft_strlen(heredoc));
 							write(pipe_fd[1], "\n", 1);
@@ -161,21 +161,24 @@ t_parser	*parse_and_store_command(t_token *token)
 						}
 						write(pipe_fd[1], "\0", 1);
 						// char *buffer = (char*)malloc(15 * sizeof(char));
-    					// int n = read(pipe_fd[0], buffer, 15);
-						// buffer[n] = '\0';
-    					// printf("%s", buffer);
-						close(pipe_fd[1]);
-						close(pipe_fd[0]);
+						// int n = read(pipe_fd[0], buffer, 15);
+						// printf("%s", buffer);
+						// close(pipe_fd[1]);
+						// close(pipe_fd[0]);
 					}
 					waitpid(pid, NULL, 0);
-					close(pipe_fd[0]);
-					close(pipe_fd[1]);
+					// close(pipe_fd[0]);
+					// close(pipe_fd[1]);
+					heredocs_count--;
 				}
 			}
 			else
 				command[j++] = ft_strdup(token->token_value);
 			token = token->next;
 		}
+		char *buffer = (char*)malloc(15 * sizeof(char));
+		int n = read(pipe_fd[0], buffer, 15);
+		printf("%s", buffer);
 		if (command && *command)
 			command[j] = NULL;
 		parser_add_back(&parser, init_parser(command, in, out));
