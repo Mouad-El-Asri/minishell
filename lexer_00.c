@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 18:22:29 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/13 18:27:16 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/14 18:36:34 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ t_token	*lexer_get_string_in_quotes(t_lexer *lexer, char character)
 		if (lexer->c == '$')
 			dollar_sign_count++;
 		if (lexer->c == '$' && (dollar_sign_count % 2) && character == '"' && \
+			lexer_skip_whitespace_backwards(lexer) == 0 && \
 			(ft_isalnum(lexer->content[lexer->i + 1]) || \
 			lexer->content[lexer->i + 1] == '_'))
 			str = ft_free(ft_strjoin(str, lexer_expand_variable(lexer)), str);
