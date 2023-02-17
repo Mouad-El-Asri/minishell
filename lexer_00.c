@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 18:22:29 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/14 18:36:34 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/16 18:10:55 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ char	*lexer_expand_variable(t_lexer *lexer)
 {
 	char	*c;
 	char	*str;
-	char	*dollars;
 
 	str = NULL;
 	lexer_advance(lexer);

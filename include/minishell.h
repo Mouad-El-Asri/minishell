@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:07:39 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/12 17:54:45 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/16 21:46:47 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,6 @@
 
 char	*ft_free(char *s1, char *s2);
 int		ft_perror(char *s);
+int		count_words(char *str);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/09 17:10:15 by moel-asr          #+#    #+#              #
-#    Updated: 2023/02/12 18:05:06 by moel-asr         ###   ########.fr        #
+#    Updated: 2023/02/16 22:25:56 by moel-asr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,14 +19,19 @@ OBJS = $(SRCS:.c=.o)
 SRCS = ft_isalnum.c \
 	ft_isalpha.c \
 	ft_isdigit.c \
+	ft_memcpy.c \
+	ft_memmove.c \
 	ft_putchar_fd.c \
 	ft_putendl_fd.c \
 	ft_putstr_fd.c \
+	ft_split.c \
 	ft_strchr.c \
+	ft_strcmp.c \
 	ft_strdup.c \
 	ft_strjoin.c \
 	ft_strlen.c \
-	ft_strnstr.c
+	ft_strnstr.c \
+	ft_substr.c
 
 all : $(NAME)
 

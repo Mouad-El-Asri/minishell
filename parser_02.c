@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:58:30 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/15 15:06:44 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/16 22:32:19 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ t_parser	*parse_and_store_command(t_token *token)
 	int			pipe_fd[2];
 	char		*heredoc;
 	int			pid;
+	char		**strs;
+	int			x;
 
 	if (!token)
 		return (NULL);
@@ -91,10 +93,17 @@ t_parser	*parse_and_store_command(t_token *token)
 			if (token->e_token_type == 3)
 			{
 				token = token->next;
+				if (token->e_token_type == 0 && (count_words(token->token_value) >= 2 || !ft_strcmp(token->token_value, "")))
+				{
+					ft_perror("ambiguous redirect");
+					return (NULL);
+				}
 				out = open(token->token_value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 				if (out == -1)
 				{
-					if (access(token->token_value, W_OK) == -1)
+					if (opendir(token->token_value))
+						ft_perror(ft_strjoin(token->token_value, ": Is a directory"));
+					else if (access(token->token_value, F_OK) == 0 && access(token->token_value, W_OK) == -1)
 						ft_perror(ft_strjoin(token->token_value, ": permission denied"));
 					else
 						ft_perror("error: file open operation failed");
@@ -104,10 +113,15 @@ t_parser	*parse_and_store_command(t_token *token)
 			else if (token->e_token_type == 4)
 			{
 				token = token->next;
+				if (token->e_token_type == 0 && (count_words(token->token_value) >= 2 || !ft_strcmp(token->token_value, "")))
+				{
+					ft_perror("ambiguous redirect");
+					return (NULL);
+				}
 				in = open(token->token_value, O_RDONLY);
 				if (in == -1)
 				{
-					if (access(token->token_value, F_OK) == 0)
+					if (access(token->token_value, F_OK) == 0 && access(token->token_value, R_OK) == -1)
 						ft_perror(ft_strjoin(token->token_value, ": permission denied"));
 					else
 						ft_perror(ft_strjoin(token->token_value, ": no such file or directory"));
@@ -117,10 +131,17 @@ t_parser	*parse_and_store_command(t_token *token)
 			else if (token->e_token_type == 5)
 			{
 				token = token->next;
+				if (token->e_token_type == 0 && (count_words(token->token_value) >= 2 || !ft_strcmp(token->token_value, "")))
+				{
+					ft_perror("ambiguous redirect");
+					return (NULL);
+				}
 				out = open(token->token_value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 				if (out == -1)
 				{
-					if (access(token->token_value, W_OK) == -1)
+					if (opendir(token->token_value))
+						ft_perror(ft_strjoin(token->token_value, ": Is a directory"));
+					else if (access(token->token_value, F_OK) == 0 && access(token->token_value, W_OK) == -1)
 						ft_perror(ft_strjoin(token->token_value, ": permission denied"));
 					else
 						ft_perror("error: file open operation failed");
@@ -129,7 +150,6 @@ t_parser	*parse_and_store_command(t_token *token)
 			}
 			else if (token->e_token_type == 6)
 			{
-				// heredocs_count--;
 				token = token->next;
 				if (heredocs_count)
 				{
@@ -160,25 +180,29 @@ t_parser	*parse_and_store_command(t_token *token)
 							heredoc = readline("> ");
 						}
 						write(pipe_fd[1], "\0", 1);
-						// char *buffer = (char*)malloc(15 * sizeof(char));
-						// int n = read(pipe_fd[0], buffer, 15);
-						// printf("%s", buffer);
-						// close(pipe_fd[1]);
-						// close(pipe_fd[0]);
+						in = pipe_fd[1];
 					}
 					waitpid(pid, NULL, 0);
-					// close(pipe_fd[0]);
-					// close(pipe_fd[1]);
 					heredocs_count--;
 				}
 			}
 			else
-				command[j++] = ft_strdup(token->token_value);
+			{
+				if (token->e_token_type == 0)
+				{
+					x = 0;
+					strs = ft_split(token->token_value, ' ');
+					while (strs[x] != NULL)
+					{
+						printf("%s\n", strs[x]);
+						command[j++] = ft_strdup(strs[x++]);
+					}
+				}
+				else
+					command[j++] = ft_strdup(token->token_value);
+			}
 			token = token->next;
 		}
-		char *buffer = (char*)malloc(15 * sizeof(char));
-		int n = read(pipe_fd[0], buffer, 15);
-		printf("%s", buffer);
 		if (command && *command)
 			command[j] = NULL;
 		parser_add_back(&parser, init_parser(command, in, out));

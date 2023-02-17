@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 20:12:47 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/11 22:46:06 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/16 18:13:19 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 t_token	*lexer_get_token(t_lexer *lexer)
 {
-	t_token	*token;
-
 	while (lexer->c && lexer->i < ft_strlen(lexer->content))
 	{
 		if (lexer->c == ' ' || lexer->c == '\t')

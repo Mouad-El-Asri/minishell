@@ -1,23 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/05 16:26:57 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/16 18:12:32 by moel-asr         ###   ########.fr       */
+/*   Created: 2022/10/09 14:51:39 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/02/17 15:32:21 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strlen(const char *str)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	int	i;
+	char	*sub;
+	size_t	i;
 
+	if (!s)
+		return (NULL);
+	if (start >= (unsigned int)ft_strlen(s))
+		return (ft_strdup(""));
+	if (len > ft_strlen(s) - start)
+		len = ft_strlen(s) - start;
+	sub = (char *)malloc (len * sizeof(char) + 1);
+	if (!sub)
+		return (NULL);
 	i = 0;
-	while (str[i])
+	while (i < len)
+	{
+		sub[i] = s[i + start];
 		i++;
-	return (i);
+	}
+	sub[i] = '\0';
+	return (sub);
 }

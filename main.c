@@ -6,11 +6,20 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/14 21:26:29 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/16 20:07:31 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
+
+// void	sigint_handler(int sig)
+// {
+// 	printf("\n");
+// 	rl_clear_history();
+// 	rl_on_new_line();
+// 	rl_replace_line("", 0);
+// 	rl_redisplay();
+// }
 
 int	main(int argc, char **argv, char **env)
 {
@@ -20,9 +29,13 @@ int	main(int argc, char **argv, char **env)
 	t_parser	*parser;
 	int			i;
 
+	(void)argc;
+	(void)argv;
+	(void)env;
 	token = NULL;
 	parser = NULL;
 	str = readline("minishell$ ");
+	// signal(SIGINT, sigint_handler);
 	while (str)
 	{
 		if (*str)
