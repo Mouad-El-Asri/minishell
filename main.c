@@ -6,20 +6,21 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/16 20:07:31 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/18 23:39:58 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
 
-// void	sigint_handler(int sig)
-// {
-// 	printf("\n");
-// 	rl_clear_history();
-// 	rl_on_new_line();
-// 	rl_replace_line("", 0);
-// 	rl_redisplay();
-// }
+void	sigint_handler(int sig)
+{
+	(void)sig;
+	printf("\n");
+	rl_clear_history();
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
 
 int	main(int argc, char **argv, char **env)
 {
@@ -34,30 +35,25 @@ int	main(int argc, char **argv, char **env)
 	(void)env;
 	token = NULL;
 	parser = NULL;
+	signal(SIGINT, sigint_handler);
 	str = readline("minishell$ ");
-	// signal(SIGINT, sigint_handler);
 	while (str)
 	{
 		if (*str)
 			add_history(str);
-		if (parser_check_quotes(str))
+		if (check_quotes(str) == -1)
 		{
 			str = readline("minishell$ ");
 			continue ;
 		}
 		lexer = init_lexer(str);
 		token = create_token_list(lexer);
-		if (parser_check_string_syntax_errors(token) || \
-			parser_check_syntax_errors(token))
+		if (check_string_syntax_errors(token) == -1 || \
+			check_syntax_errors(token) == -1)
 		{
 			str = readline("minishell$ ");
 			continue ;
 		}
-		// while (token)
-		// {
-		// 	printf("TOKEN(%d, %s)\n", token->e_token_type, token->token_value);
-		// 	token = token->next;
-		// }
 		parser = parse_and_store_command(token);
 		while (parser)
 		{
@@ -78,3 +74,11 @@ int	main(int argc, char **argv, char **env)
 	}
 	return (0);
 }
+
+
+
+// while (token)
+// {
+// 	printf("TOKEN(%d, %s)\n", token->e_token_type, token->token_value);
+// 	token = token->next;
+// }

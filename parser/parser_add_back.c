@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   count_words.c                                      :+:      :+:    :+:   */
+/*   parser_add_back.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/16 21:46:58 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/16 21:56:07 by moel-asr         ###   ########.fr       */
+/*   Created: 2023/02/17 22:21:07 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/02/17 22:21:21 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/minishell.h"
 
-int	count_words(char *str)
+void	parser_add_back(t_parser **parser, t_parser *new)
 {
-	int	i;
-	int	count;
+	t_parser	*tmp;
 
-	i = 0;
-	count = 0;
-	while (str[i])
+	tmp = (*parser);
+	if (!new)
+		return ;
+	if (!(*parser))
+		*parser = new;
+	else
 	{
-		if ((str[i] == ' ' && str[i + 1] != ' ' && str[i + 1]) \
-			|| (i == 0 && str[i] != ' '))
-			count++;
-		i++;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
 	}
-	return (count);
 }
