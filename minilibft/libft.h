@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 14:03:52 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/16 22:25:06 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/20 13:44:28 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	*ft_memmove(void *dest, const void *src, size_t len);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);
-char	**ft_split(char const *s, char c);
+char	**ft_split(char const *s);
 char	*ft_strchr(const char *str, int c);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strdup(const char *str);
