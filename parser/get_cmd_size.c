@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   count_words.c                                      :+:      :+:    :+:   */
+/*   get_cmd_size.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/16 21:46:58 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/20 13:36:05 by moel-asr         ###   ########.fr       */
+/*   Created: 2023/02/17 22:23:09 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/02/19 22:26:12 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	count_words(char *str)
-{
-	int	i;
-	int	count;
+#include "../include/minishell.h"
 
-	i = 0;
-	count = 0;
-	while (str[i])
+int	get_cmd_size(t_token *token)
+{
+	int	size;	
+
+	size = 0;
+	while (token && token->e_token_type != 2)
 	{
-		if (((str[i] == ' ' || str[i] == '\t') && str[i + 1] != ' ' \
-			&& str[i + 1] != '\t' && str[i + 1]) \
-			|| (i == 0 && str[i] != ' ' && str[i] != '\t'))
-			count++;
-		i++;
+		size++;
+		token = token->next;
 	}
-	return (count);
+	return (size);
 }

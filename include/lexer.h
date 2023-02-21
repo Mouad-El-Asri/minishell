@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 18:11:03 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/18 15:33:02 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/20 22:27:23 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		is_not_special_char(char c);
 void	lexer_advance(t_lexer *lexer);
 char	*lexer_get_char_as_string(t_lexer *lexer);
 t_token	*lexer_get_operator(t_lexer *lexer, int token_type);
-t_token	*lexer_get_string_in_quotes(t_lexer *lexer, char character);
+char	*lexer_get_string_in_quotes(t_lexer *lexer, char character);
 t_token	*lexer_get_string(t_lexer *lexer);
 t_token	*lexer_get_token(t_lexer *lexer);
 int		skip_whitespace_backwards(t_lexer *lexer);

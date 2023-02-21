@@ -6,7 +6,7 @@
 #    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/02/18 19:58:09 by moel-asr         ###   ########.fr        #
+#    Updated: 2023/02/20 15:24:24 by moel-asr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,8 +38,10 @@ SRCS = minishell_utils/count_words.c \
 	lexer/skip_whitespace.c \
 	lexer/token_add_back.c \
 	lexer/token_last.c \
+	parser/build_command_array.c \
 	parser/check_ambiguous_redirect.c \
 	parser/check_heredoc_variables.c \
+	parser/check_operators_syntax_errors.c \
 	parser/check_quotes.c \
 	parser/check_string_syntax_errors.c \
 	parser/check_syntax_errors.c \
@@ -48,10 +50,11 @@ SRCS = minishell_utils/count_words.c \
 	parser/count_heredocs.c \
 	parser/expand_heredoc_variable.c \
 	parser/get_char_as_string.c \
-	parser/get_command_size.c \
+	parser/get_cmd_size.c \
 	parser/handle_heredoc_input.c \
 	parser/handle_heredoc.c \
 	parser/handle_input_redirection.c \
+	parser/handle_operators_tokens.c \
 	parser/handle_output_append_operator.c \
 	parser/handle_output_redirection.c \
 	parser/init_parser.c \

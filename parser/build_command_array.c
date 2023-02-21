@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_command_size.c                                 :+:      :+:    :+:   */
+/*   build_command_array.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/17 22:23:09 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/17 22:24:20 by moel-asr         ###   ########.fr       */
+/*   Created: 2023/02/20 13:50:28 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/02/20 15:12:16 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	get_command_size(t_token *token)
+void	build_command_array(t_token *token, char **command, int *j)
 {
-	int	size;	
+	char		**strs;
+	int			i;
 
-	size = 0;
-	while (token && token->e_token_type != 2)
+	if (token->e_token_type == 0)
 	{
-		size++;
-		token = token->next;
+		i = 0;
+		strs = ft_split(token->token_value);
+		while (strs[i] != NULL)
+			command[(*j)++] = ft_strdup(strs[i++]);
 	}
-	return (size);
+	else
+		command[(*j)++] = ft_strdup(token->token_value);
 }

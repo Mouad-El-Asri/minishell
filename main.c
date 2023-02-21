@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/18 23:39:58 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/21 00:25:34 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	main(int argc, char **argv, char **env)
 			str = readline("minishell$ ");
 			continue ;
 		}
-		parser = parse_and_store_command(token);
+		parse_and_store_command(token, &parser);
 		while (parser)
 		{
 			i = 0;
@@ -74,11 +74,3 @@ int	main(int argc, char **argv, char **env)
 	}
 	return (0);
 }
-
-
-
-// while (token)
-// {
-// 	printf("TOKEN(%d, %s)\n", token->e_token_type, token->token_value);
-// 	token = token->next;
-// }
