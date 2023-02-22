@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:40:40 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/21 00:49:47 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/22 21:40:19 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ void	*parse_and_store_command(t_token *token, t_parser **parser)
 			return (NULL);
 		while (token && token->token_value != NULL && token->e_token_type != 2)
 		{
+			while (token && ft_strcmp(token->token_value, "") == 0)
+				token = token->next;
+			if (!token || !token->token_value || token->e_token_type == 2)
+				break ;
 			if (check_token_type(token) == 0)
 			{
 				if (!handle_operators_tokens(&token, &in, &out, &heredoc_count))

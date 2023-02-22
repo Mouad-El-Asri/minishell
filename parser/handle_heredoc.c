@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:39:21 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/21 00:19:48 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/22 15:10:39 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,10 @@ int	handle_heredoc(t_token *token, int *heredoc_count)
 		waitpid(pid, NULL, 0);
 	}
 	(*heredoc_count)--;
+	if ((*heredoc_count))
+	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+	}
 	return (in);
 }
