@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:06:34 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/18 15:30:42 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/25 18:14:08 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_token	*lexer_get_operator(t_lexer *lexer, int token_type)
 	char	*c;
 	t_token	*token;
 
+	s = NULL;
 	if ((lexer->c == '>' && lexer->content[lexer->i + 1] == '>') || \
 		(lexer->c == '<' && lexer->content[lexer->i + 1] == '<'))
 	{
@@ -25,13 +26,14 @@ t_token	*lexer_get_operator(t_lexer *lexer, int token_type)
 		lexer_advance(lexer);
 		s = lexer_get_char_as_string(lexer);
 		s = ft_free(ft_strjoin(c, s), s);
-		token = init_token(s, token_type);
+		token = init_token(ft_strdup(s), token_type);
 		free(c);
 	}
 	else
 	{
 		s = lexer_get_char_as_string(lexer);
-		token = init_token(s, token_type);
+		token = init_token(ft_strdup(s), token_type);
 	}
+	free(s);
 	return (advance_with_token(lexer, token));
 }

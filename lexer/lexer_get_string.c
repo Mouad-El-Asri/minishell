@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:12:14 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/21 00:27:59 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/25 18:20:05 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 t_token	*lexer_get_string(t_lexer *lexer)
 {
 	char	*s;
+	char	*c;
 	t_token	*token;
 	int		dollar_sign_count;
 	int		token_type;
 
 	s = NULL;
+	c = NULL;
 	dollar_sign_count = 0;
 	token_type = 0;
 	while (is_not_special_char(lexer->c))
@@ -35,14 +37,18 @@ t_token	*lexer_get_string(t_lexer *lexer)
 		{
 			if (lexer->c == '\'' || lexer->c == '"')
 			{
-				s = ft_free(ft_strjoin(s, lexer_get_string_in_quotes(lexer, \
-				lexer->c)), s);
+				c = lexer_get_string_in_quotes(lexer, lexer->c);
+				s = ft_free(ft_strjoin(s, c), s);
+				free(c);
 				token_type = 1;
 			}
-			s = ft_free(ft_strjoin(s, lexer_get_char_as_string(lexer)), s);
+			c = lexer_get_char_as_string(lexer);
+			s = ft_free(ft_strjoin(s, c), s);
+			free(c);
 			lexer_advance(lexer);
 		}
 	}
 	token = init_token(s, token_type);
+	free(s);
 	return (token);
 }

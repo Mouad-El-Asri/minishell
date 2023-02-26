@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 19:58:01 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/22 21:28:03 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/24 18:44:29 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 char	*lexer_get_string_in_quotes(t_lexer *lexer, char character)
 {
+	char	*c;
 	char	*s;
 	int		ds_count;
 
@@ -31,7 +32,9 @@ char	*lexer_get_string_in_quotes(t_lexer *lexer, char character)
 		}
 		else
 		{
-			s = ft_free(ft_strjoin(s, lexer_get_char_as_string(lexer)), s);
+			c = lexer_get_char_as_string(lexer);
+			s = ft_free(ft_strjoin(s, c), s);
+			free(c);
 			lexer_advance(lexer);
 		}
 		while (lexer->c == '"' || lexer->c == '\'')

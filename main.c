@@ -6,17 +6,23 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/22 21:34:22 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/25 18:39:31 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
 
-void	sigint_handler(int sig)
+void handle_sigquit(int signum) {
+	(void)signum;
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
+void	sigint_handler(int signum)
 {
-	(void)sig;
+	(void)signum;
 	printf("\n");
-	rl_clear_history();
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -36,9 +42,15 @@ int	main(int argc, char **argv, char **env)
 	token = NULL;
 	parser = NULL;
 	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, handle_sigquit);
 	str = readline("minishell$ ");
 	while (str)
 	{
+		if (str == 0)
+		{
+			printf("Exiting...\n");
+			break ;
+		}
 		if (*str)
 			add_history(str);
 		if (check_quotes(str) == -1)
@@ -54,11 +66,6 @@ int	main(int argc, char **argv, char **env)
 			str = readline("minishell$ ");
 			continue ;
 		}
-		// while (token)
-		// {
-		// 	printf("TOKEN(%d, %s)\n", token->e_token_type, token->token_value);
-		// 	token = token->next;
-		// }
 		parse_and_store_command(token, &parser);
 		while (parser)
 		{
