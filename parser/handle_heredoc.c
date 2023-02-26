@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:39:21 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/22 15:10:39 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/26 19:29:12 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,11 @@ int	handle_heredoc(t_token *token, int *heredoc_count)
 			handle_heredoc_input(token, pipe_fd[1]);
 			in = pipe_fd[0];
 		}
+		close(pipe_fd[1]);
 		waitpid(pid, NULL, 0);
 	}
 	(*heredoc_count)--;
 	if ((*heredoc_count))
-	{
 		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-	}
 	return (in);
 }

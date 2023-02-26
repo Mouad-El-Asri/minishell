@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_get_string.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:12:14 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/25 18:20:05 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/26 20:34:15 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_token	*lexer_get_string(t_lexer *lexer)
 			lexer_advance(lexer);
 		}
 	}
-	token = init_token(s, token_type);
+	token = init_token(ft_strdup(s), token_type);
 	free(s);
 	return (token);
 }

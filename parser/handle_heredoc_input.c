@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_heredoc_input.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 15:56:38 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/18 15:56:46 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/26 19:33:15 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ void	handle_heredoc_input(t_token *token, int pipe_fd_in)
 		free(heredoc);
 		heredoc = readline("> ");
 	}
-	write(pipe_fd_in, "\0", 1);
+	close(pipe_fd_in);
 }

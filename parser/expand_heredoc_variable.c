@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   expand_heredoc_variable.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:31:13 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/17 22:31:51 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/26 19:27:41 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+extern t_global *global_vars;
+
 char	*expand_heredoc_variable(char *str, char *var)
 {
-	var = ft_free(getenv(var), var);
+	var = ft_free(ft_mygetenv(global_vars->env, var), var);
 	if (var)
 		str = ft_free(ft_strjoin(str, var), str);
 	else

@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
+#    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/02/20 15:24:24 by moel-asr         ###   ########.fr        #
+#    Updated: 2023/02/26 20:27:03 by ceddibao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-RE_PATH = ~/brew/opt/readline
+RE_PATH = /goinfre/ceddibao/homebrew/opt/readline/
 
 LFLAGS = -lreadline -L $(RE_PATH)/lib -I $(RE_PATH)/include
 
@@ -60,6 +60,11 @@ SRCS = minishell_utils/count_words.c \
 	parser/init_parser.c \
 	parser/parse_and_store_command.c \
 	parser/parser_add_back.c \
+	execution/strlen.c \
+	execution/pipex.c \
+	execution/pipex_utils.c \
+	execution/multiple.c \
+	execution/builtins.c \
 	main.c
 
 OBJS = $(SRCS:.c=.o)

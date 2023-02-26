@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variale.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 19:56:38 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/24 18:59:39 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/25 16:50:29 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+extern t_global *global_vars;
 
 char	*expand_variable(t_lexer *lexer)
 {
@@ -25,7 +27,7 @@ char	*expand_variable(t_lexer *lexer)
 		str = ft_free(ft_free(ft_strjoin(str, c), c), str);
 		lexer_advance(lexer);
 	}
-	str = ft_free(getenv(str), str);
+	str = ft_free(ft_mygetenv(global_vars->env, str), str);
 	if (str)
 		return (str);
 	else

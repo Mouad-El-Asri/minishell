@@ -3,30 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/25 18:39:31 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/26 19:51:48 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
 
-void handle_sigquit(int signum) {
-	(void)signum;
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+t_global *global_vars;
 
-void	sigint_handler(int signum)
-{
-	(void)signum;
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+// void handle_sigquit(int signum) {
+// 	(void)signum;
+// 	rl_on_new_line();
+// 	rl_replace_line("", 0);
+// 	rl_redisplay();
+// }
+
+// void	sigint_handler(int signum)
+// {
+// 	(void)signum;
+// 	printf("\n");
+// 	rl_on_new_line();
+// 	rl_replace_line("", 0);
+// 	rl_redisplay();
+// }
 
 int	main(int argc, char **argv, char **env)
 {
@@ -34,28 +36,38 @@ int	main(int argc, char **argv, char **env)
 	t_lexer		*lexer;
 	t_token		*token;
 	t_parser	*parser;
-	int			i;
+	t_node		*my_env;
+	t_node		*export;
+	data		*data;
+	t_parser	*temp;
 
 	(void)argc;
 	(void)argv;
-	(void)env;
+	data = malloc(sizeof(data));
+	global_vars = (t_global *)malloc(sizeof(t_global));
+	if (*env)
+	{
+		fill_env(&my_env, env, 0);
+		fill_env(&export, env, 1);
+	}
+	else
+	{
+		(my_env) = NULL;
+		export  = NULL;
+	}
+	global_vars->env = my_env;
 	token = NULL;
-	parser = NULL;
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, handle_sigquit);
-	str = readline("minishell$ ");
+	// signal(SIGINT, sigint_handler);
+	// signal(SIGQUIT, handle_sigquit);
+	str = readline("\x1B[36mminishell$\x1B[0m ");
 	while (str)
 	{
-		if (str == 0)
-		{
-			printf("Exiting...\n");
-			break ;
-		}
+		parser = NULL;
 		if (*str)
 			add_history(str);
 		if (check_quotes(str) == -1)
 		{
-			str = readline("minishell$ ");
+			str = readline("\x1B[36mminishell$\x1B[0m ");
 			continue ;
 		}
 		lexer = init_lexer(str);
@@ -67,22 +79,15 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		parse_and_store_command(token, &parser);
-		while (parser)
+		temp = parser;
+		while(temp)
 		{
-			i = 0;
-			printf("%d  ", parser->in);
-			printf("%d  ", parser->out);
-			while (parser->command[i])
-			{
-				printf("%s  ", parser->command[i]);
-				i++;
-			}
-			printf("\n");
-			parser = parser->next;
+			connect_and_handle(&temp, &my_env, &export ,&data);
 		}
+		free(parser);
 		free(str);
 		free(lexer);
-		str = readline("minishell$ ");
+		str = readline("\x1B[36mminishell$\x1B[0m ");
 	}
 	return (0);
 }
