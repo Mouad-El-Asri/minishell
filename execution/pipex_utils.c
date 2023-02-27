@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:23:08 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/02/26 19:49:21 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/02/27 15:14:14 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ char	*genv(char **env)
 
 char	*rap(char *s, char **env)
 {
+	if (!s)
+		return NULL;
 	char	**path;
 	char	*cmd;
 	int		i;

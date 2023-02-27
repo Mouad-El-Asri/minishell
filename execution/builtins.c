@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:42:10 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/02/26 20:30:18 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/02/27 15:11:54 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ char *ft_mygetenv(t_node *env, const char *s)
 
 int what_length(char *s1, char *s2)
 {
+	if (!s1)
+		return (ft_strlen(s2));
 	if (ft_strlen(s1) > ft_strlen(s2))
 		return ft_strlen(s1);
 	else
@@ -248,7 +250,6 @@ int isexist(t_node **env, char *s, t_node **export)
 	{
 		if (ft_strncmp(grab_keyname(s), grab_keyname((*export)->cmd), ft_strlen(s)) == 0)
 		{
-			printf("yes found it\n");
 			free((*export)->cmd);
 			(*export)->cmd = ft_strdup(s);
 			flag = 1;
@@ -357,7 +358,7 @@ void handle_builtin_unset(char *s ,t_node *env, t_node *export)
 	while(env)
 	{
 		temp = grab_keyname(env->cmd);
-		if (ft_strncmp(s, temp, ft_strlen(temp)) == 0)
+		if (ft_strncmp(s, temp, ft_strlen(s)) == 0)
 		{
 				target = env;
 				break;
@@ -374,7 +375,7 @@ void handle_builtin_unset(char *s ,t_node *env, t_node *export)
 	while(export)
 	{
 		temp = grab_keyname(export->cmd);
-		if (ft_strncmp(s, temp, ft_strlen(temp)) == 0)
+		if (ft_strncmp(s, temp, ft_strlen(s)) == 0)
 		{
 			target = export;
 			break;
@@ -401,12 +402,13 @@ void	handle_builtin_env(t_node **env)
 	*env = tmp;
 }
 
-char *handle_builtin_pwd()
+char *handle_builtin_pwd(int flag)
 {
 	char cwd[90];
 	if (getcwd(cwd, 90) == NULL)
       		(perror("getcwd()"));
-	printf("Current working directory is: %s\n", cwd);
+	if (flag == 1)
+		printf("Current working directory is: %s\n", cwd);
 	return ft_strdup(cwd);
 }
 
@@ -446,17 +448,54 @@ void handle_builtin_echo(t_parser **parser)
 	
 }
 
-void handle_builtin_cd(t_parser **parser)
+void handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
 {
+	(void)export;
 	int i;
+	t_node *tmp;
+	char *temp;
 
 	i = 1;
-	if (chdir((*parser)->command[i]) != 0)
+	tmp = *env;
+	if (!(*parser)->command[i])
+	{
+		if (chdir(ft_mygetenv(*env, "HOME")) != 0)
+		{
+			global_vars->status_code = 1;
+			(perror("cd"));
+		}
+	}
+	else if (chdir((*parser)->command[i]) != 0)
 	{
 		global_vars->status_code = 1;
 		(perror("cd"));
 	}
-	handle_builtin_pwd();
+	while(*env)
+	{
+		temp = grab_keyname((*env)->cmd);
+		if (ft_strncmp("PWD", temp, ft_strlen(temp)) == 0)
+		{
+			(*env)->cmd = ft_strjoin("PWD=", handle_builtin_pwd(0));
+			break;
+		}
+		free(temp);
+		(*env) = (*env)->next;
+	}
+	(*env) = tmp;
+	// tmp = *export;
+	// while(*export)
+	// {
+	// 	temp = grab_keyname((*export)->cmd);
+	// 	if (ft_strncmp("PWD", temp, ft_strlen(temp)) == 0)
+	// 	{
+	// 		(*export)->cmd = ft_strjoin("PWD=", handle_builtin_pwd(0));
+	// 		break;
+	// 	}
+	// 	free(temp);
+	// 	(*export) = (*export)->next;
+	// }
+	// *export = tmp;
+	handle_builtin_pwd(1);
 }
 
 void handle_builtins(t_parser **parser, char *builtin, t_node **env, t_node **export)
@@ -469,9 +508,9 @@ void handle_builtins(t_parser **parser, char *builtin, t_node **env, t_node **ex
 		exit(0);
 	}
 	else if (ft_strncmp(builtin, "pwd", ft_strlen(builtin)) == 0)
-		handle_builtin_pwd();
+		handle_builtin_pwd(1);
 	else if (ft_strncmp(builtin, "cd", ft_strlen(builtin)) == 0)
-		handle_builtin_cd(parser);
+		handle_builtin_cd(parser, env, export);
 	else if (ft_strncmp(builtin, "env", ft_strlen(builtin)) == 0)
 		handle_builtin_env(env);
 	else if (ft_strncmp(builtin, "unset", ft_strlen(builtin)) == 0)

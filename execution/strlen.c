@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:44:31 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/02/26 20:18:31 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/02/27 15:15:25 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,10 @@ void handle_single_command(t_parser **parser, data **data)
 	if (pid == 0)
 	{
 		(*parser)->command[0] = rap((*parser)->command[0], (*data)->env_arr);
+		if ((*parser)->command[0] == NULL)
+		{
+			exit(0);
+		}
 		if ((*parser)->in != 0)
 		{
 			dup2((*parser)->in, 0);
@@ -188,6 +192,8 @@ int     ft_strncmp(const char *s1, const char *s2, size_t size)
 
 char *cmp_with_builtins(char *input)
 {
+	if (!input)
+		return NULL;
 	if (ft_strncmp(input, "env", what_length(input, "env")) == 0)
 		return input;
 	if (ft_strncmp(input, "cd", what_length(input, "cd")) == 0)

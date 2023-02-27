@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/26 19:51:48 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/02/27 15:09:32 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	
 	data = malloc(sizeof(data));
 	global_vars = (t_global *)malloc(sizeof(t_global));
 	if (*env)
@@ -71,7 +72,9 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		lexer = init_lexer(str);
+		
 		token = create_token_list(lexer);
+		
 		if (check_string_syntax_errors(token) == -1 || \
 			check_syntax_errors(token) == -1)
 		{
