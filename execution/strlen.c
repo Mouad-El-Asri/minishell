@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   strlen.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:44:31 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/02/27 20:24:25 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:38:16 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern	t_global *global_vars;
+extern t_global *global_vars;
 
 void	print_error(char c, int flag)
 {
@@ -31,39 +31,36 @@ void	print_error(char c, int flag)
 	}
 	else
 	{
+		(void)c;
 		ft_putstr_fd("permission denied\n", 2);
 		exit(13);
 	}
 }
 
-void	handle_normal_pipe(t_parser **parser, t_node *envp, \
-		data *data, t_node **export)
+void handle_normal_pipe(t_parser **parser, t_node *envp, data *data, t_node **export)
 {
 	int		fd[2];
 	int		pid1;
 	int		pid2;
-	char	*temp;
+	char 	*temp;
+
 	if (pipe(fd) == -1)
 	{
-		ft_perror("pipe system call error: failed to create pipe");
+		perror("pipe: ");
 		exit(1);
 	}
 	pid1 = fork();
 	if (pid1 == -1)
-	{
-		ft_perror("fork system call error: failed to create child process");
-		exit(1);
-	}
+		perror("Fork: ");
 	if ((temp = check_if_builtin(parser)))
 	{
 		if (pid1 == 0)
 		{
 			dup2(fd[1], 1);
 			close(fd[1]);
-			handle_builtins(parser, temp, &envp, export);
+			handle_builtins(parser, temp, &envp, export, data);
 			exit(0);
 		}
-		wait(NULL);
 	}
 	else
 		handle_left(pid1, *parser, data->env_arr, fd);
@@ -71,7 +68,7 @@ void	handle_normal_pipe(t_parser **parser, t_node *envp, \
 	*parser = (*parser)->next;
 	if (pid2 == -1)
 	{
-		ft_perror("fork system call error: failed to create child process");
+		perror("2 fork: ");
 		exit(1);
 	}
 	if ((temp = check_if_builtin(parser)))
@@ -80,10 +77,9 @@ void	handle_normal_pipe(t_parser **parser, t_node *envp, \
 		{
 			dup2(fd[0], 0);
 			close(fd[1]);
-			handle_builtins(parser, temp, &envp, export);
+			handle_builtins(parser, temp, &envp, export, data);
 			exit(0);
 		}
-		wait(NULL);
 	}
 	else
 		handle_right(pid2, *parser, data->env_arr, fd);
@@ -93,41 +89,43 @@ void	handle_normal_pipe(t_parser **parser, t_node *envp, \
 	waitpid(pid2, NULL, 0);
 }
 
-void	handle_first_child(int pid, t_parser **parser, char **envp, int **fds)
+void handle_first_child(int pid, t_parser **parser, char **envp,int **fds) //int fds[][2]
 {
-	int	i;
-
-	i = 0;
-	if (pid == 0)
-	{
-		dup2((*parser)->in, 0);
-		close(fds[i][0]);
-		dup2(fds[i][1], 1);
-		(*parser)->command[i] = rap((*parser)->command[i], envp);
-		if (access((*parser)->command[i], F_OK) != 0)
+		int i = 0;
+		if (pid == 0)
 		{
-			print_error((*parser)->command[i][0], 1);
+			dup2((*parser)->in, 0);
+			close(fds[i][0]);
+			dup2(fds[i][1], 1);
+			(*parser)->command[i] = rap((*parser)->command[i], envp);
+			if (access((*parser)->command[i], F_OK) != 0)
+			{
+				print_error((*parser)->command[i][0], 1);
+			}
+			else if (access((*parser)->command[i], X_OK) != 0)
+			{
+				print_error((*parser)->command[i][0], 2);
+			}
+			execve((*parser)->command[i], (*parser)->command, NULL);
 		}
-		else if (access((*parser)->command[i], X_OK) != 0)
-		{
-			print_error((*parser)->command[i][0], 2);
-		}
-		execve((*parser)->command[i], (*parser)->command, NULL);
-	}
-	(*parser) = (*parser)->next;
+		(*parser) = (*parser)->next;
 }
 
-void	handle_single_command(t_parser **parser, data **data)
+void handle_sigkill()
 {
-	int	pid;
-	int	exit_status;
+	kill(0, SIGKILL);
+}
 
+void handle_single_command(t_parser **parser, data **data)
+{
+	signal(SIGKILL, handle_sigkill);
+	int pid;
 	if ((pid = fork()) == -1)
 	{
 		ft_putstr_fd("Error:createing child", 2);
 		exit(1);
 	}
-	exit_status = 0;
+	int exit_status = 0;
 	if (pid == 0)
 	{
 		(*parser)->command[0] = rap((*parser)->command[0], (*data)->env_arr);
@@ -160,98 +158,92 @@ void	handle_single_command(t_parser **parser, data **data)
 	free((*data)->env_arr);
 }
 
-int	ft_lstsize(t_parser *parser)
+int ft_lstsize(t_parser *parser)
 {
-	int	i;
-
-	i = 0;
-	while (parser)
+	int i = 0;
+	while(parser)
 	{
 		i++;
 		parser = parser->next;
 	}
-	return (i);
+	return i;
 }
 
-int	ft_llsize(t_node *head)
+int ft_llsize(t_node *head)
 {
-	int	i;
-
-	i = 0;
-	while (head)
+	int i = 0;
+	if (head == NULL)
+		return 0;
+	while(head)
 	{
 		i++;
 		head = head->next;
 	}
-	return (i);
+	return i;
 }
 
-int	ft_strncmp(const char *s1, const char *s2, size_t size)
+int     ft_strncmp(const char *s1, const char *s2, size_t size)
 {
-	unsigned long int	i;
+        unsigned long int       i;
 
-	i = 0;
-	while (i < size)
-	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
-		i++;
-	}
-	return (0);
+        i = 0;
+        while (i < size)
+        {
+                if (s1[i] != s2[i])
+                        return (s1[i] - s2[i]);
+                i++;
+        }
+        return (0);
 }
 
-char	*cmp_with_builtins(char *input)
+char *cmp_with_builtins(char *input)
 {
 	if (!input)
-		return (NULL);
+		return NULL;
 	if (ft_strncmp(input, "env", what_length(input, "env")) == 0)
-		return (input);
+		return input;
 	if (ft_strncmp(input, "cd", what_length(input, "cd")) == 0)
-		return (input);
+		return input;
 	if (ft_strncmp(input, "echo", what_length(input, "echo")) == 0)
-		return (input);
+		return input;
 	if (ft_strncmp(input, "export", what_length(input, "export")) == 0)
-		return (input);
+		return input;
 	if (ft_strncmp(input, "pwd", what_length(input, "pwd")) == 0)
-		return (input);
+		return input;
 	if (ft_strncmp(input, "unset", what_length(input, "unset")) == 0)
-		return (input);
+		return input;
 	if (ft_strncmp(input, "exit", what_length(input, "unset")) == 0)
-		return (input);
-	return (NULL);
+		return input;
+	return NULL;
 }
 
-char	*check_if_builtin(t_parser **parser)
+char *check_if_builtin(t_parser **parser)
 {
-	int			i;
-	t_parser	*tmp;
+	int i;
 
 	i = 0;
+	t_parser *tmp;
 	tmp = *parser;
-	while (*parser)
+	while(*parser)
 	{
 		if (cmp_with_builtins((*parser)->command[0]))
 		{
 			*parser = tmp;
-			return ((*parser)->command[0]);
+			return (*parser)->command[0];
 		}
 		(*parser) = (*parser)->next;
 	}
 	*parser = tmp;
-	return (NULL);
+	return NULL;
 }
 
-void	connect_and_handle(t_parser **parser, t_node **env, \
-		t_node **export, data **data)
+void connect_and_handle(t_parser **parser, t_node **env, t_node **export , data **data)
 {
-	int		i;
-	t_node	*tmp;
-	char	*ret;
-
-	(*data)->env_arr = (char **)malloc(sizeof(char *) * (ft_llsize(*env) + 60));
-	i = 0;
+	(*data)->env_arr = (char **)malloc(sizeof(char *) * (ft_llsize(*env) + 1));
+	int i = 0;
+	t_node *tmp;
 	tmp = *env;
-	while (*env)
+	while(*env)
 	{
 		(*data)->env_arr[i] = (*env)->cmd;
 		i++;
@@ -261,9 +253,10 @@ void	connect_and_handle(t_parser **parser, t_node **env, \
 	*env = tmp;
 	if (ft_lstsize(*parser) == 1)
 	{
+		char *ret;
 		if ((ret = check_if_builtin(parser)))
 		{
-			handle_builtins(parser, ret, env, export);
+			handle_builtins(parser, ret, env, export, *data);
 			(*parser) = (*parser)->next;
 		}
 		else

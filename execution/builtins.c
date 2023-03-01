@@ -3,86 +3,110 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:42:10 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/02/27 17:14:13 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:46:17 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include "../get_next_line/get_next_line.h"
 
-extern t_global	*global_vars;
+extern t_global *global_vars;
 
-t_node	*ft_lstnew(void)
+t_node *ft_lstnew()
 {
-	t_node	*ret;
-
+	t_node *ret;
 	ret = (t_node *)malloc(sizeof(t_node));
 	ret->next = NULL;
-	return (ret);
+	return ret;
 }
 
 void	ft_lstaddback(t_node **l, t_node **new)
 {
+	
 	t_node	*lst;
 
 	lst = *l;
-	while (lst->next)
-		lst = lst->next;
-	lst->next = (*new);
+	if ((*l) == NULL)
+	{
+		*l = *new;
+	}
+	else
+	{
+		while (lst->next)
+			lst = lst->next;
+		lst->next = (*new);
+	}
 }
 
-void	del(void *str)
+void del(void *str)
 {
-	str = NULL;
+	free(str);
 }
 
 void	ft_lstdelone(t_node **lst, t_node *todel, void (*del)(void*))
 {
-	t_node	*tmp;
-
-	tmp = *lst;
-	while ((*lst)->next != todel)
+    t_node *tmp;
+	if (ft_llsize(*lst) > 1)
+    	tmp = *lst;
+	else
+		tmp = NULL;
+	while(*lst && (*lst)->next != todel)
+	{
 		(*lst) = (*lst)->next;
-	(*lst)->next = (*lst)->next->next;
+	}
+	if (*lst && (*lst)->next)
+		(*lst)->next = (*lst)->next->next;
 	del(todel->cmd);
 	free(todel);
 	todel = NULL;
 	*lst = tmp;
 }
 
-char	*ft_strdup(char const *s)
+char    *ft_strdup(char const *s)
 {
-	int		l;
-	int		i;
-	char	*dup;
+        int             l;
+        int             i;
+        char    *dup;
 
-	i = 0;
-	l = (ft_strlen(s) + 1);
-	dup = (char *) malloc(l * sizeof(char));
-	if (!dup)
-		return (NULL);
-	while (s[i])
-	{
-		dup[i] = s[i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
+        l = (ft_strlen(s) + 1);
+        i = 0;
+        dup = (char *) malloc(l * sizeof(char));
+        if (!dup)
+                return (NULL);
+        while (s[i])
+        {
+                dup[i] = s[i];
+                i++;
+        }
+        dup[i] = '\0';
+        return (dup);
 }
 
-char	*get_value(char *s)
+int contain_equal(char *s)
 {
-	char	*ret;
-	int		i;
-	int		j;
+	int i = 0;
+	while(s[i])
+	{
+		if (s[i] == '=')
+			return 1;
+		i++;
+	}
+	return 0;
+}
 
-	ret = (char *)malloc(ft_strlen(s) + 1);
-	i = 0;
-	j = 0;
-	while (s[i] != '=')
+char *get_value(char *s)
+{
+	if (contain_equal(s) == 0)
+	{
+		return NULL;
+	}
+	char *ret = (char *)malloc(ft_strlen(s) + 1);
+	int i = 0;
+	int j = 0;
+	while(s[i] != '=')
 	{
 		i++;
 	}
@@ -90,23 +114,22 @@ char	*get_value(char *s)
 	if (s[i] == '\0')
 	{
 		free(ret);
-		return (NULL);
+		return(NULL);
 	}
-	while (s[i])
+	while(s[i])
 	{
 		ret[j] = s[i];
 		j++;
 		i++;
 	}
 	ret[j] = '\0';
-	return (ret);
+	return ret;
 }
 
-char	*ft_mygetenv(t_node *env, const char *s)
+char *ft_mygetenv(t_node *env, const char *s)
 {
-	char	*tmp;
-
-	while (env)
+	char *tmp;
+	while(env)
 	{
 		tmp = grab_keyname(env->cmd);
 		if (ft_strncmp(s, tmp, ft_strlen(s)) == 0)
@@ -116,37 +139,36 @@ char	*ft_mygetenv(t_node *env, const char *s)
 		free(tmp);
 		env = env->next;
 	}
-	return (NULL);
+	return NULL;
 }
 
-int	what_length(char *s1, char *s2)
+int what_length(char *s1, char *s2)
 {
 	if (!s1)
 		return (ft_strlen(s2));
 	if (ft_strlen(s1) > ft_strlen(s2))
-		return (ft_strlen(s1));
+		return ft_strlen(s1);
 	else
-		return (ft_strlen(s2));
+		return ft_strlen(s2);
 }
-
-void	ft_swap(char **s1, char **s2)
+void ft_swap(char **s1, char **s2)
 {
-	char	*tmp;
-
+	char *tmp;
 	tmp = *s1;
 	*s1 = *s2;
 	*s2 = tmp;
 }
 
-void	fill_env(t_node **env, char **envp, int i)
+void fill_env(t_node **env, char **envp, int i)
 {
-	int		x;
-	t_node	*new;
+	int x;
 
 	x = 1;
+	
+	t_node *new;
 	(*env) = ft_lstnew();
 	(*env)->cmd = ft_strdup(envp[0]);
-	while (envp[x])
+	while(envp[x])
 	{
 		new = ft_lstnew();
 		new->cmd = ft_strdup(envp[x]);
@@ -161,72 +183,66 @@ void	fill_env(t_node **env, char **envp, int i)
 	}
 }
 
-int	contain_equal(char *s)
+int check_if_valid(t_parser **parser)
 {
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == '=')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	check_if_valid(t_parser **parser)
-{
-	t_parser	*tmp;
-	int			i;
-
+	int i;
+	int j;
 	i = 1;
+	j = 0;
+	t_parser *tmp;
 	tmp = *parser;
-	while ((*parser)->command[i])
+	while((*parser)->command[i])
 	{
-		if (ft_isdigit((*parser)->command[i][0]) || \
-			(*parser)->command[i][0] == '=')
+		if (ft_isdigit((*parser)->command[i][0]) || (*parser)->command[i][0] == '=')
 		{
-			ft_putstr_fd(ft_strjoin((*parser)->command[i], \
-			": not a valid identifier\n"), 2);
+			ft_putstr_fd(ft_strjoin((*parser)->command[i], ": not a valid identifier\n"), 2);
 			return (-1);
 		}
+		while((*parser)->command[i][j] && (*parser)->command[i][j] != '=')
+		{
+			if (!ft_isalnum((*parser)->command[i][j]) && (*parser)->command[i][j] != '+')
+			{
+				ft_putstr_fd(ft_strjoin((*parser)->command[i], ": not a valid identifier\n"), 2);
+				return (-1);
+			}
+			j++;
+		}
 		i++;
+		j = 0;
 	}
 	*parser = tmp;
 	return (0);
 }
 
-void	sort_export(t_node **export)
+void sort_export(t_node **export)
 {
-	t_node	*tmp;
-
+	t_node *tmp;
 	tmp = NULL;
 	tmp = (*export);
-	while ((*export) && (*export)->next)
+	if (*export)
 	{
-		if (ft_strncmp((*export)->cmd, (*export)->next->cmd, \
-		what_length((*export)->cmd, (*export)->next->cmd)) > 0)
+		while((*export) && (*export)->next)
 		{
-			ft_swap(&(*export)->cmd, &(*export)->next->cmd);
-			(*export) = tmp;
+			if (ft_strncmp((*export)->cmd, (*export)->next->cmd, what_length((*export)->cmd, (*export)->next->cmd)) > 0)
+			{
+				ft_swap(&(*export)->cmd, &(*export)->next->cmd);
+				(*export) = tmp;
+			}
+			else
+				(*export) = (*export)->next;
 		}
-		else
-			(*export) = (*export)->next;
 	}
 	(*export) = tmp;
 }
 
-char	*grab_keyname(char *s)
+char *grab_keyname(char *s)
 {
-	char	*ret;
-	int		i;
-
 	if (contain_equal(s) == 0)
-		return (ft_strdup(s));
-	i = 0;
+		return ft_strdup(s);
+	int i = 0;
+	char *ret;
 	ret = malloc(sizeof(char) * ft_strlen(s));
-	while (s[i] != '=')
+	while(s[i] != '=' && s[i] != '+')
 	{
 		ret[i] = s[i];
 		i++;
@@ -235,10 +251,10 @@ char	*grab_keyname(char *s)
 	return (ret);
 }
 
-void	print_export(t_node *export)
+void print_export(t_node *export)
 {
-	char	*key;
-	char	*val;
+	char *key;
+	char *val;
 
 	key = grab_keyname((export)->cmd);
 	val = get_value((export)->cmd);
@@ -256,59 +272,67 @@ void	print_export(t_node *export)
 	free(val);
 }
 
-int	isexist(t_node **env, char *s, t_node **export)
+int isexist(t_node **env, char *s, t_node **export)
 {
-	t_node	*temp;
-	int		flag;
-
-	flag = 0;
+	t_node *temp;
+	char *ks;
+	char *cms;
+	int flag = 0;
 	temp = *export;
-	while (*export)
+	while(*export)
 	{
-		if (ft_strncmp(grab_keyname(s), grab_keyname((*export)->cmd), \
-			ft_strlen(s)) == 0)
+		ks = grab_keyname(s);
+		cms = grab_keyname((*export)->cmd);
+		if (ft_strncmp(ks, cms, what_length(ks, cms)) == 0)
 		{
 			free((*export)->cmd);
+			(*export)->cmd = NULL;
 			(*export)->cmd = ft_strdup(s);
 			flag = 1;
-			break ;
+			free(ks);
+			free(cms);
+			break;
 		}
+		free(ks);
+		free(cms);
 		*export = (*export)->next;
 	}
 	*export = temp;
 	if (flag == 1)
 	{
 		temp = *env;
-		while (*env)
+		while(*env)
 		{
-			if (ft_strncmp(grab_keyname(s), grab_keyname((*env)->cmd), \
-				ft_strlen(s)) == 0)
+			ks = grab_keyname(s);
+			cms = grab_keyname((*env)->cmd);
+			if (ft_strncmp(ks, cms, ft_strlen(cms)) == 0)
 			{
 				free((*env)->cmd);
 				(*env)->cmd = ft_strdup(s);
+				free(ks);
+				free(cms);
 				(*env) = temp;
-				return (1);
+				return 1;
 			}
+			free(ks);
+			free(cms);
 			*env = (*env)->next;
 		}
 		*env = temp;
+		return 2;
 	}
-	return (0);
+	return 0;
 }
 
-void	handle_builtin_export(t_node **env, t_node **export, \
-		int action, t_parser **parser)
+void handle_builtin_export(t_node **env, t_node **export ,int action, t_parser **parser)
 {
-	t_node	*tmp;
-	t_node	*new;
-	t_node	*new2;
-	int		pid;
-	int		i;
-
-	i = 1;
+	t_node *tmp;
+	t_node *new;
+	t_node *new2;
+	int i = 1;
 	if (action == 1)
 	{
-		while ((*parser)->command[i])
+		while((*parser)->command[i])
 		{
 			if (isexist(env, (*parser)->command[i], export) == 0)
 			{
@@ -318,15 +342,16 @@ void	handle_builtin_export(t_node **env, t_node **export, \
 					new->cmd = ft_strdup((*parser)->command[i]);
 					ft_lstaddback(export, &new);
 				}
-				else if (contain_equal((*parser)->command[i]) == 1 && \
-						!get_value((*parser)->command[i]))
+				else if (contain_equal((*parser)->command[i]) == 1 && !get_value((*parser)->command[i]))
 				{
 					new = ft_lstnew();
+					new2 = ft_lstnew();
 					new->cmd = ft_strdup((*parser)->command[i]);
-					ft_lstaddback(export, &new);
+					new2->cmd = ft_strdup((*parser)->command[i]);
+					ft_lstaddback(env, &new);
+					ft_lstaddback(export, &new2);
 				}
-				else if (contain_equal((*parser)->command[i]) == 1 && \
-						get_value((*parser)->command[i]))
+				else if (contain_equal((*parser)->command[i]) == 1 && get_value((*parser)->command[i]))
 				{
 					new = ft_lstnew();
 					new2 = ft_lstnew();
@@ -336,21 +361,37 @@ void	handle_builtin_export(t_node **env, t_node **export, \
 					ft_lstaddback(export, &new2);
 				}
 			}
+			else if (isexist(env, (*parser)->command[i], export) == 2)
+			{
+				if (contain_equal((*parser)->command[i]) == 0)
+				{
+					new = ft_lstnew();
+					new->cmd = ft_strdup((*parser)->command[i]);
+					ft_lstaddback(env, &new);
+				}
+				else if (contain_equal((*parser)->command[i]) == 1)
+				{
+					new = ft_lstnew();
+					new->cmd = ft_strdup((*parser)->command[i]);
+					ft_lstaddback(env, &new);
+				}
+			}
 			i++;
 		}
 	}
-	sort_export(export);
+	if (*export)
+		sort_export(export);
 	tmp = (*export);
 	if (action == 0)
 	{
 		if ((*parser)->out != 1)
 		{
-			pid = fork();
+			int pid = fork();
 			if (pid == 0)
 			{
 				dup2((*parser)->out, 1);
 				close((*parser)->out);
-				while (*export)
+				while(*export)
 				{
 					printf("declare -x ");
 					printf("%s\n", (*export)->cmd);
@@ -363,128 +404,258 @@ void	handle_builtin_export(t_node **env, t_node **export, \
 		}
 		else
 		{
-			while (*export)
+			if (*export)
 			{
-				print_export(*export);
-				(*export) = (*export)->next;
+				while(*export)
+				{
+					print_export(*export);
+					(*export) = (*export)->next;
+				}
+				*export = tmp;
 			}
-			*export = tmp;
 		}
 	}
 }
 
-void	handle_builtin_unset(char *s, t_node *env, t_node *export)
+void handle_builtin_unset(char *s ,t_node **env, t_node **export)
 {
-	t_node	*tmp;
-	t_node	*target;
-	char	*temp;
-
+	t_node *tmp;
+	t_node *target;
+	char *temp;
 	target = NULL;
-	tmp = env;
-	while (env)
+	tmp = *env;
+	while(*env)
 	{
-		temp = grab_keyname(env->cmd);
-		if (ft_strncmp(s, temp, ft_strlen(s)) == 0)
+		temp = grab_keyname((*env)->cmd);
+		if (ft_strncmp(s, temp, ft_strlen(temp)) == 0)
 		{
-			target = env;
-			break ;
+				target = *env;
+				break;
 		}
 		free(temp);
-		env = env->next;
+		*env = (*env)->next;
 	}
-	env = tmp;
+	*env = tmp;
 	if (target)
 	{
-		ft_lstdelone(&env, target, del);
+		ft_lstdelone(env, target, del);
 	}
-	tmp = export;
-	while (export)
+	tmp = *export;
+	while(*export)
 	{
-		temp = grab_keyname(export->cmd);
-		if (ft_strncmp(s, temp, ft_strlen(s)) == 0)
+		temp = grab_keyname((*export)->cmd);
+		if (ft_strncmp(s, temp, ft_strlen(temp)) == 0)
 		{
-			target = export;
-			break ;
+			target = *export;
+			break;
 		}
-		export = export->next;
+		*export = (*export)->next;
 	}
-	export = tmp;
+	*export = tmp;
 	if (target)
 	{
-		ft_lstdelone(&export, target, del);
+		ft_lstdelone(export, target, del);
 	}
 }
 
 void	handle_builtin_env(t_node **env)
 {
-	t_node	*tmp;
-
+	t_node *tmp; 
 	tmp = *env;
-	while (*env)
+	while(*env)
 	{
-		if (contain_equal((*env)->cmd) == 1)
-			printf("%s\n", (*env)->cmd);
+		printf("%s\n", (*env)->cmd);
 		*env = (*env)->next;
 	}
 	*env = tmp;
 }
 
-char	*handle_builtin_pwd(int flag)
+char *handle_builtin_pwd(int flag, t_parser **parser)
 {
-	char	cwd[90];
-
+	char cwd[1024];
+	int x;
+	x = dup(1);
+	if ((*parser)->out != 1)
+	{
+		dup2((*parser)->out, 1);
+	}
 	if (getcwd(cwd, 90) == NULL)
-		(perror("getcwd()"));
+      		(perror("getcwd()"));
 	if (flag == 1)
-		printf("Current working directory is: %s\n", cwd);
-	return (ft_strdup(cwd));
+	{
+		ft_putstr_fd(cwd, 1);
+		ft_putstr_fd("\n", 1);
+	}
+	dup2(x, 1);
+	return ft_strdup(cwd);
 }
 
-void	handle_builtin_echo(t_parser **parser)
+void handle_builtin_echo(t_parser **parser, t_node **env, t_node **export, data *data)
 {
-	int	pid;
-	int	i;
-	int	flag;
+	(void)env;
+	(void)export;
+	(void)data;
+	int pid;
+	int printed;
+	int i = 1;
+	int j;
+	int flag;
 
-	i = 1;
 	flag = 0;
-	if ((pid = fork()) == 0)
-	{
-		if ((*parser)->out != 1)
+	printed = 0;
+		if ((pid = fork()) == 0)
 		{
-			dup2((*parser)->out, 1);
-			close((*parser)->out);
-		}
-		while ((*parser)->command[i])
-		{
-			if (ft_strncmp((*parser)->command[i], "-n", \
-				ft_strlen((*parser)->command[i])) == 0)
+			if ((*parser)->out != 1)
 			{
-				i++;
-				flag = 1;
+				dup2((*parser)->out, 1);
+				close((*parser)->out);
 			}
-			if ((*parser)->command[i + 1])
-				printf("%s ", (*parser)->command[i]);
-			else if (!(*parser)->command[i + 1] && flag)
-				printf("%s", (*parser)->command[i]);
-			else if (!(*parser)->command[i + 1] && flag == 0)
-				printf("%s\n", (*parser)->command[i]);
-			i++;
+			while((*parser)->command[i])
+			{
+				j = 1;
+				if (ft_strncmp((*parser)->command[i], "-n", 2) == 0 && printed == 0)
+				{
+					while((*parser)->command[i][j] == 'n')
+						j++;
+					i++;
+					flag = 1;
+					continue;
+				}
+				if ((*parser)->command[i + 1])
+				{
+					printf("%s ", (*parser)->command[i]);
+					printed = 1;
+				}
+				else if (!(*parser)->command[i + 1] && flag)
+				{
+					printf("%s", (*parser)->command[i]);
+					printed = 1;
+				}
+				else if (!(*parser)->command[i + 1] && flag == 0)
+				{
+					printf("%s\n", (*parser)->command[i]);
+					printed = 1;
+				}
+				i++;
+			}
+			exit(0);
 		}
-		exit(0);
-	}
+	// }
 	wait(NULL);
 	global_vars->status_code = 0;
 }
 
-void	handle_builtin_cd(t_parser **parser, t_node **env)
+int check_wanna_add(t_parser **parser, t_node **env, t_node **export)
 {
-	t_node	*tmp;
-	char	*temp;
-	int		i;
+	t_parser *temp = *parser;
+	t_node *tmp = *env;
+	t_node *new;
+	t_node *new2;
+	char *final;
+	int found = 0;
+	int ret = 0;
+	char *tempo;
+	char *tempo2;
+	char *val;
+	int i = 1;
+	int j = 0;
+	int flag = 0;
+	while((*parser)->command[i])
+	{
+		while((*parser)->command[i][j] && (*parser)->command[i][j + 1])
+		{
+			if ((*parser)->command[i][j] == '+' && (*parser)->command[i][j + 1] == '=')
+			{
+				flag = 1;
+				ret = 1;
+				break;
+			}
+			j++;
+		}
+		if (flag == 1)
+			break;
+		i++;
+		j = 0;
+	}
+	*parser = temp;
+	if (flag == 1)
+	{
+		i = 1;
+		tmp = *env;
+		while(*env)
+		{
+			tempo = grab_keyname((*env)->cmd);
+			tempo2 = grab_keyname((*parser)->command[i]);
+			if (ft_strncmp(tempo, tempo2, what_length(tempo, tempo2)) == 0)
+			{
+				found = 1;
+				val = get_value((*parser)->command[i]);
+				final = ft_strjoin(get_value((*env)->cmd), val);
+				(*env)->cmd = ft_strjoin(ft_strjoin(tempo, "="), final);
+				free(final);
+				free(val);
+			}
+			free(tempo);
+			free(tempo2);
+			*env = (*env)->next;
+		}
+		*env = tmp;
+		tmp = *export;
+		while(*export)
+		{
+			tempo = grab_keyname((*export)->cmd);
+			tempo2 = grab_keyname((*parser)->command[i]);
+			if (ft_strncmp(tempo, tempo2, what_length(tempo, tempo2)) == 0)
+			{
+				found = 1;
+				val = get_value((*parser)->command[i]);
+				final = ft_strjoin(get_value((*export)->cmd), val);
+				(*export)->cmd = ft_strjoin(ft_strjoin(tempo, "="), final);
+				free(final);
+				free(val);
+			}
+			free(tempo);
+			free(tempo2);
+			*export = (*export)->next;
+		}
+		*export = tmp;
+		if (found == 0)
+		{
+			tempo2 = grab_keyname((*parser)->command[i]); 
+			val = get_value((*parser)->command[i]);
+			final = ft_strjoin(tempo2, "=");
+			new = ft_lstnew();
+			new2 = ft_lstnew();
+			new->cmd = ft_strjoin(final, val);
+			new2->cmd = ft_strjoin(final, val);
+			free(val);
+			ft_lstaddback(env, &new);
+			ft_lstaddback(export, &new2);
+		}
+	}
+	return ret;
+}
+
+void handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
+{
+	int i;
+	t_node *tmp;
+	char *temp;
 
 	i = 1;
-	tmp = *env;
+	tmp = *export;
+	while(*export)
+	{
+		temp = grab_keyname((*export)->cmd);
+		if (ft_strncmp("OLDPWD", temp, ft_strlen(temp)) == 0)
+		{
+			(*export)->cmd = ft_strjoin("OLDPWD=", handle_builtin_pwd(0, parser));
+			break;
+		}
+		free(temp);
+		(*export) = (*export)->next;
+	}
+	*export = tmp;
 	if (!(*parser)->command[i])
 	{
 		if (chdir(ft_mygetenv(*env, "HOME")) != 0)
@@ -498,45 +669,56 @@ void	handle_builtin_cd(t_parser **parser, t_node **env)
 		global_vars->status_code = 1;
 		(perror("cd"));
 	}
-	while (*env)
+	tmp = *env;
+	while(*env)
 	{
 		temp = grab_keyname((*env)->cmd);
 		if (ft_strncmp("PWD", temp, ft_strlen(temp)) == 0)
 		{
-			(*env)->cmd = ft_strjoin("PWD=", handle_builtin_pwd(0));
-			break ;
+			(*env)->cmd = ft_strjoin("PWD=", handle_builtin_pwd(0, parser));
+			break;
 		}
 		free(temp);
 		(*env) = (*env)->next;
 	}
 	(*env) = tmp;
-	handle_builtin_pwd(1);
+	tmp = *export;
+	while(*export)
+	{
+		temp = grab_keyname((*export)->cmd);
+		if (ft_strncmp("PWD", temp, ft_strlen(temp)) == 0)
+		{
+			(*export)->cmd = ft_strjoin("PWD=", handle_builtin_pwd(0, parser));
+			break;
+		}
+		free(temp);
+		(*export) = (*export)->next;
+	}
+	*export = tmp;
+	handle_builtin_pwd(1, parser);
 }
 
-void	handle_builtins(t_parser **parser, char *builtin, \
-		t_node **env, t_node **export)
+void handle_builtins(t_parser **parser, char *builtin, t_node **env, t_node **export, data *data)
 {
-	int	i;
-
 	if (ft_strncmp(builtin, "echo", ft_strlen(builtin)) == 0)
-		handle_builtin_echo(parser);
+		handle_builtin_echo(parser, env, export, data);
 	else if (ft_strncmp(builtin, "exit", ft_strlen(builtin)) == 0)
 	{
 		ft_putstr_fd("exit\n", 1);
 		exit(0);
 	}
 	else if (ft_strncmp(builtin, "pwd", ft_strlen(builtin)) == 0)
-		handle_builtin_pwd(1);
+		handle_builtin_pwd(1, parser);
 	else if (ft_strncmp(builtin, "cd", ft_strlen(builtin)) == 0)
-		handle_builtin_cd(parser, env);
+		handle_builtin_cd(parser, env, export);
 	else if (ft_strncmp(builtin, "env", ft_strlen(builtin)) == 0)
 		handle_builtin_env(env);
 	else if (ft_strncmp(builtin, "unset", ft_strlen(builtin)) == 0)
 	{
-		i = 1;
-		while ((*parser)->command[i])
+		int i = 1;
+		while((*parser)->command[i])
 		{
-			handle_builtin_unset((*parser)->command[i], *env, *export);
+			handle_builtin_unset((*parser)->command[i], env, export);
 			i++;
 		}
 	}
@@ -544,11 +726,14 @@ void	handle_builtins(t_parser **parser, char *builtin, \
 	{
 		if (check_if_valid(parser) != -1)
 		{
-			if ((*parser)->command[1])
-				handle_builtin_export(env, export, 1, parser);
-			else
+			if (check_wanna_add(parser, env, export) == 0)
 			{
-				handle_builtin_export(env, export, 0, parser);
+				if ((*parser)->command[1])
+					handle_builtin_export(env, export, 1, parser);
+				else
+				{
+					handle_builtin_export(env, export, 0, parser);
+				}
 			}
 		}
 	}
