@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:44:31 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/01 17:38:16 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/01 18:19:31 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,18 @@ void handle_normal_pipe(t_parser **parser, t_node *envp, data *data, t_node **ex
 	int		pid1;
 	int		pid2;
 	char 	*temp;
+	t_parser *tmp;
+	tmp = *parser;
 
+	while(*parser)
+	{
+		if ((*parser)->in == -1 || (*parser)->out == -1)
+		{
+			return;
+		}
+		*parser = (*parser)->next;
+	}
+	*parser = tmp;
 	if (pipe(fd) == -1)
 	{
 		perror("pipe: ");
@@ -133,6 +144,8 @@ void handle_single_command(t_parser **parser, data **data)
 		{
 			exit(0);
 		}
+		if ((*parser)->in == -1 || (*parser)->out == -1)
+			return;
 		if ((*parser)->in != 0)
 		{
 			dup2((*parser)->in, 0);

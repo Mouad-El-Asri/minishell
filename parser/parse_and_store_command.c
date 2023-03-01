@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_and_store_command.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:40:40 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/01 16:09:44 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/01 18:08:01 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ void	*parse_and_store_command(t_token *token, t_parser **parser)
 				break ;
 			if (check_token_type(token) == 0)
 				handle_operators_tokens(&token, &in, &out, &heredoc_count);
-			build_command_array(token, command, &j);
+			else
+				build_command_array(token, command, &j);
 			token = token->next;
 		}
 		if (command && *command)
