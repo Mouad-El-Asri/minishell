@@ -6,12 +6,11 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:41:03 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/02/27 20:08:21 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/01 21:53:27 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include "../get_next_line/get_next_line.h"
 
 void	handle_multiple_pipes(int num, t_parser **parser, char **envp)
 {

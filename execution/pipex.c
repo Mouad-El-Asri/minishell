@@ -6,12 +6,11 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 18:46:21 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/02/27 20:27:32 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/01 21:53:30 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include "../get_next_line/get_next_line.h"
 
 char	*handle_path(char *path)
 {

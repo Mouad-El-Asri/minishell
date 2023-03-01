@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:35:25 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/17 22:35:52 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/01 19:25:23 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	handle_output_redirection(t_token *token)
 	{
 		if (opendir(token->token_value))
 			return (ft_perror(ft_strjoin(token->token_value, \
-			": Is a directory")));
+			": is a directory")));
 		else if (access(token->token_value, F_OK) == 0 && \
 			access(token->token_value, W_OK) == -1)
 			return (ft_perror(ft_strjoin(token->token_value, \

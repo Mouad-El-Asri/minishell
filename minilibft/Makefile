@@ -6,7 +6,7 @@
 #    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/09 17:10:15 by moel-asr          #+#    #+#              #
-#    Updated: 2023/02/27 18:04:20 by moel-asr         ###   ########.fr        #
+#    Updated: 2023/03/01 20:54:16 by moel-asr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRCS = ft_isalnum.c \
 	ft_strdup.c \
 	ft_strjoin.c \
 	ft_strlen.c \
+	ft_strncmp.c \
 	ft_strnstr.c \
 	ft_substr.c
 

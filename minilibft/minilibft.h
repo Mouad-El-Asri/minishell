@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
+/*   minilibft.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 14:03:52 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/27 18:00:13 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/01 20:53:08 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LIBFT_H
-# define LIBFT_H
+#ifndef MINILIBFT_H
+# define MINILIBFT_H
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -31,6 +31,7 @@ int		ft_strcmp(char *s1, char *s2);
 char	*ft_strdup(const char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_strlen(const char *str);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strnstr(const char *str, const char *to_find, size_t len);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 

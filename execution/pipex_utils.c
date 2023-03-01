@@ -6,12 +6,11 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:23:08 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/02/27 19:23:33 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/01 20:36:11 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include "../minilibft/minilibft.h"
 
 static	char	*fnr(char *ret, char const *str, int i, int j)
 {

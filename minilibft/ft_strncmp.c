@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_perror.c                                        :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/08 13:09:23 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/01 19:22:15 by moel-asr         ###   ########.fr       */
+/*   Created: 2022/10/05 20:51:29 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/03/01 20:52:47 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "minilibft.h"
 
-int	ft_perror(char *s)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	char	*error_messgae;
+	size_t			i;
+	unsigned char	*ss1;
+	unsigned char	*ss2;
 
-	error_messgae = ft_strjoin("\x1B[31mminishell: ", s);
-	error_messgae = ft_free(ft_strjoin(error_messgae, "\x1B[0m"), error_messgae);
-	ft_putendl_fd(error_messgae, STDERR_FILENO);
-	free(error_messgae);
-	return (-1);
+	ss1 = (unsigned char *)s1;
+	ss2 = (unsigned char *)s2;
+	i = 0;
+	while ((ss1[i] != '\0' || ss2[i] != '\0') && i < n)
+	{
+		if (ss1[i] != ss2[i])
+			return (ss1[i] - ss2[i]);
+		i++;
+	}
+	return (0);
 }
