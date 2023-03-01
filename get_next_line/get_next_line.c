@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 18:41:16 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/02/21 13:03:46 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/02/27 18:01:19 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "../minilibft/libft.h"
+#include "../minilibft/minilibft.h"
 
 char	*get_bef(char *storage)
 {

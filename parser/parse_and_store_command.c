@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:40:40 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/24 15:15:16 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:09:44 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,37 +45,15 @@ void	*parse_and_store_command(t_token *token, t_parser **parser)
 			if (!token || !token->token_value || token->e_token_type == 2)
 				break ;
 			if (check_token_type(token) == 0)
-			{
-				if (!handle_operators_tokens(&token, &in, &out, &heredoc_count))
-				{
-					key = 1;
-					break ;
-				}
-			}
-			else
-				build_command_array(token, command, &j);
+				handle_operators_tokens(&token, &in, &out, &heredoc_count);
+			build_command_array(token, command, &j);
 			token = token->next;
 		}
 		if (command && *command)
 			command[j] = NULL;
-		if (key == 0)
-		{
-			parser_add_back(parser, init_parser(command, in, out));
-			if (token && token->e_token_type == 2)
-				token = token->next;
-		}
-		else
-		{
-			while (token)
-			{
-				if (token && token->e_token_type == 2)
-				{
-					token = token->next;
-					break ;
-				}
-				token = token->next;
-			}
-		}
+		parser_add_back(parser, init_parser(command, in, out));
+		if (token && token->e_token_type == 2)
+			token = token->next;
 		i++;
 	}
 	return ("success");

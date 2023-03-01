@@ -6,11 +6,11 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 13:40:47 by moel-asr          #+#    #+#             */
-/*   Updated: 2022/10/18 15:48:22 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/27 18:01:48 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minilibft.h"
 
 int	ft_isalnum(int c)
 {

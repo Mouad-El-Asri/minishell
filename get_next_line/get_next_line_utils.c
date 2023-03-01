@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 18:42:13 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/02/26 19:34:59 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/02/27 18:01:15 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "../minilibft/libft.h"
+#include "../minilibft/minilibft.h"
 
 void	ft_bzero(void *s, int n)
 {

@@ -6,11 +6,11 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 09:30:25 by moel-asr          #+#    #+#             */
-/*   Updated: 2022/10/19 19:33:50 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/27 18:02:53 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minilibft.h"
 
 char	*ft_strnstr(const char *str, const char *to_find, size_t len)
 {

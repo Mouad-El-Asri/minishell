@@ -6,11 +6,11 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:32 by moel-asr          #+#    #+#             */
-/*   Updated: 2022/10/18 15:50:16 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/27 18:02:32 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minilibft.h"
 
 char	*ft_strdup(const char *str)
 {

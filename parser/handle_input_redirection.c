@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   handle_input_redirection.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:38:14 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/26 19:32:31 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:48:16 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern t_global *global_vars;
+extern	t_global	*global_vars;
 
 int	handle_input_redirection(t_token *token)
 {

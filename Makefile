@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
+#    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/02/27 15:16:18 by ceddibao         ###   ########.fr        #
+#    Updated: 2023/02/27 18:00:49 by moel-asr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-RE_PATH = /goinfre/ceddibao/homebrew/opt/readline/
+RE_PATH = /Users/moel-asr/brew/opt/readline/
 
 LFLAGS = -lreadline -L $(RE_PATH)/lib -I $(RE_PATH)/include
 
@@ -73,7 +73,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	make -C minilibft
-	$(CC) $(CFLAGS) $(LFLAGS) minilibft/libft.a $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(LFLAGS) minilibft/minilibft.a $(OBJS) -o $(NAME)
 
 clean :
 	$(RM) $(OBJS)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 18:46:21 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/02/26 19:43:37 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/02/27 20:27:32 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ char	*handle_path(char *path)
 	while (path[i])
 	{
 		if (path[i] != ':')
-		{
 			ret[j] = path[i];
-		}
 		else
 		{
 			ret[j++] = '/';
@@ -37,6 +35,7 @@ char	*handle_path(char *path)
 		i++;
 		j++;
 	}
+	free(path);
 	return (ret);
 }
 
@@ -72,10 +71,9 @@ void	handle_right(int pid1, t_parser *parser, char **envp, int *fd)
 			dup2(parser->out, 1);
 		parser->command[0] = rap(parser->command[0], envp);
 		if (access(parser->command[0], F_OK) == -1)
-		{
 			print_error(parser->command[0][0], 1);
-		}
 		execve(parser->command[0], parser->command, envp);
 		exit(1);
 	}
+	wait(NULL);
 }

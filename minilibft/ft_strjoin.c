@@ -6,11 +6,11 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 15:41:05 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/08 14:52:12 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/02/27 18:02:39 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minilibft.h"
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {

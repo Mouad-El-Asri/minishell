@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:23:08 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/02/27 15:14:14 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/02/27 19:23:33 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include "../minilibft/libft.h"
+#include "../minilibft/minilibft.h"
 
 static	char	*fnr(char *ret, char const *str, int i, int j)
 {
@@ -97,12 +97,12 @@ char	*genv(char **env)
 
 char	*rap(char *s, char **env)
 {
-	if (!s)
-		return NULL;
 	char	**path;
 	char	*cmd;
 	int		i;
-	
+
+	if (!s)
+		return (NULL);
 	if (access(s, F_OK) == 0)
 		return (s);
 	i = 0;
