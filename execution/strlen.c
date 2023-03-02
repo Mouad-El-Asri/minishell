@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strlen.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:44:31 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/01 21:03:31 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/02 19:18:04 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,18 @@ void	print_error(char c, int flag)
 			exit(127);
 		}
 	}
-	else
+	else if (flag == 2)
 	{
-		ft_perror("permission denied\n");
-		exit(13);
+		if (c == '.')
+		{
+			ft_perror("permission denied");
+			exit(13);
+		}
+		else
+		{
+			ft_perror("command not found");
+			exit(127);
+		}
 	}
 }
 
@@ -67,7 +75,7 @@ void	handle_normal_pipe(t_parser **parser, t_node *envp, \
 		{
 			dup2(fd[1], 1);
 			close(fd[1]);
-			handle_builtins(parser, temp, &envp, export);
+			handle_builtins(parser, temp, &envp, export, NULL);
 			exit(0);
 		}
 	}
@@ -86,7 +94,7 @@ void	handle_normal_pipe(t_parser **parser, t_node *envp, \
 		{
 			dup2(fd[0], 0);
 			close(fd[1]);
-			handle_builtins(parser, temp, &envp, export);
+			handle_builtins(parser, temp, &envp, export, NULL);
 			exit(0);
 		}
 	}
@@ -122,8 +130,9 @@ void	handle_first_child(int pid, t_parser **parser, char **envp, int **fds)
 	(*parser) = (*parser)->next;
 }
 
-void	handle_sigkill(void)
+void	handle_sigkill(int sig)
 {
+	(void)sig;
 	kill(0, SIGKILL);
 }
 
@@ -144,9 +153,7 @@ void	handle_single_command(t_parser **parser, data **data)
 	{
 		(*parser)->command[0] = rap((*parser)->command[0], (*data)->env_arr);
 		if ((*parser)->command[0] == NULL)
-		{
 			exit(0);
-		}
 		if ((*parser)->in == -1 || (*parser)->out == -1)
 			return ;
 		if ((*parser)->in != 0)
@@ -244,7 +251,7 @@ char	*check_if_builtin(t_parser **parser)
 }
 
 void	connect_and_handle(t_parser **parser, t_node **env, \
-		t_node **export, data **data)
+		t_node **export, data **data, int *flag)
 {
 	char	*ret;
 	t_node	*tmp;
@@ -265,7 +272,7 @@ void	connect_and_handle(t_parser **parser, t_node **env, \
 	{
 		if ((ret = check_if_builtin(parser)))
 		{
-			handle_builtins(parser, ret, env, export);
+			handle_builtins(parser, ret, env, export, flag);
 			(*parser) = (*parser)->next;
 		}
 		else

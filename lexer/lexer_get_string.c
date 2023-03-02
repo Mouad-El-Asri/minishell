@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:12:14 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/27 15:19:51 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/02 19:09:01 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,13 @@ t_token	*lexer_get_string(t_lexer *lexer)
 				free(c);
 				token_type = 1;
 			}
-			c = lexer_get_char_as_string(lexer);
-			s = ft_free(ft_strjoin(s, c), s);
-			free(c);
-			lexer_advance(lexer);
+			else
+			{
+				c = lexer_get_char_as_string(lexer);
+				s = ft_free(ft_strjoin(s, c), s);
+				free(c);
+				lexer_advance(lexer);
+			}
 		}
 	}
 	token = init_token(s, token_type);

@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:40:40 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/01 18:08:01 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/02 19:16:52 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ void	*parse_and_store_command(t_token *token, t_parser **parser)
 			return (NULL);
 		while (token && token->token_value != NULL && token->e_token_type != 2)
 		{
+			if (token && token->next && (ft_strcmp(token->token_value, "export") == 0 \
+				&& ft_strcmp(token->next->token_value, "") == 0))
+				ft_perror("export: `': not a valid identifier");
 			while (token && ft_strcmp(token->token_value, "") == 0)
 				token = token->next;
 			if (!token || !token->token_value || token->e_token_type == 2)

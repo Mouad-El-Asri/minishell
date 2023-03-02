@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 19:58:01 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/26 20:25:56 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/02 19:04:13 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ char	*lexer_get_string_in_quotes(t_lexer *lexer, char character)
 	s = ft_strdup("");
 	ds_count = 0;
 	lexer_advance(lexer);
+	if (lexer->c == character)
+	{
+		lexer_advance(lexer);
+		return (s);
+	}
 	while (is_not_special_char(lexer->c) && lexer->c != character)
 	{
 		if (lexer->c == '$')

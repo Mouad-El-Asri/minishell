@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:42:10 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/01 21:54:01 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/02 18:45:17 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,12 @@ char	*get_value(char *s)
 char	*ft_mygetenv(t_node *env, const char *s)
 {
 	char	*tmp;
-
+	(void)tmp;
+	(void)s;
 	while (env)
 	{
 		tmp = grab_keyname(env->cmd);
-		if (ft_strncmp(s, tmp, ft_strlen(s)) == 0)
+		if (ft_strncmp(s, tmp, ft_strlen(tmp)) == 0)
 		{
 			return (get_value(env->cmd));
 		}
@@ -173,10 +174,12 @@ int	check_if_valid(t_parser **parser)
 {
 	int			i;
 	int			j;
+	int 		ret;
 	t_parser	*tmp;
 
 	i = 1;
 	j = 0;
+	ret = 0;
 	tmp = *parser;
 	while ((*parser)->command[i])
 	{
@@ -185,7 +188,7 @@ int	check_if_valid(t_parser **parser)
 		{
 			ft_putstr_fd(ft_strjoin((*parser)->command[i], \
 				": not a valid identifier\n"), 2);
-			return (-1);
+			ret = (-1);
 		}
 		while ((*parser)->command[i][j] && (*parser)->command[i][j] != '=')
 		{
@@ -194,7 +197,7 @@ int	check_if_valid(t_parser **parser)
 			{
 				ft_putstr_fd(ft_strjoin((*parser)->command[i], \
 					": not a valid identifier\n"), 2);
-				return (-1);
+				ret = (-1);
 			}
 			j++;
 		}
@@ -202,7 +205,7 @@ int	check_if_valid(t_parser **parser)
 		j = 0;
 	}
 	*parser = tmp;
-	return (0);
+	return (ret);
 }
 
 void	sort_export(t_node **export)
@@ -486,7 +489,7 @@ char	*handle_builtin_pwd(int flag, t_parser **parser)
 		dup2((*parser)->out, 1);
 	}
 	if (getcwd(cwd, 1024) == NULL)
-		(ft_perror("getcwd: unknown error occurred while "\
+		(ft_perror("getcwd: an error occurred while "\
 			"getting current working directory"));
 	if (flag == 1)
 	{
@@ -497,7 +500,7 @@ char	*handle_builtin_pwd(int flag, t_parser **parser)
 	return (ft_strdup(cwd));
 }
 
-void	handle_builtin_echo(t_parser **parser)
+void	handle_builtin_echo(t_parser **parser, t_node *env)
 {
 	int	pid;
 	int	printed;
@@ -527,7 +530,14 @@ void	handle_builtin_echo(t_parser **parser)
 				flag = 1;
 				continue ;
 			}
-			if ((*parser)->command[i + 1])
+			if (ft_strncmp((*parser)->command[i], "~", ft_strlen((*parser)->command[i])) == 0)
+			{
+				char *tmp;
+				tmp = ft_mygetenv(env, "HOME");
+				printf("%s\n", tmp);
+				free(tmp);
+			}
+			else if ((*parser)->command[i + 1])
 			{
 				printf("%s ", (*parser)->command[i]);
 				printed = 1;
@@ -650,7 +660,7 @@ int check_wanna_add(t_parser **parser, t_node **env, t_node **export)
 	return (ret);
 }
 
-void handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
+void handle_builtin_cd(t_parser **parser, t_node **env, t_node **export, int *flag)
 {
 	t_node	*tmp;
 	char	*temp;
@@ -658,32 +668,59 @@ void handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
 
 	i = 1;
 	tmp = *export;
-	while (*export)
-	{
-		temp = grab_keyname((*export)->cmd);
-		if (ft_strncmp("OLDPWD", temp, ft_strlen(temp)) == 0)
+		while (*export)
 		{
-			(*export)->cmd = ft_strjoin("OLDPWD=", \
-				handle_builtin_pwd(0, parser));
-			break ;
+			temp = grab_keyname((*export)->cmd);
+			if (ft_strncmp("OLDPWD", temp, ft_strlen(temp)) == 0)
+			{
+				free((*export)->cmd);
+				(*export)->cmd = ft_strjoin("OLDPWD=", \
+					handle_builtin_pwd(0, parser));
+				break ;
+			}
+			free(temp);
+			(*export) = (*export)->next;
 		}
-		free(temp);
-		(*export) = (*export)->next;
-	}
-	*export = tmp;
+		*export = tmp;
 	if (!(*parser)->command[i])
 	{
+		*flag = 1;
 		if (chdir(ft_mygetenv(*env, "HOME")) != 0)
 		{
 			global_vars->status_code = 1;
-			ft_perror("cd: unknown error occurred "
+			ft_perror("cd: an error occurred "
 				"while changing directory to HOME");
 		}
 	}
+	else if (ft_strncmp((*parser)->command[i], "-", ft_strlen((*parser)->command[i])) == 0)
+	{
+			//if (chdir() != 0)
+			*flag = 1;
+			tmp = *export;
+			while (*export)
+			{
+				temp = grab_keyname((*export)->cmd);
+				if (ft_strncmp("OLDPWD", temp, ft_strlen(temp)) == 0)
+				{
+					(*export)->cmd = ft_strjoin("OLDPWD=", \
+						handle_builtin_pwd(0, parser));
+					break ;
+				}
+				free(temp);
+				(*export) = (*export)->next;
+			}
+			*export = tmp;
+			if (chdir((*parser)->command[i]) != 0)
+			{
+				global_vars->status_code = 1;
+				ft_perror("cd: an error occurred while changing directory");
+			}
+	}
 	else if (chdir((*parser)->command[i]) != 0)
 	{
+		*flag = 1;
 		global_vars->status_code = 1;
-		ft_perror("cd: unknown error occurred while changing directory to");
+		ft_perror("cd: an error occurred while changing directory");
 	}
 	tmp = *env;
 	while (*env)
@@ -711,16 +748,15 @@ void handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
 		(*export) = (*export)->next;
 	}
 	*export = tmp;
-	handle_builtin_pwd(1, parser);
 }
 
 void	handle_builtins(t_parser **parser, char *builtin, \
-		t_node **env, t_node **export)
+		t_node **env, t_node **export, int *flag)
 {
 	int	i;
 
 	if (ft_strncmp(builtin, "echo", ft_strlen(builtin)) == 0)
-		handle_builtin_echo(parser);
+		handle_builtin_echo(parser, *env);
 	else if (ft_strncmp(builtin, "exit", ft_strlen(builtin)) == 0)
 	{
 		ft_putstr_fd("exit\n", 1);
@@ -729,7 +765,7 @@ void	handle_builtins(t_parser **parser, char *builtin, \
 	else if (ft_strncmp(builtin, "pwd", ft_strlen(builtin)) == 0)
 		handle_builtin_pwd(1, parser);
 	else if (ft_strncmp(builtin, "cd", ft_strlen(builtin)) == 0)
-		handle_builtin_cd(parser, env, export);
+		handle_builtin_cd(parser, env, export, flag);
 	else if (ft_strncmp(builtin, "env", ft_strlen(builtin)) == 0)
 		handle_builtin_env(env);
 	else if (ft_strncmp(builtin, "unset", ft_strlen(builtin)) == 0)

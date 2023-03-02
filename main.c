@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/01 15:47:54 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/02 18:52:18 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ int	main(int argc, char **argv, char **env)
 	t_node		*export;
 	data		*data;
 	t_parser	*temp;
+	int		flag;
+	
+	flag = 0;
 
 	(void)argc;
 	(void)argv;
@@ -78,11 +81,12 @@ int	main(int argc, char **argv, char **env)
 			str = readline("minishell$ ");
 			continue ;
 		}
+
 		parse_and_store_command(token, &parser);
 		temp = parser;
 		while (temp)
 		{
-			connect_and_handle(&temp, &my_env, &export, &data);
+			connect_and_handle(&temp, &my_env, &export, &data, &flag);
 		}
 		free(parser);
 		free(str);
