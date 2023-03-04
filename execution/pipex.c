@@ -6,11 +6,13 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 18:46:21 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/02 18:18:10 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/04 22:28:52 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+extern t_global *g_global_vars;
 
 char	*handle_path(char *path)
 {
@@ -45,19 +47,25 @@ void	handle_left(int pid1, t_parser *parser, char **envp, int *fd)
 		close(fd[0]);
 		if (parser->in != 0)
 			dup2(parser->in, 0);
-		parser->command[0] = rap(parser->command[0], envp);
-		if (access((parser)->command[0], F_OK) != 0)
+		if (parser->command[0][0] == '.')
 		{
+			if (access((parser)->command[0], F_OK) != 0)
 			print_error((parser)->command[0][0], 1);
+			else if (access((parser)->command[0], X_OK) != 0)
+				print_error((parser)->command[0][0], 2);
 		}
-		else if (access((parser)->command[0], X_OK) != 0)
-		{
-			print_error((parser)->command[0][0], 2);
-		}
-		if (parser->out != 1)
-			dup2(parser->out, 1);
 		else
-			dup2(fd[1], 1);
+		{
+			parser->command[0] = rap(parser->command[0], envp);
+			if (access((parser)->command[0], F_OK) != 0)
+				print_error((parser)->command[0][0], 1);
+			else if (access((parser)->command[0], X_OK) != 0)
+				print_error((parser)->command[0][0], 2);
+			if (parser->out != 1)
+				dup2(parser->out, 1);
+			else
+				dup2(fd[1], 1);
+		}
 		if (execve(parser->command[0], parser->command, envp) == -1)
 			exit(1);
 	}
@@ -66,23 +74,31 @@ void	handle_left(int pid1, t_parser *parser, char **envp, int *fd)
 void	handle_right(int pid1, t_parser *parser, char **envp, int *fd)
 {
 	(void)envp;
+	int stat;
 	if (pid1 == 0)
 	{
 		dup2(fd[0], 0);
 		close(fd[1]);
 		if (parser->out != 1)
 			dup2(parser->out, 1);
-		parser->command[0] = rap(parser->command[0], envp);
-		if (access((parser)->command[0], F_OK) != 0)
+		if (parser->command[0][0] == '.')
 		{
+			if (access((parser)->command[0], F_OK) != 0)
 			print_error((parser)->command[0][0], 1);
+			else if (access((parser)->command[0], X_OK) != 0)
+				print_error((parser)->command[0][0], 2);
 		}
-		else if (access((parser)->command[0], X_OK) != 0)
+		else
 		{
-			print_error((parser)->command[0][0], 2);
+			parser->command[0] = rap(parser->command[0], envp);
+			if (access((parser)->command[0], F_OK) != 0)
+				print_error((parser)->command[0][0], 1);
+			else if (access((parser)->command[0], X_OK) != 0)
+				print_error((parser)->command[0][0], 2);
 		}
 		if (execve(parser->command[0], parser->command, envp) == -1)
 			exit(1);
 	}
-	wait(NULL);
+	wait(&stat);
+	g_global_vars->status_code = WIFEXITED(stat);
 }

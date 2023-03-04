@@ -6,7 +6,7 @@
 #    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/03/02 19:17:03 by ceddibao         ###   ########.fr        #
+#    Updated: 2023/03/04 21:44:01 by ceddibao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,6 +64,15 @@ SRCS = minishell_utils/count_words.c \
 	execution/pipex.c \
 	execution/pipex_utils.c \
 	execution/multiple.c \
+	execution/execution_utils1.c \
+	execution/execution_utils2.c \
+	execution/execution_utils3.c \
+	execution/execution_utils4.c \
+	execution/execution_utils5.c \
+	execution/execution_utils6.c \
+	execution/execution_utils7.c \
+	execution/execution_utils8.c \
+	execution/execution_utils9.c \
 	execution/builtins.c \
 	main.c
 
@@ -73,7 +82,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	make -C minilibft
-	$(CC) $(CFLAGS) $(LFLAGS) minilibft/minilibft.a $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(LFLAGS)  minilibft/minilibft.a $(OBJS) -o $(NAME)
 
 clean :
 	$(RM) $(OBJS)

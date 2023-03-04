@@ -6,13 +6,13 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/02 18:52:18 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/04 15:58:26 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
 
-t_global	*global_vars;
+t_global	*g_global_vars;
 
 void	handle_sigquit(int signum)
 {
@@ -40,14 +40,11 @@ int	main(int argc, char **argv, char **env)
 	t_node		*export;
 	data		*data;
 	t_parser	*temp;
-	int		flag;
-	
-	flag = 0;
 
 	(void)argc;
 	(void)argv;
 	data = malloc(sizeof(data));
-	global_vars = (t_global *)malloc(sizeof(t_global));
+	g_global_vars = (t_global *)malloc(sizeof(t_global));
 	if (*env)
 	{
 		fill_env(&my_env, env, 0);
@@ -58,7 +55,7 @@ int	main(int argc, char **argv, char **env)
 		(my_env) = NULL;
 		export  = NULL;
 	}
-	global_vars->env = my_env;
+	g_global_vars->env = my_env;
 	token = NULL;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, handle_sigquit);
@@ -81,12 +78,11 @@ int	main(int argc, char **argv, char **env)
 			str = readline("minishell$ ");
 			continue ;
 		}
-
 		parse_and_store_command(token, &parser);
 		temp = parser;
 		while (temp)
 		{
-			connect_and_handle(&temp, &my_env, &export, &data, &flag);
+			connect_and_handle(&temp, &my_env, &export, &data);
 		}
 		free(parser);
 		free(str);

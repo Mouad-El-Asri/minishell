@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_heredoc_variables.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:33:16 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/27 18:22:55 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/04 14:29:43 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern	t_global	*global_vars;
+extern	t_global	*g_global_vars;
 
 char	*check_heredoc_variables(char *s)
 {
@@ -42,7 +42,7 @@ char	*check_heredoc_variables(char *s)
 				{
 					i++;
 					flag = 1;
-					var = ft_free(ft_strjoin(var, ft_itoa(global_vars->status_code)), var);
+					var = ft_free(ft_strjoin(var, ft_itoa(g_global_vars->status_code)), var);
 					break ;
 				}
 				var = ft_free(ft_strjoin(var, get_char_as_string(s[i])), var);

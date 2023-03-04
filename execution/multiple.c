@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiple.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:41:03 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/01 21:53:27 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/04 21:59:37 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@ void	handle_multiple_pipes(int num, t_parser **parser, char **envp)
 				print_error((*parser)->command[0][0], 1);
 			}
 			dup2(fds[i][0], 0);
-			if ((*parser)->next)
+			if ((*parser)->next && (*parser)->out == 1)
 			{
 				dup2(fds[i + 1][1], 1);
 				close(fds[i][1]);
 				close(fds[i][0]);
 				close(fds[i + 1][0]);
 			}
-			else if ((*parser)->next == NULL && (*parser)->out != 1)
+			else if ((*parser)->out != 1)
 			{
 				dup2((*parser)->out, 1);
 				close(fds[i][1]);
