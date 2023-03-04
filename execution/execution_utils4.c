@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution_utils4.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/05 00:34:06 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/03/05 00:34:16 by moel-asr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 extern	t_global *g_global_vars;
@@ -32,6 +44,7 @@ char	*get_value(char *s)
 char	*ft_mygetenv(t_node *env, char *s)
 {
 	char	*tmp;
+
 	while (env)
 	{
 		tmp = grab_keyname(env->cmd);
@@ -49,6 +62,7 @@ char	*grab_keyname(char *s)
 {
 	int		i;
 	char	*ret;
+
 	if (s == NULL)
 		return (NULL);
 	if (contain_equal(s) == 0)
@@ -64,15 +78,17 @@ char	*grab_keyname(char *s)
 	return (ret);
 }
 
-void matched_unset(t_parser **parser, t_node **env, t_node **export)
+void	matched_unset(t_parser **parser, t_node **env, t_node **export)
 {
-	int i;
-	i = 1;
+	int	i;
 
-	if (!(*parser)->command[i] ||  ft_strncmp((*parser)->command[i], "=", 1) == 0  || ft_strlen((*parser)->command[i]) == 0)
+	i = 1;
+	if (!(*parser)->command[i] || \
+		ft_strncmp((*parser)->command[i], "=", 1) == 0 || \
+		ft_strlen((*parser)->command[i]) == 0)
 	{
-		ft_putstr_fd(ft_strjoin((*parser)->command[i], \
-			": not a valid identifier\n"), 2);
+		ft_perror(ft_strjoin((*parser)->command[i], \
+			": not a valid identifier"));
 		g_global_vars->status_code = 1;
 	}
 	else

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution_utils2.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/05 00:27:48 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/03/05 00:27:49 by moel-asr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 extern t_global	*g_global_vars;
@@ -84,7 +96,7 @@ void	handle_builtin_echo(t_parser **parser, t_node *env)
 	g_global_vars->status_code = 0;
 }
 
-void handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
+void	handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
 {
 	char *tempo;
 	int		i;

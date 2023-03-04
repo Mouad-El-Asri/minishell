@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:58:38 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/20 22:13:17 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/04 23:24:32 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ typedef struct s_parser {
 	struct s_parser	*next;
 }	t_parser;
 
-void		build_command_array(t_token *token, char **command, int *j);
 int			check_ambiguous_redirect(t_token *token);
 char		*check_heredoc_variables(char *str);
 int			check_operators_syntax_errors(t_token *token);

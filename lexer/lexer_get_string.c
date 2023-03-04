@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_get_string.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:12:14 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/02 19:09:01 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/04 23:20:39 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ t_token	*lexer_get_string(t_lexer *lexer)
 	c = NULL;
 	dollar_sign_count = 0;
 	token_type = 0;
-	while (is_not_special_char(lexer->c))
+	while (is_not_special_char(lexer->c) && lexer->c != ' ' && lexer->c != '\t')
 	{
 		if (lexer->c == '$')
 			dollar_sign_count++;
 		if (is_env_variable(lexer) == 0 && (dollar_sign_count % 2))
 		{
-			s = ft_free(ft_strjoin(s, expand_variable(lexer)), s);
+			s = ft_free(ft_strjoin(s, split_variable(expand_variable(lexer))), s);
 			dollar_sign_count = 0;
 		}
 		else

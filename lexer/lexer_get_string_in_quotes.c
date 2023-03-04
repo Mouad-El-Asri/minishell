@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_get_string_in_quotes.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 19:58:01 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/02 19:04:13 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/04 23:20:17 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,33 +17,42 @@ char	*lexer_get_string_in_quotes(t_lexer *lexer, char character)
 	char	*c;
 	char	*s;
 	int		ds_count;
+	int		flag;
 
 	s = ft_strdup("");
 	ds_count = 0;
+	flag = 0;
 	lexer_advance(lexer);
-	if (lexer->c == character)
+	while (is_not_special_char(lexer->c))
 	{
-		lexer_advance(lexer);
-		return (s);
-	}
-	while (is_not_special_char(lexer->c) && lexer->c != character)
-	{
+		if (flag == 1)
+			if (lexer->c == ' ' || lexer->c == '\t')
+				break ;
 		if (lexer->c == '$')
 			ds_count++;
 		if (is_env_variable(lexer) == 0 && (ds_count % 2) && character == '"')
 		{
-			s = ft_free(ft_strjoin(s, expand_variable(lexer)), s);
+			if (flag == 1)
+				s = ft_free(ft_strjoin(s, split_variable(expand_variable(lexer))), s);
+			else
+				s = ft_free(ft_strjoin(s, expand_variable(lexer)), s);
 			ds_count = 0;
 		}
-		else
+		else if (lexer->c != character)
 		{
 			c = lexer_get_char_as_string(lexer);
 			s = ft_free(ft_strjoin(s, c), s);
 			free(c);
 			lexer_advance(lexer);
 		}
-		while (lexer->c == '"' || lexer->c == '\'')
+		if (lexer->c == character)
+		{
 			lexer_advance(lexer);
+			if (lexer->c == '\'' || lexer->c == '"')
+				s = ft_free(ft_strjoin(s, lexer_get_string_in_quotes(lexer, lexer->c)), s);
+			else
+				flag = 1;
+		}
 	}
 	return (s);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution_utils7.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/05 00:28:33 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/03/05 00:28:34 by moel-asr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 extern t_global	*g_global_vars;
@@ -9,8 +21,8 @@ void do_check(t_parser **parser, int *i, int *j, int *ret)
 		if (ft_isdigit((*parser)->command[*i][0]) || \
 			(*parser)->command[*i][0] == '=')
 		{
-			ft_putstr_fd(ft_strjoin((*parser)->command[*i], \
-				": not a valid identifier\n"), 2);
+			ft_perror(ft_strjoin((*parser)->command[*i], \
+				": not a valid identifier"));
 			*ret = (-1);
 		}
 		while ((*parser)->command[*i][*j] && (*parser)->command[*i][*j] != '=')
@@ -18,8 +30,8 @@ void do_check(t_parser **parser, int *i, int *j, int *ret)
 			if (!ft_isalnum((*parser)->command[*i][*j]) && \
 				(*parser)->command[*i][*j] != '+')
 			{
-				ft_putstr_fd(ft_strjoin((*parser)->command[*i], \
-					": not a valid identifier\n"), 2);
+				ft_perror(ft_strjoin((*parser)->command[*i], \
+					": not a valid identifier"));
 				*ret = (-1);
 			}
 			(*j)++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 20:34:49 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/04 21:07:47 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/04 23:31:57 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ typedef struct vars
 	int	i;
 	int	j;
 	int	flag;
-	int pid2;
-	int fd[2];
+	int	pid2;
+	int	fd[2];
 }	t_vars;
 
 typedef struct s_global
@@ -61,7 +61,7 @@ void	handle_builtins(t_parser **parser, char *builtin, \
 		t_node **env, t_node **export);
 void	handle_builtin_export(t_node **env, t_node **export, \
 		int action, t_parser **parser);
-void handle_builtin_cd(t_parser **parser, t_node **env, t_node **export);
+void	handle_builtin_cd(t_parser **parser, t_node **env, t_node **export);
 void	handle_builtin_env(t_parser **parser, t_node **env);
 void	fill_env(t_node **env, char **envp, int i);
 void	handle_builtin_echo(t_parser **parser, t_node *env);
@@ -80,34 +80,34 @@ int		what_length(char *s1, char *s2);
 void	ft_lstaddback(t_node **l, t_node **new);
 void	del(void *str);
 void	ft_lstdelone(t_node **lst, t_node *todel, void (*del)(void*));
-int	contain_equal(char *s);
-int	isexist(t_node **env, char *s, t_node **export);
+int		contain_equal(char *s);
+int		isexist(t_node **env, char *s, t_node **export);
 char	*get_value(char *s);
 void	sort_export(t_node **export);
 void	print_export(t_node *export, int flag);
-int	check_if_valid(t_parser **parser);
-void set_target(t_node **env, t_node **target, char *s);
-void echo_do_job(t_parser **parser, t_vars vars, t_node *env);
-void set_oldpwd(t_parser **parser, t_node **export);
-void update_pwd(t_parser **parser, t_node **env);
-void do_check(t_parser **parser, int *i, int *j, int *ret);
-void if_exist_update(t_node **export, int *flag, char *s);
-int if_exist_update_env(t_node **env, char *s, int *flag, t_node *temp);
-void redirect_to_back(t_parser **parser, t_node **export, char **tempo);
-void redirect_to_home(t_parser **parser, char **home, char **temp, int *i);
-void echo_handle_special(t_parser **parser, int *i, int *flag, int *printed);
-void child_print(t_parser **parser, t_node **one, int flag);
-int check_wanna_add(t_parser **parser, t_node **env, t_node **export);
-void matched_unset(t_parser **parser, t_node **env, t_node **export);
-void matched_export(t_parser **parser, t_node **env, t_node **export);
-void add_export(t_parser **parser, t_node **env, t_node **export, int *i);
-void add_export_2(t_parser **parser, t_node **env, t_node **export, int *i);
-void fill_env_arr(data **data, t_node **env);
-void check_and_adjust(t_parser **parser);
-void check_piping_error(t_parser **parser);
-int do_exec_assign_to(t_parser **parser, t_vars *vars, t_node *envp, t_node **export);
-int do_exec_assign_to_2(t_parser **parser, t_vars *vars, t_node *envp, t_node **export);
-
-
+int		check_if_valid(t_parser **parser);
+void	set_target(t_node **env, t_node **target, char *s);
+void	echo_do_job(t_parser **parser, t_vars vars, t_node *env);
+void	set_oldpwd(t_parser **parser, t_node **export);
+void	update_pwd(t_parser **parser, t_node **env);
+void	do_check(t_parser **parser, int *i, int *j, int *ret);
+void	if_exist_update(t_node **export, int *flag, char *s);
+int		if_exist_update_env(t_node **env, char *s, int *flag, t_node *temp);
+void	redirect_to_back(t_parser **parser, t_node **export, char **tempo);
+void	redirect_to_home(t_parser **parser, char **home, char **temp, int *i);
+void	echo_handle_special(t_parser **parser, int *i, int *flag, int *printed);
+void	child_print(t_parser **parser, t_node **one, int flag);
+int		check_wanna_add(t_parser **parser, t_node **env, t_node **export);
+void	matched_unset(t_parser **parser, t_node **env, t_node **export);
+void	matched_export(t_parser **parser, t_node **env, t_node **export);
+void	add_export(t_parser **parser, t_node **env, t_node **export, int *i);
+void	add_export_2(t_parser **parser, t_node **env, t_node **export, int *i);
+void	fill_env_arr(data **data, t_node **env);
+void	check_and_adjust(t_parser **parser);
+void	check_piping_error(t_parser **parser);
+int		do_exec_assign_to(t_parser **parser, t_vars *vars, \
+		t_node *envp, t_node **export);
+int		do_exec_assign_to_2(t_parser **parser, t_vars *vars, \
+		t_node *envp, t_node **export);
 
 #endif

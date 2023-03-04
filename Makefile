@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
+#    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/03/04 21:44:01 by ceddibao         ###   ########.fr        #
+#    Updated: 2023/03/05 00:49:50 by moel-asr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-RE_PATH = /goinfre/ceddibao/homebrew/opt/readline/
+RE_PATH = ~/brew/opt/readline/
 
 LFLAGS = -lreadline -L $(RE_PATH)/lib -I $(RE_PATH)/include
 
@@ -23,7 +23,7 @@ SRCS = minishell_utils/count_words.c \
 	minishell_utils/ft_perror.c \
 	lexer/advance_with_token.c \
 	lexer/create_token_list.c \
-	lexer/expand_variale.c \
+	lexer/expand_variable.c \
 	lexer/init_lexer.c \
 	lexer/init_token.c \
 	lexer/is_env_variable.c \
@@ -36,9 +36,9 @@ SRCS = minishell_utils/count_words.c \
 	lexer/lexer_get_token.c \
 	lexer/skip_whitespace_backwards.c \
 	lexer/skip_whitespace.c \
+	lexer/split_variable.c \
 	lexer/token_add_back.c \
 	lexer/token_last.c \
-	parser/build_command_array.c \
 	parser/check_ambiguous_redirect.c \
 	parser/check_heredoc_variables.c \
 	parser/check_operators_syntax_errors.c \
@@ -72,7 +72,6 @@ SRCS = minishell_utils/count_words.c \
 	execution/execution_utils6.c \
 	execution/execution_utils7.c \
 	execution/execution_utils8.c \
-	execution/execution_utils9.c \
 	execution/builtins.c \
 	main.c
 
@@ -82,7 +81,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	make -C minilibft
-	$(CC) $(CFLAGS) $(LFLAGS)  minilibft/minilibft.a $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(LFLAGS) minilibft/minilibft.a $(OBJS) -o $(NAME)
 
 clean :
 	$(RM) $(OBJS)
