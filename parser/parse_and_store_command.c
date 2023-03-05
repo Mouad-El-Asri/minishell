@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_and_store_command.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:40:40 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/04 23:16:01 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/05 17:10:15 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@ void	*parse_and_store_command(t_token *token, t_parser **parser)
 		command = (char **)malloc(sizeof(char *) * (get_cmd_size(token) + 1));
 		if (!command)
 			return (NULL);
-		while (token && token->token_value != NULL && token->e_token_type != 2)
+		while (token && token->token_value && token->e_token_type != 2)
 		{
-			if (token && token->next && (ft_strcmp(token->token_value, "export") == 0 \
-				&& ft_strcmp(token->next->token_value, "") == 0))
-				ft_perror("export: `': not a valid identifier");
+			if (ft_strcmp(token->token_value, "export") == 0 && check_export(token) == -1)
+			{
+				i++;
+				break ;
+			}
 			while (token && ft_strcmp(token->token_value, "") == 0)
 				token = token->next;
 			if (!token || !token->token_value || token->e_token_type == 2)

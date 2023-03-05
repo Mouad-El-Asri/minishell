@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:27:48 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 00:27:49 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/05 16:07:50 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void	handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
 	i = 1;
 	tempo = ft_mygetenv(*export, "OLDPWD");
 	set_oldpwd(parser, export);
+	set_oldpwd(parser, env);
 	if (!(*parser)->command[i] || ft_strncmp((*parser)->command[i], "~", 1) == 0)
 	{
 		char *home;

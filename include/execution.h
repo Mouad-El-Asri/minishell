@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 20:34:49 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/04 23:31:57 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/05 15:59:37 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct vars
 	int	flag;
 	int	pid2;
 	int	fd[2];
+		int	nl;
+	char *temp;
 }	t_vars;
 
 typedef struct s_global
@@ -109,5 +111,6 @@ int		do_exec_assign_to(t_parser **parser, t_vars *vars, \
 		t_node *envp, t_node **export);
 int		do_exec_assign_to_2(t_parser **parser, t_vars *vars, \
 		t_node *envp, t_node **export);
+void	handle_builtin_exit(t_parser **parser);
 
 #endif

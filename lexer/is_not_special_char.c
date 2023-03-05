@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   is_not_special_char.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:05:21 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/04 23:20:03 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/05 16:10:05 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	is_not_special_char(char c)
 {
-	if (c && c != '|' && c != '>' && c != '<')
+	if (c && c != ' ' && c != '\t' && c != '|' && c != '>' && c != '<')
 		return (1);
 	return (0);
 }

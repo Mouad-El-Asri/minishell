@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/04 15:58:26 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/05 18:04:17 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	main(int argc, char **argv, char **env)
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, handle_sigquit);
 	str = readline("\x1B[36mminishell$\x1B[0m ");
+	if (str == NULL)
+		printf("exit\n");
 	while (str)
 	{
 		parser = NULL;
@@ -76,6 +78,8 @@ int	main(int argc, char **argv, char **env)
 			check_syntax_errors(token) == -1)
 		{
 			str = readline("minishell$ ");
+			if (str == NULL)
+				printf("exit\n");
 			continue ;
 		}
 		parse_and_store_command(token, &parser);
@@ -88,6 +92,10 @@ int	main(int argc, char **argv, char **env)
 		free(str);
 		free(lexer);
 		str = readline("\x1B[36mminishell$\x1B[0m ");
+		if (str == NULL)
+		{
+			printf("exit\n");
+		}
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils6.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:30 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 00:28:31 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/05 16:07:11 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,58 +16,75 @@ extern t_global	*g_global_vars;
 
 void set_oldpwd(t_parser **parser, t_node **export)
 {
+	int flag;
 	t_node *tmp;
 	char	*temp;
+	flag = 0;
 	tmp = *export;
-	while (*export)
-	{
-		temp = grab_keyname((*export)->cmd);
-		if (ft_strncmp("OLDPWD", temp, ft_strlen(temp)) == 0)
+		while (*export)
 		{
-			free((*export)->cmd);
-			(*export)->cmd = ft_strjoin("OLDPWD=", \
-				handle_builtin_pwd(0, parser));
-			break ;
+			temp = grab_keyname((*export)->cmd);
+			if (ft_strncmp("OLDPWD", temp, ft_strlen(temp)) == 0)
+			{
+				flag = 1;
+				free((*export)->cmd);
+				(*export)->cmd = ft_strjoin("OLDPWD=", \
+					handle_builtin_pwd(0, parser));
+				break ;
+			}
+			free(temp);
+			(*export) = (*export)->next;
 		}
-		free(temp);
-		(*export) = (*export)->next;
+		*export = tmp;
+	if (flag == 0)
+	{
+		t_node *new;
+		new = ft_lstnew();
+		new->cmd = ft_strjoin("OLDPWD=", \
+					handle_builtin_pwd(0, parser));
+		ft_lstaddback(export, &new);
 	}
-	*export = tmp;
 }
 
 void echo_do_job(t_parser **parser, t_vars vars, t_node *env)
 {
-	int found = 0;
-		while ((*parser)->command[vars.i])
+	if (!(*parser)->command[vars.i])
+		ft_putstr_fd("\n", 1);
+	while ((*parser)->command[vars.i])
+	{
+		vars.j = 1;
+		if (ft_strncmp((*parser)->command[vars.i], "-n", 2) == 0 && vars.printed == 0)
 		{
-			vars.j = 1;
-			if (ft_strncmp((*parser)->command[vars.i], "-n", 2) == 0 && vars.printed == 0)
-			{
-				found = 1;
-				while ((*parser)->command[vars.i][vars.j] == 'n')
-					vars.j++;
-				if ((*parser)->command[vars.i][vars.j] != ' ' && (*parser)->command[vars.i][vars.j] != '\0' && found == 1)
-				{
-					printf("%s ", (*parser)->command[vars.i]);
-				}
-				vars.i++;
+			while((*parser)->command[vars.i][vars.j] == 'n')
+				(vars.j)++;
+			if ((*parser)->command[vars.i][vars.j] == '\0')
 				vars.flag = 1;
-				continue ;
-			}
-			if (ft_strncmp((*parser)->command[vars.i], "~", ft_strlen((*parser)->command[vars.i])) == 0)
+			else if ((*parser)->command[vars.i][vars.j] != '\0')
 			{
-				char *tmp;
-				tmp = ft_mygetenv(env, "HOME");
-				printf("%s\n", tmp);
-				free(tmp);
+				if ((*parser)->command[vars.i + 1])
+					printf("%s ", (*parser)->command[vars.i]);
+				else
+					printf("%s", (*parser)->command[vars.i]);
+				vars.printed = 1;
 			}
-			echo_handle_special(parser, &vars.i, &vars.flag, &vars.printed);
 			vars.i++;
+			continue;
 		}
+		if (ft_strncmp((*parser)->command[vars.i], "~", ft_strlen((*parser)->command[vars.i])) == 0)
+		{
+			vars.temp = ft_mygetenv(env, "HOME");
+			printf("%s\n", vars.temp);
+			free(vars.temp);
+		}
+		echo_handle_special(parser, &vars.i, &vars.flag, &vars.printed);
+		vars.i++;
+	}
 }
 
 void redirect_to_home(t_parser **parser, char **home, char **temp, int *i)
 {
+	if ((*parser)->command[*i] == NULL)
+		return;
 	char *final;
 	int j;
 	int x;
@@ -89,6 +106,7 @@ void redirect_to_home(t_parser **parser, char **home, char **temp, int *i)
 	}
 	else if (chdir(*home) != 0)
 	{
+		printf("sdfsdfdsfdsfdsf\n");
 		g_global_vars->status_code = 1;
 		ft_perror("cd: an error occurred "
 			"while changing directory to HOME");

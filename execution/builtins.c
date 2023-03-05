@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:42:10 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/05 00:49:56 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/05 16:08:43 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,7 @@ void	handle_builtins(t_parser **parser, char *builtin, \
 	if (ft_strncmp(builtin, "echo", ft_strlen(builtin)) == 0)
 		handle_builtin_echo(parser, *env);
 	else if (ft_strncmp(builtin, "exit", ft_strlen(builtin)) == 0)
-	{
-		(ft_putstr_fd("exit\n", 1), exit(0));
-	}
+		handle_builtin_exit(parser);
 	else if (ft_strncmp(builtin, "pwd", ft_strlen(builtin)) == 0)
 		handle_builtin_pwd(1, parser);
 	else if (ft_strncmp(builtin, "cd", ft_strlen(builtin)) == 0)

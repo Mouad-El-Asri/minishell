@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:58:38 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/04 23:24:32 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/05 16:52:12 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_parser {
 }	t_parser;
 
 int			check_ambiguous_redirect(t_token *token);
+int			check_export(t_token *token);
 char		*check_heredoc_variables(char *str);
 int			check_operators_syntax_errors(t_token *token);
 int			check_quotes(char *str);

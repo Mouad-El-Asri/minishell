@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:44:31 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/04 22:26:25 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/05 17:58:01 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,8 @@ void	handle_first_child(int pid, t_parser **parser, char **envp, int **fds)
 
 void	handle_sigkill(int sig)
 {
-	(void)sig;
-	kill(0, SIGKILL);
+	fprintf(stderr, "exit\n");
+	kill(sig, SIGKILL);
 }
 
 void	handle_single_command(t_parser **parser, data **data)
@@ -95,7 +95,7 @@ void	handle_single_command(t_parser **parser, data **data)
 	exit_status = 0;
 	if (pid == 0)
 	{
-		if ((*parser)->command[0][0] == '.')
+		if ((*parser)->command[0] && ((*parser)->command[0][0] == '.' || (*parser)->command[0][0] == '/'))
 		{
 			if (access((*parser)->command[0], F_OK) != 0)
 				print_error((*parser)->command[0][0], 1);
@@ -104,12 +104,15 @@ void	handle_single_command(t_parser **parser, data **data)
 		}
 		else
 		{
-			(*parser)->command[0] = rap((*parser)->command[0], (*data)->env_arr);
-			check_and_adjust(parser);
-			if (access((*parser)->command[0], F_OK) != 0)
-				print_error((*parser)->command[0][0], 1);
-			else if (access((*parser)->command[0], X_OK) != 0)
-				print_error((*parser)->command[0][0], 2);
+			if ((*parser)->command[0])
+			{
+				(*parser)->command[0] = rap((*parser)->command[0], (*data)->env_arr);
+				check_and_adjust(parser);
+				if (access((*parser)->command[0], F_OK) != 0)
+					print_error((*parser)->command[0][0], 1);
+				else if (access((*parser)->command[0], X_OK) != 0)
+					print_error((*parser)->command[0][0], 2);
+			}
 		}
 		execve((*parser)->command[0], (*parser)->command, (*data)->env_arr);
 	}
@@ -190,6 +193,7 @@ char	*check_if_builtin(t_parser **parser)
 void	connect_and_handle(t_parser **parser, t_node **env, \
 		t_node **export, data **data)
 {
+	signal(SIGKILL, handle_sigkill);
 	char	*ret;
 
 	fill_env_arr(data, env);

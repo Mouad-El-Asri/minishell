@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
+#    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/09 17:10:15 by moel-asr          #+#    #+#              #
-#    Updated: 2023/03/01 20:54:16 by moel-asr         ###   ########.fr        #
+#    Updated: 2023/03/05 16:04:18 by ceddibao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ CFLAGS = -Wall -Wextra -Werror
 
 OBJS = $(SRCS:.c=.o)
 
-SRCS = ft_isalnum.c \
+SRCS = ft_atoi.c \
+	ft_isalnum.c \
 	ft_isalpha.c \
 	ft_isdigit.c \
 	ft_itoa.c \
