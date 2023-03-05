@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:58:38 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 16:52:12 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/05 19:37:50 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void		*handle_operators_tokens(t_token **token, int *in, int *out, \
 int			handle_output_append_operator(t_token *token);
 int			handle_output_redirection(t_token *token);
 t_parser	*init_parser(char **command, int in, int out);
-void		*parse_and_store_command(t_token *token, t_parser **parser);
+void		parse_and_store_command(t_token *token, t_parser **parser);
 void		parser_add_back(t_parser **parser, t_parser *new);
 
 #endif

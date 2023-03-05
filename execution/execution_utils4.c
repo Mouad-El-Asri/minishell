@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils4.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:34:06 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 16:41:18 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/05 23:28:44 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char	*ft_mygetenv(t_node *env, char *s)
 		tmp = grab_keyname(env->cmd);
 		if (ft_strncmp(s, tmp, what_length(s, tmp)) == 0)
 		{
+			free(tmp);
 			return (get_value(env->cmd));
 		}
 		free(tmp);

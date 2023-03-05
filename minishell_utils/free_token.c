@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_token_list.c                                :+:      :+:    :+:   */
+/*   free_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/17 20:32:26 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 21:31:29 by moel-asr         ###   ########.fr       */
+/*   Created: 2023/03/06 00:26:19 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/03/06 00:29:57 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_token	*create_token_list(t_lexer *lexer)
+void	free_token(t_token **token)
 {
-	t_token	*token;
-	t_token	*tmp;
+	t_token		*tmp_token;
 
-	token = NULL;
-	token_add_back(&token, lexer_get_token(lexer));
-	tmp = token;
-	while (tmp)
+	tmp_token = (*token);
+	while (tmp_token)
 	{
-		token_add_back(&token, lexer_get_token(lexer));
-		tmp = tmp->next;
+		(*token) = (*token)->next;
+		free(tmp_token->token_value);
+		free(tmp_token);
+		tmp_token = (*token);
 	}
-	return (token);
 }

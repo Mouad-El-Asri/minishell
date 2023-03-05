@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:27:48 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 16:07:50 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/05 21:17:33 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,11 @@ void	handle_builtin_unset(char *s ,t_node **env, t_node **export)
 
 char	*handle_builtin_pwd(int flag, t_parser **parser)
 {
-	char	cwd[1024];
+	char	*cwd;
 	int		x;
 
 	x = dup(1);
+	cwd = malloc(sizeof(char) * 1024);
 	if ((*parser)->out != 1)
 	{
 		dup2((*parser)->out, 1);
@@ -71,7 +72,7 @@ char	*handle_builtin_pwd(int flag, t_parser **parser)
 		ft_putstr_fd("\n", 1);
 	}
 	dup2(x, 1);
-	return (ft_strdup(cwd));
+	return (cwd);
 }
 
 void	handle_builtin_echo(t_parser **parser, t_node *env)

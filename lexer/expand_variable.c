@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_variale.c                                   :+:      :+:    :+:   */
+/*   expand_variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 19:56:38 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/04 14:29:43 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/05 23:34:31 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ char	*expand_variable(t_lexer *lexer)
 			return (str);
 		}
 		c = lexer_get_char_as_string(lexer);
-		str = ft_free(ft_free(ft_strjoin(str, c), c), str);
+		str = ft_free(ft_strjoin(str, c), str);
+		free(c);
 		lexer_advance(lexer);
 	}
-	str = ft_free(ft_mygetenv(g_global_vars->env, str), str);
+	c = ft_mygetenv(g_global_vars->env, str);
+	str = ft_free(c, str);
+	free(c);
 	if (str)
 		return (str);
-	else
-		return ("");
+	return ("");
 }

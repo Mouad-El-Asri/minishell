@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_and_store_command.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:40:40 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 17:10:15 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/05 23:36:49 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	*parse_and_store_command(t_token *token, t_parser **parser)
+void	parse_and_store_command(t_token *token, t_parser **parser)
 {
 	char		**command;
 	int			i;
@@ -21,10 +21,9 @@ void	*parse_and_store_command(t_token *token, t_parser **parser)
 	int			out;
 	int			cmds_count;
 	int			heredoc_count;
-	int			key;
 
 	if (!token)
-		return (NULL);
+		return ;
 	i = 0;
 	cmds_count = commands_count(token);
 	heredoc_count = count_heredocs(token);
@@ -33,18 +32,15 @@ void	*parse_and_store_command(t_token *token, t_parser **parser)
 		in = 0;
 		out = 1;
 		j = 0;
-		key = 0;
 		command = NULL;
 		command = (char **)malloc(sizeof(char *) * (get_cmd_size(token) + 1));
 		if (!command)
-			return (NULL);
+			return ;
 		while (token && token->token_value && token->e_token_type != 2)
 		{
-			if (ft_strcmp(token->token_value, "export") == 0 && check_export(token) == -1)
-			{
-				i++;
+			if (ft_strcmp(token->token_value, "export") == 0 \
+				&& check_export(token) == -1)
 				break ;
-			}
 			while (token && ft_strcmp(token->token_value, "") == 0)
 				token = token->next;
 			if (!token || !token->token_value || token->e_token_type == 2)
@@ -62,5 +58,4 @@ void	*parse_and_store_command(t_token *token, t_parser **parser)
 			token = token->next;
 		i++;
 	}
-	return ("success");
 }

@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 18:25:32 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/02/27 18:02:32 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/05 19:27:30 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strdup(const char *str)
 	char	*cp;
 
 	i = 0;
+	if (!str)
+		return (NULL);
 	cp = (char *)malloc ((ft_strlen(str) * sizeof(char)) + 1);
 	if (!cp)
 		return (NULL);

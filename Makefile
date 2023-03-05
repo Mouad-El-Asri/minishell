@@ -3,24 +3,28 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
+#    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/03/05 16:54:08 by ceddibao         ###   ########.fr        #
+#    Updated: 2023/03/06 00:45:29 by moel-asr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-RE_PATH = /goinfre/ceddibao/homebrew/opt/readline/
+RE_PATH = ~/brew/opt/readline/
 
 LFLAGS = -lreadline -L $(RE_PATH)/lib -I $(RE_PATH)/include
 
 CFLAGS = -Wall -Wextra -Werror
 
 SRCS = minishell_utils/count_words.c \
+	minishell_utils/free_parser.c \
+	minishell_utils/free_token.c \
 	minishell_utils/ft_free.c \
 	minishell_utils/ft_perror.c \
+	minishell_utils/sigint_handler.c \
+	minishell_utils/sigquit_handler.c \
 	lexer/advance_with_token.c \
 	lexer/create_token_list.c \
 	lexer/expand_variable.c \
@@ -82,7 +86,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	make -C minilibft
-	$(CC) $(CFLAGS) $(LFLAGS) -fsanitize=address -g3 minilibft/minilibft.a $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(LFLAGS) minilibft/minilibft.a $(OBJS) -o $(NAME)
 
 clean :
 	$(RM) $(OBJS)

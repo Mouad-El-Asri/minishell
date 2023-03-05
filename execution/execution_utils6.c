@@ -3,45 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils6.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:30 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 16:07:11 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/05 21:08:20 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern t_global	*g_global_vars;
+extern t_global *g_global_vars;
 
 void set_oldpwd(t_parser **parser, t_node **export)
 {
 	int flag;
 	t_node *tmp;
-	char	*temp;
+	char *temp;
+	char *tempo;
 	flag = 0;
 	tmp = *export;
-		while (*export)
+	while (*export)
+	{
+		temp = grab_keyname((*export)->cmd);
+		if (ft_strncmp("OLDPWD", temp, ft_strlen(temp)) == 0)
 		{
-			temp = grab_keyname((*export)->cmd);
-			if (ft_strncmp("OLDPWD", temp, ft_strlen(temp)) == 0)
-			{
-				flag = 1;
-				free((*export)->cmd);
-				(*export)->cmd = ft_strjoin("OLDPWD=", \
-					handle_builtin_pwd(0, parser));
-				break ;
-			}
-			free(temp);
-			(*export) = (*export)->next;
+			flag = 1;
+			free((*export)->cmd);
+			tempo = handle_builtin_pwd(0, parser);
+			(*export)->cmd = ft_strjoin("OLDPWD=",
+										tempo);
+			free(tempo);
+			break;
 		}
-		*export = tmp;
+		free(temp);
+		(*export) = (*export)->next;
+	}
+	*export = tmp;
 	if (flag == 0)
 	{
 		t_node *new;
 		new = ft_lstnew();
-		new->cmd = ft_strjoin("OLDPWD=", \
-					handle_builtin_pwd(0, parser));
+		tempo = handle_builtin_pwd(0, parser);
+		new->cmd = ft_strjoin("OLDPWD=",
+							  tempo);
+		free(tempo);
 		ft_lstaddback(export, &new);
 	}
 }
@@ -55,7 +60,7 @@ void echo_do_job(t_parser **parser, t_vars vars, t_node *env)
 		vars.j = 1;
 		if (ft_strncmp((*parser)->command[vars.i], "-n", 2) == 0 && vars.printed == 0)
 		{
-			while((*parser)->command[vars.i][vars.j] == 'n')
+			while ((*parser)->command[vars.i][vars.j] == 'n')
 				(vars.j)++;
 			if ((*parser)->command[vars.i][vars.j] == '\0')
 				vars.flag = 1;
@@ -93,7 +98,7 @@ void redirect_to_home(t_parser **parser, char **home, char **temp, int *i)
 	x = 0;
 	if ((*parser)->command[*i])
 	{
-		while((*parser)->command[*i][j])
+		while ((*parser)->command[*i][j])
 			*temp[x++] = (*parser)->command[*i][j++];
 		final = ft_strjoin(*home, *temp);
 		free(*temp);
@@ -109,14 +114,15 @@ void redirect_to_home(t_parser **parser, char **home, char **temp, int *i)
 		printf("sdfsdfdsfdsfdsf\n");
 		g_global_vars->status_code = 1;
 		ft_perror("cd: an error occurred "
-			"while changing directory to HOME");
+				  "while changing directory to HOME");
 	}
 }
 
 void redirect_to_back(t_parser **parser, t_node **export, char **tempo)
 {
 	t_node *tmp;
-	char	*temp;
+	char *temp;
+	char *tempo_str;
 	tmp = *export;
 	while (*export)
 	{
@@ -124,9 +130,11 @@ void redirect_to_back(t_parser **parser, t_node **export, char **tempo)
 		if (ft_strncmp("OLDPWD", temp, ft_strlen(temp)) == 0)
 		{
 			free((*export)->cmd);
-			(*export)->cmd = ft_strjoin("OLDPWD=", \
-				handle_builtin_pwd(0, parser));
-			break ;
+			tempo_str = handle_builtin_pwd(0, parser);
+			(*export)->cmd = ft_strjoin("OLDPWD=",
+										tempo_str);
+			free(tempo_str);
+			break;
 		}
 		free(temp);
 		(*export) = (*export)->next;
@@ -134,23 +142,26 @@ void redirect_to_back(t_parser **parser, t_node **export, char **tempo)
 	*export = tmp;
 	if (chdir(*tempo) != 0)
 	{
-				g_global_vars->status_code = 1;
+		g_global_vars->status_code = 1;
 		ft_perror("cd: an error occurred while changing directory");
 	}
 }
 
 void update_pwd(t_parser **parser, t_node **env)
 {
-	char	*temp;
+	char *temp;
 	t_node *tmp;
+	char *tempo;
 	tmp = *env;
 	while (*env)
 	{
 		temp = grab_keyname((*env)->cmd);
 		if (ft_strncmp("PWD", temp, ft_strlen(temp)) == 0)
 		{
-			(*env)->cmd = ft_strjoin("PWD=", handle_builtin_pwd(0, parser));
-			break ;
+			tempo = handle_builtin_pwd(0, parser);
+			(*env)->cmd = ft_strjoin("PWD=", tempo);
+			free(tempo);
+			break;
 		}
 		free(temp);
 		(*env) = (*env)->next;

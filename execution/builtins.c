@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:42:10 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/05 16:08:43 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/05 21:19:08 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,16 @@ void	sort_export(t_node **export)
 void	handle_builtins(t_parser **parser, char *builtin, \
 		t_node **env, t_node **export)
 {
+	char *temp;
 	if (ft_strncmp(builtin, "echo", ft_strlen(builtin)) == 0)
 		handle_builtin_echo(parser, *env);
 	else if (ft_strncmp(builtin, "exit", ft_strlen(builtin)) == 0)
 		handle_builtin_exit(parser);
 	else if (ft_strncmp(builtin, "pwd", ft_strlen(builtin)) == 0)
-		handle_builtin_pwd(1, parser);
+	{
+		temp = handle_builtin_pwd(1, parser);
+		free(temp);
+	}
 	else if (ft_strncmp(builtin, "cd", ft_strlen(builtin)) == 0)
 		handle_builtin_cd(parser, env, export);
 	else if (ft_strncmp(builtin, "env", ft_strlen(builtin)) == 0)

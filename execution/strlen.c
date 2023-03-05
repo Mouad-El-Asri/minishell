@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strlen.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:44:31 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/05 17:58:01 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/05 21:54:42 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ void	handle_single_command(t_parser **parser, data **data)
 	}
 	wait(&exit_status);
 	g_global_vars->status_code = WEXITSTATUS(exit_status);
-	free((*data)->env_arr);
 }
 
 int	ft_lstsize(t_parser *parser)
@@ -193,9 +192,9 @@ char	*check_if_builtin(t_parser **parser)
 void	connect_and_handle(t_parser **parser, t_node **env, \
 		t_node **export, data **data)
 {
+	//int i = 0;
 	signal(SIGKILL, handle_sigkill);
 	char	*ret;
-
 	fill_env_arr(data, env);
 	if (ft_lstsize(*parser) == 1)
 	{

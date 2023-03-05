@@ -1,29 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_token_list.c                                :+:      :+:    :+:   */
+/*   sigint_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/17 20:32:26 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 21:31:29 by moel-asr         ###   ########.fr       */
+/*   Created: 2023/03/06 00:32:04 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/03/06 00:32:25 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_token	*create_token_list(t_lexer *lexer)
+void	sigint_handler(int signum)
 {
-	t_token	*token;
-	t_token	*tmp;
-
-	token = NULL;
-	token_add_back(&token, lexer_get_token(lexer));
-	tmp = token;
-	while (tmp)
-	{
-		token_add_back(&token, lexer_get_token(lexer));
-		tmp = tmp->next;
-	}
-	return (token);
+	(void)signum;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
