@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 20:34:49 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 15:59:37 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:45:27 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ typedef struct data
 
 typedef struct vars
 {
-	int	pid;
-	int	printed;
-	int	i;
-	int	j;
-	int	flag;
-	int	pid2;
-	int	fd[2];
-		int	nl;
-	char *temp;
+	int		pid;
+	int		printed;
+	int		i;
+	int		j;
+	int		flag;
+	int		pid2;
+	int		fd[2];
+	int		nl;
+	char	*temp;
 }	t_vars;
 
 typedef struct s_global
@@ -74,7 +74,7 @@ void	connect_and_handle(t_parser **parser, t_node **env, \
 		t_node **export, data **data);
 int		ft_lstsize(t_parser *parser);
 char	*handle_builtin_pwd(int flag, t_parser **parser);
-void	handle_builtin_unset(char *s ,t_node **env, t_node **export);
+void	handle_builtin_unset(char *s, t_node **env, t_node **export);
 int		ft_llsize(t_node *head);
 char	*grab_keyname(char *s);
 char	*check_if_builtin(t_parser **parser);
@@ -103,7 +103,7 @@ int		check_wanna_add(t_parser **parser, t_node **env, t_node **export);
 void	matched_unset(t_parser **parser, t_node **env, t_node **export);
 void	matched_export(t_parser **parser, t_node **env, t_node **export);
 void	add_export(t_parser **parser, t_node **env, t_node **export, int *i);
-void	add_export_2(t_parser **parser, t_node **env, t_node **export, int *i);
+void	add_export_2(t_parser **parser, t_node **env, int *i);
 void	fill_env_arr(data **data, t_node **env);
 void	check_and_adjust(t_parser **parser);
 void	check_piping_error(t_parser **parser);

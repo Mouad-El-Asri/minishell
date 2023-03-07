@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_heredoc_variables.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:33:16 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/04 14:29:43 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/07 17:45:28 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern	t_global	*g_global_vars;
+extern t_global	*g_global_vars;
 
 char	*check_heredoc_variables(char *s)
 {
@@ -35,24 +35,15 @@ char	*check_heredoc_variables(char *s)
 			(ft_isalnum(s[i + 1]) || s[i + 1] == '_' || s[i + 1] == '?'))
 		{
 			ds_count = 0;
-			while (s[++i] && \
-				(ft_isalnum(s[i]) || s[i] == '_' || s[i] == '?'))
-			{
-				if (s[i] == '?')
-				{
-					i++;
-					flag = 1;
-					var = ft_free(ft_strjoin(var, ft_itoa(g_global_vars->status_code)), var);
-					break ;
-				}
-				var = ft_free(ft_strjoin(var, get_char_as_string(s[i])), var);
-			}
+			expand_heredoc_var_with_status(s, &var, &i, &flag);
 			if (flag == 0)
 				str = expand_heredoc_variable(str, var);
 			else
 				str = ft_free(ft_strjoin(str, var), str);
 		}
 		str = ft_free(ft_strjoin(str, get_char_as_string(s[i])), str);
+		if (ft_strcmp(str, var) == 0)
+			break ;
 	}
 	return (str);
 }

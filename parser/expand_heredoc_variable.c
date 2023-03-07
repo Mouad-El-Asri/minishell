@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand_heredoc_variable.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:31:13 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/04 14:29:43 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:41:34 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern t_global *g_global_vars;
+extern t_global	*g_global_vars;
 
 char	*expand_heredoc_variable(char *str, char *var)
 {

@@ -6,7 +6,7 @@
 #    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/03/06 00:45:29 by moel-asr         ###   ########.fr        #
+#    Updated: 2023/03/06 22:51:21 by moel-asr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,6 +53,7 @@ SRCS = minishell_utils/count_words.c \
 	parser/check_token_type.c \
 	parser/commands_count.c \
 	parser/count_heredocs.c \
+	parser/expand_heredoc_var_with_status.c \
 	parser/expand_heredoc_variable.c \
 	parser/get_char_as_string.c \
 	parser/get_cmd_size.c \

@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:12:14 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 23:47:25 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/06 23:33:20 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ t_token	*lexer_get_string(t_lexer *lexer)
 		if (is_env_variable(lexer) == 0 && (dollar_sign_count % 2))
 		{
 			c = expand_variable(lexer);
-			c = ft_free(split_variable(c), c);
+			if (c[0])
+				c = ft_free(split_variable(c), c);
 			s = ft_free(ft_strjoin(s, c), s);
-			free(c);
+			if (c[0])
+				free(c);
 			dollar_sign_count = 0;
 		}
 		else
@@ -54,7 +56,6 @@ t_token	*lexer_get_string(t_lexer *lexer)
 			}
 		}
 	}
-	token = init_token(ft_strdup(s), token_type);
-	free(s);
+	token = init_token(s, token_type);
 	return (token);
 }

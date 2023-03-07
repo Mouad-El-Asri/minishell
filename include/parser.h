@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:58:38 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 19:37:50 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/06 22:51:04 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int			check_syntax_errors(t_token *token);
 int			check_token_type(t_token *token);
 int			commands_count(t_token *token);
 int			count_heredocs(t_token *token);
+void		expand_heredoc_var_with_status(char *s, char **var, \
+			int *i, int *flag);
 char		*expand_heredoc_variable(char *str, char *var);
 char		*get_char_as_string(char c);
 int			get_cmd_size(t_token *token);

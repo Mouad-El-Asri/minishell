@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minilibft.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/05 14:03:52 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 16:04:06 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:43:28 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-int     ft_atoi(const char *s);
+int		ft_atoi(const char *s);
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);

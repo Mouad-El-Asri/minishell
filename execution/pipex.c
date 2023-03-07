@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 18:46:21 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/04 22:28:52 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:20:48 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern t_global *g_global_vars;
+extern t_global	*g_global_vars;
 
 char	*handle_path(char *path)
 {
@@ -50,7 +50,7 @@ void	handle_left(int pid1, t_parser *parser, char **envp, int *fd)
 		if (parser->command[0][0] == '.')
 		{
 			if (access((parser)->command[0], F_OK) != 0)
-			print_error((parser)->command[0][0], 1);
+				print_error((parser)->command[0][0], 1);
 			else if (access((parser)->command[0], X_OK) != 0)
 				print_error((parser)->command[0][0], 2);
 		}
@@ -73,8 +73,8 @@ void	handle_left(int pid1, t_parser *parser, char **envp, int *fd)
 
 void	handle_right(int pid1, t_parser *parser, char **envp, int *fd)
 {
-	(void)envp;
-	int stat;
+	int	stat;
+
 	if (pid1 == 0)
 	{
 		dup2(fd[0], 0);
@@ -84,7 +84,7 @@ void	handle_right(int pid1, t_parser *parser, char **envp, int *fd)
 		if (parser->command[0][0] == '.')
 		{
 			if (access((parser)->command[0], F_OK) != 0)
-			print_error((parser)->command[0][0], 1);
+				print_error((parser)->command[0][0], 1);
 			else if (access((parser)->command[0], X_OK) != 0)
 				print_error((parser)->command[0][0], 2);
 		}

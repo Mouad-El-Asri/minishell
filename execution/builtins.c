@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:42:10 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/05 21:19:08 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:00:39 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ void	sort_export(t_node **export)
 void	handle_builtins(t_parser **parser, char *builtin, \
 		t_node **env, t_node **export)
 {
-	char *temp;
+	char	*temp;
+
 	if (ft_strncmp(builtin, "echo", ft_strlen(builtin)) == 0)
 		handle_builtin_echo(parser, *env);
 	else if (ft_strncmp(builtin, "exit", ft_strlen(builtin)) == 0)

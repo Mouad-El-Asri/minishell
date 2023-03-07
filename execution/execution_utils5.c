@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:26 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 00:28:27 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:21:13 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 extern t_global	*g_global_vars;
 
-void add_export(t_parser **parser, t_node **env, t_node **export, int *i)
+void	add_export(t_parser **parser, t_node **env, t_node **export, int *i)
 {
-	t_node *new;
-	t_node *new2;
+	t_node	*new;
+	t_node	*new2;
+
 	if (contain_equal((*parser)->command[*i]) == 0)
 	{
 		new = ft_lstnew();
@@ -46,10 +47,10 @@ void add_export(t_parser **parser, t_node **env, t_node **export, int *i)
 	}
 }
 
-void add_export_2(t_parser **parser, t_node **env, t_node **export, int *i)
+void	add_export_2(t_parser **parser, t_node **env, int *i)
 {
-	(void)export;
-	t_node *new;
+	t_node	*new;
+
 	if (contain_equal((*parser)->command[*i]) == 0)
 	{
 		new = ft_lstnew();
@@ -64,10 +65,11 @@ void add_export_2(t_parser **parser, t_node **env, t_node **export, int *i)
 	}
 }
 
-void child_print(t_parser **parser, t_node **one, int flag)
+void	child_print(t_parser **parser, t_node **one, int flag)
 {
-	int pid;
-	t_node *tmp;
+	t_node	*tmp;
+	int		pid;
+
 	tmp = *one;
 	pid = fork();
 	if (pid == 0)
@@ -91,10 +93,11 @@ void child_print(t_parser **parser, t_node **one, int flag)
 	wait(NULL);
 }
 
-void set_target(t_node **env, t_node **target, char *s)
+void	set_target(t_node **env, t_node **target, char *s)
 {
-	t_node *tmp;
-	char *temp;
+	t_node	*tmp;
+	char	*temp;
+
 	tmp = *env;
 	while (*env)
 	{
@@ -110,21 +113,21 @@ void set_target(t_node **env, t_node **target, char *s)
 	*env = tmp;
 }
 
-void echo_handle_special(t_parser **parser, int *i, int *flag, int *printed)
+void	echo_handle_special(t_parser **parser, int *i, int *flag, int *printed)
 {
-			if ((*parser)->command[*i + 1])
-			{
-				printf("%s ", (*parser)->command[*i]);
-				*printed = 1;
-			}
-			else if (!(*parser)->command[*i + 1] && *flag)
-			{
-				printf("%s", (*parser)->command[*i]);
-				*printed = 1;
-			}
-			else if (!(*parser)->command[*i + 1] && *flag == 0)
-			{
-				printf("%s\n", (*parser)->command[*i]);
-				*printed = 1;
-			}
+	if ((*parser)->command[*i + 1])
+	{
+		printf("%s ", (*parser)->command[*i]);
+		*printed = 1;
+	}
+	else if (!(*parser)->command[*i + 1] && *flag)
+	{
+		printf("%s", (*parser)->command[*i]);
+		*printed = 1;
+	}
+	else if (!(*parser)->command[*i + 1] && *flag == 0)
+	{
+		printf("%s\n", (*parser)->command[*i]);
+		*printed = 1;
+	}
 }

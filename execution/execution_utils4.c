@@ -6,13 +6,13 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:34:06 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 23:28:44 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:21:18 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern	t_global *g_global_vars;
+extern t_global	*g_global_vars;
 
 char	*get_value(char *s)
 {
@@ -101,7 +101,8 @@ void	matched_unset(t_parser **parser, t_node **env, t_node **export)
 		}
 	}
 }
-void matched_export(t_parser **parser, t_node **env, t_node **export)
+
+void	matched_export(t_parser **parser, t_node **env, t_node **export)
 {
 	if (check_if_valid(parser) != -1)
 	{

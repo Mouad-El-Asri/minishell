@@ -6,13 +6,13 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 19:56:38 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 23:34:31 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/06 23:21:49 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern	t_global	*g_global_vars;
+extern t_global	*g_global_vars;
 
 char	*expand_variable(t_lexer *lexer)
 {

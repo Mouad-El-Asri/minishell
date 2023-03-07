@@ -6,13 +6,13 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:27:31 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 00:27:32 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:21:35 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern t_global*g_global_vars;
+extern t_global	*g_global_vars;
 
 t_node	*ft_lstnew(void)
 {
@@ -58,7 +58,7 @@ void	ft_lstdelone(t_node **lst, t_node *todel, void (*del)(void*))
 		del(todel->cmd);
 		free(todel);
 		*lst = (*lst)->next;
-		return;
+		return ;
 	}
 	while (*lst && (*lst)->next != todel)
 	{

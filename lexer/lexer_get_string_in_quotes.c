@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 19:58:01 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 23:57:39 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:43:58 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ char	*lexer_get_string_in_quotes(t_lexer *lexer, char character)
 		if (is_env_variable(lexer) == 0 && (ds_count % 2) && character == '"')
 		{
 			if (flag == 1)
-				s = ft_free(ft_strjoin(s, split_variable(expand_variable(lexer))), s);
+				s = ft_free(ft_strjoin(s, \
+				split_variable(expand_variable(lexer))), s);
 			else
 				s = ft_free(ft_strjoin(s, expand_variable(lexer)), s);
 			ds_count = 0;
@@ -49,7 +50,8 @@ char	*lexer_get_string_in_quotes(t_lexer *lexer, char character)
 		{
 			lexer_advance(lexer);
 			if (lexer->c == '\'' || lexer->c == '"')
-				s = ft_free(ft_strjoin(s, lexer_get_string_in_quotes(lexer, lexer->c)), s);
+				s = ft_free(ft_strjoin(s, \
+				lexer_get_string_in_quotes(lexer, lexer->c)), s);
 			else
 				flag = 1;
 		}

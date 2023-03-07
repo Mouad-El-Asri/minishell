@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:27:48 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 21:17:33 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:21:30 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	handle_builtin_export(t_node **env, t_node **export, \
 			if (isexist(env, (*parser)->command[i], export) == 0)
 				add_export(parser, env, export, &i);
 			else if (isexist(env, (*parser)->command[i], export) == 2)
-				add_export_2(parser, env, export, &i);
+				add_export_2(parser, env, &i);
 			i++;
 		}
 	}
@@ -39,7 +39,7 @@ void	handle_builtin_export(t_node **env, t_node **export, \
 		child_print(parser, export, 1);
 }
 
-void	handle_builtin_unset(char *s ,t_node **env, t_node **export)
+void	handle_builtin_unset(char *s, t_node **env, t_node **export)
 {
 	t_node	*target;
 
@@ -77,7 +77,7 @@ char	*handle_builtin_pwd(int flag, t_parser **parser)
 
 void	handle_builtin_echo(t_parser **parser, t_node *env)
 {
-	t_vars vars;
+	t_vars	vars;
 
 	vars.i = 1;
 	vars.flag = 0;
@@ -99,23 +99,25 @@ void	handle_builtin_echo(t_parser **parser, t_node *env)
 
 void	handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
 {
-	char *tempo;
+	char	*tempo;
+	char	*temp;
+	char	*home;
 	int		i;
 
 	i = 1;
 	tempo = ft_mygetenv(*export, "OLDPWD");
 	set_oldpwd(parser, export);
 	set_oldpwd(parser, env);
-	if (!(*parser)->command[i] || ft_strncmp((*parser)->command[i], "~", 1) == 0)
+	if (!(*parser)->command[i] || \
+		ft_strncmp((*parser)->command[i], "~", 1) == 0)
 	{
-		char *home;
-		char *temp;
 		if ((*parser)->command[i])
 			temp = malloc(sizeof(char) * ft_strlen((*parser)->command[i]));
 		home = ft_mygetenv(*env, "HOME");
 		redirect_to_home(parser, &home, &temp, &i);
 	}
-	else if (ft_strncmp((*parser)->command[i], "-", ft_strlen((*parser)->command[i])) == 0)
+	else if (ft_strncmp((*parser)->command[i], "-", \
+		ft_strlen((*parser)->command[i])) == 0)
 		redirect_to_back(parser, export, &tempo);
 	else if (chdir((*parser)->command[i]) != 0)
 	{

@@ -6,13 +6,13 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:44:31 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/05 21:54:42 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:20:42 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern	t_global *g_global_vars;
+extern t_global	*g_global_vars;
 
 void	print_error(char c, int flag)
 {
@@ -42,13 +42,15 @@ void	handle_normal_pipe(t_parser **parser, t_node *envp, \
 		(ft_perror("pipe system call error: failed to create pipe"), exit(1));
 	vars.pid = fork();
 	if (vars.pid == -1)
-		(ft_perror("fork system call error: failed to create child process"),exit(1));
+		(ft_perror("fork system call error: failed to create child process"), \
+		exit(1));
 	if (do_exec_assign_to(parser, &vars, envp, export) == 0)
 		handle_left(vars.pid, *parser, data->env_arr, vars.fd);
 	vars.pid2 = fork();
 	*parser = (*parser)->next;
 	if (vars.pid2 == -1)
-		(ft_perror("fork system call error: failed to create child process"),exit(1));
+		(ft_perror("fork system call error: failed to create child process"), \
+		exit(1));
 	if (do_exec_assign_to_2(parser, &vars, envp, export) == 0)
 		handle_right(vars.pid2, *parser, data->env_arr, vars.fd);
 	close(vars.fd[1]);
@@ -86,16 +88,18 @@ void	handle_sigkill(int sig)
 void	handle_single_command(t_parser **parser, data **data)
 {
 	int	pid;
-	int exit_status;
+	int	exit_status;
 
 	signal(SIGKILL, handle_sigkill);
 	pid = fork();
 	if (pid == -1)
-		(ft_perror("fork system call error: failed to create child process"), exit(1));
+		(ft_perror("fork system call error: failed to create child process"), \
+		exit(1));
 	exit_status = 0;
 	if (pid == 0)
 	{
-		if ((*parser)->command[0] && ((*parser)->command[0][0] == '.' || (*parser)->command[0][0] == '/'))
+		if ((*parser)->command[0] && ((*parser)->command[0][0] == '.' || \
+			(*parser)->command[0][0] == '/'))
 		{
 			if (access((*parser)->command[0], F_OK) != 0)
 				print_error((*parser)->command[0][0], 1);
@@ -106,7 +110,8 @@ void	handle_single_command(t_parser **parser, data **data)
 		{
 			if ((*parser)->command[0])
 			{
-				(*parser)->command[0] = rap((*parser)->command[0], (*data)->env_arr);
+				(*parser)->command[0] = rap((*parser)->command[0], \
+				(*data)->env_arr);
 				check_and_adjust(parser);
 				if (access((*parser)->command[0], F_OK) != 0)
 					print_error((*parser)->command[0][0], 1);
@@ -115,6 +120,7 @@ void	handle_single_command(t_parser **parser, data **data)
 			}
 		}
 		execve((*parser)->command[0], (*parser)->command, (*data)->env_arr);
+		exit(1);
 	}
 	wait(&exit_status);
 	g_global_vars->status_code = WEXITSTATUS(exit_status);
@@ -192,9 +198,9 @@ char	*check_if_builtin(t_parser **parser)
 void	connect_and_handle(t_parser **parser, t_node **env, \
 		t_node **export, data **data)
 {
-	//int i = 0;
-	signal(SIGKILL, handle_sigkill);
 	char	*ret;
+
+	signal(SIGKILL, handle_sigkill);
 	fill_env_arr(data, env);
 	if (ft_lstsize(*parser) == 1)
 	{

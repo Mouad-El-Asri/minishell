@@ -6,25 +6,25 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:07 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 00:35:57 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:21:23 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern t_global *g_global_vars;
+extern t_global	*g_global_vars;
 
-void handle_builtin_env(t_parser **parser, t_node **env)
+void	handle_builtin_env(t_parser **parser, t_node **env)
 {
 	child_print(parser, env, 0);
 }
 
-int check_if_valid(t_parser **parser)
+int	check_if_valid(t_parser **parser)
 {
-	int i;
-	int j;
-	int ret;
-	t_parser *tmp;
+	int			i;
+	int			j;
+	int			ret;
+	t_parser	*tmp;
 
 	i = 1;
 	j = 0;
@@ -35,12 +35,12 @@ int check_if_valid(t_parser **parser)
 	return (ret);
 }
 
-int isexist(t_node **env, char *s, t_node **export)
+int	isexist(t_node **env, char *s, t_node **export)
 {
-	t_node *temp;
-	char *ks;
-	char *cms;
-	int flag;
+	t_node	*temp;
+	char	*ks;
+	char	*cms;
+	int		flag;
 
 	temp = *export;
 	flag = 0;
@@ -74,21 +74,21 @@ int isexist(t_node **env, char *s, t_node **export)
 	return (0);
 }
 
-int check_wanna_add(t_parser **parser, t_node **env, t_node **export)
+int	check_wanna_add(t_parser **parser, t_node **env, t_node **export)
 {
-	t_parser *temp;
-	t_node *tmp;
-	t_node *new;
-	t_node *new2;
-	char *final;
-	int found;
-	int ret;
-	char *tempo;
-	char *tempo2;
-	char *val;
-	int i;
-	int j;
-	int flag;
+	t_parser	*temp;
+	t_node		*tmp;
+	t_node		*new;
+	t_node		*new2;
+	char		*final;
+	int			found;
+	int			ret;
+	char		*tempo;
+	char		*tempo2;
+	char		*val;
+	int			i;
+	int			j;
+	int			flag;
 
 	temp = *parser;
 	tmp = *env;
@@ -106,12 +106,12 @@ int check_wanna_add(t_parser **parser, t_node **env, t_node **export)
 			{
 				flag = 1;
 				ret = 1;
-				break;
+				break ;
 			}
 			j++;
 		}
 		if (flag == 1)
-			break;
+			break ;
 		i++;
 		j = 0;
 	}
@@ -174,13 +174,13 @@ int check_wanna_add(t_parser **parser, t_node **env, t_node **export)
 	return (ret);
 }
 
-void print_export(t_node *export, int flag)
+void	print_export(t_node *export, int flag)
 {
-	if (export == NULL)
-		return;
-	char *key;
-	char *val;
+	char	*key;
+	char	*val;
 
+	if (export == NULL)
+		return ;
 	key = grab_keyname((export)->cmd);
 	val = get_value((export)->cmd);
 	if (key)

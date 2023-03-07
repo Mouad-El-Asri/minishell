@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_token_list.c                                :+:      :+:    :+:   */
+/*   expand_heredoc_var_with_status.c                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/17 20:32:26 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/06 23:42:28 by moel-asr         ###   ########.fr       */
+/*   Created: 2023/03/06 19:47:40 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/03/06 22:51:36 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_token	*create_token_list(t_lexer *lexer)
-{
-	t_token	*token;
-	t_token	*tmp;
+extern t_global	*g_global_vars;
 
-	token = NULL;
-	token_add_back(&token, lexer_get_token(lexer));
-	tmp = token;
-	while (tmp)
+void	expand_heredoc_var_with_status(char *s, char **var, int *i, int *flag)
+{
+	while (s[++(*i)] && \
+	(ft_isalnum(s[(*i)]) || s[(*i)] == '_' || s[(*i)] == '?'))
 	{
-		token_add_back(&token, lexer_get_token(lexer));
-		tmp = tmp->next;
+		if (s[(*i)] == '?')
+		{
+			(*i)++;
+			(*flag) = 1;
+			(*var) = ft_free(ft_strjoin(*var, \
+			ft_itoa(g_global_vars->status_code)), (*var));
+			break ;
+		}
+		(*var) = ft_free(ft_strjoin((*var), \
+		get_char_as_string(s[(*i)])), (*var));
 	}
-	return (token);
 }
