@@ -6,14 +6,16 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:41:03 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/04 21:59:37 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 17:00:46 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	handle_multiple_pipes(int num, t_parser **parser, char **envp)
+void	handle_multiple_pipes(data *data, t_parser **parser, t_node **env, t_node **export)
 {
+	(void)env;
+	(void)export;
 	int	count;
 	int	**fds;
 	int	*pid;
@@ -21,9 +23,11 @@ void	handle_multiple_pipes(int num, t_parser **parser, char **envp)
 	int	g;
 	int	i;
 	int	c;
+	t_vars *vars;
 
-	count = num - 1;
+	count = data->num - 1;
 	fds = (int **)malloc(count * sizeof(int *));
+	vars = malloc(sizeof(t_vars));
 	g = 0;
 	while (g < count)
 	{
@@ -32,7 +36,7 @@ void	handle_multiple_pipes(int num, t_parser **parser, char **envp)
 	}
 	i = 0;
 	c = 0;
-	pid = (int *)malloc(num * sizeof(int));
+	pid = (int *)malloc(data->num * sizeof(int));
 	while (count)
 	{
 		if (pipe(fds[i]) != 0)
@@ -43,49 +47,67 @@ void	handle_multiple_pipes(int num, t_parser **parser, char **envp)
 		i++;
 		count--;
 	}
-	count = num - 1;
+	count = data->num - 1;
 	i = 0;
 	pid[i] = fork();
-	handle_first_child(pid[i], parser, envp, fds);
+	handle_first_child(pid[i], parser, data->env_arr, fds);
+	(*parser) = (*parser)->next;
 	temp = c;
 	while (*parser)
 	{
-		pid[i + 1] = fork();
-		if (pid[i + 1] == 0)
+		if ((*parser)->next)
 		{
-			(*parser)->command[0] = rap((*parser)->command[0], envp);
-			if (access((*parser)->command[0], X_OK) == -1)
-			{
-				print_error((*parser)->command[0][0], 1);
-			}
-			dup2(fds[i][0], 0);
-			if ((*parser)->next && (*parser)->out == 1)
-			{
-				dup2(fds[i + 1][1], 1);
-				close(fds[i][1]);
+			if (ft_strcmp("cat", (*parser)->command[0]) == 0)
 				close(fds[i][0]);
-				close(fds[i + 1][0]);
-			}
-			else if ((*parser)->out != 1)
-			{
-				dup2((*parser)->out, 1);
-				close(fds[i][1]);
-				close(fds[i][0]);
-			}
-			else
-			{
-				close(fds[i][1]);
-				close(fds[i][0]);
-			}
-			while (temp)
-			{
-				close(fds[i - temp][1]);
-				close(fds[i - temp][0]);
-				temp--;
-			}
-			temp = c;
-			execve((*parser)->command[0], (*parser)->command, envp);
 		}
+			pid[i + 1] = fork();
+			if (pid[i + 1] == 0)
+			{
+				(*parser)->command[0] = rap((*parser)->command[0], data->env_arr);
+				if (access((*parser)->command[0], F_OK) != 0)
+					print_error((*parser)->command[0][0], 1);
+				else if (access((*parser)->command[0], X_OK) != 0)
+					print_error((*parser)->command[0][0], 2);
+				if ((*parser)->in == -1 || (*parser)->out == -1)
+				{
+					close(fds[i][0]);
+					close(fds[i][1]);
+					exit(1);
+				}
+				if ((*parser)->in != 0)
+					dup2((*parser)->in, 0);
+				else
+					dup2(fds[i][0], 0);
+				close(fds[i][0]);
+				if ((*parser)->next && (*parser)->out == 1)
+				{
+					dup2(fds[i + 1][1], 1);
+					close(fds[i + 1][1]);
+					close(fds[i][1]);
+					close(fds[i][0]);
+					close(fds[i + 1][0]);
+				}
+				else if ((*parser)->out != 1)
+				{
+					dup2((*parser)->out, 1);
+					close(fds[i][1]);
+					close(fds[i][0]);
+				}
+				else
+				{
+					close(fds[i][1]);
+					close(fds[i][0]);
+				}
+				while (temp)
+				{
+					close(fds[i - temp][1]);
+					close(fds[i - temp][0]);
+					temp--;
+				}
+				temp = c;
+				execve((*parser)->command[0], (*parser)->command, data->env_arr);
+				exit(0);
+			}
 		temp++;
 		i++;
 		c++;
@@ -99,7 +121,7 @@ void	handle_multiple_pipes(int num, t_parser **parser, char **envp)
 		i++;
 	}
 	i = 0;
-	while (i < num)
+	while (i < data->num)
 	{
 		waitpid(pid[i], NULL, 0);
 		i++;

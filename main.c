@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/06 23:54:40 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/10 14:05:18 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	main(int argc, char **argv, char **env)
 		export = NULL;
 	}
 	g_global_vars->env = my_env;
+	data->env_arr = NULL;
 	token = NULL;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
@@ -91,7 +92,6 @@ int	main(int argc, char **argv, char **env)
 		temp = parser;
 		while (temp)
 			connect_and_handle(&temp, &my_env, &export, &data);
-		free((data)->env_arr);
 		free_parser(&parser);
 		free_token(&token);
 		free(str);

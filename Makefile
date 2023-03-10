@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
+#    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/03/06 22:51:21 by moel-asr         ###   ########.fr        #
+#    Updated: 2023/03/09 13:13:05 by ceddibao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-RE_PATH = ~/brew/opt/readline/
+RE_PATH = /goinfre/ceddibao/homebrew/opt/readline/
 
 LFLAGS = -lreadline -L $(RE_PATH)/lib -I $(RE_PATH)/include
 
@@ -78,6 +78,11 @@ SRCS = minishell_utils/count_words.c \
 	execution/execution_utils6.c \
 	execution/execution_utils7.c \
 	execution/execution_utils8.c \
+	execution/execution_utils9.c \
+	execution/execution_utils10.c \
+	execution/execution_utils11.c \
+	execution/execution_utils12.c \
+	execution/execution_utils13.c \
 	execution/builtins.c \
 	main.c
 
@@ -87,7 +92,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	make -C minilibft
-	$(CC) $(CFLAGS) $(LFLAGS) minilibft/minilibft.a $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(LFLAGS)  minilibft/minilibft.a $(OBJS) -o $(NAME)
 
 clean :
 	$(RM) $(OBJS)

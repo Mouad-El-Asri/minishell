@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils5.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:26 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/06 15:21:13 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/07 19:00:48 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ extern t_global	*g_global_vars;
 void	add_export(t_parser **parser, t_node **env, t_node **export, int *i)
 {
 	t_node	*new;
-	t_node	*new2;
 
 	if (contain_equal((*parser)->command[*i]) == 0)
 	{
@@ -25,26 +24,7 @@ void	add_export(t_parser **parser, t_node **env, t_node **export, int *i)
 		new->cmd = ft_strdup((*parser)->command[*i]);
 		ft_lstaddback(export, &new);
 	}
-	else if (contain_equal((*parser)->command[*i]) == 1 && \
-			!get_value((*parser)->command[*i]))
-	{
-		new = ft_lstnew();
-		new2 = ft_lstnew();
-		new->cmd = ft_strdup((*parser)->command[*i]);
-		new2->cmd = ft_strdup((*parser)->command[*i]);
-		ft_lstaddback(env, &new);
-		ft_lstaddback(export, &new2);
-	}
-	else if (contain_equal((*parser)->command[*i]) == 1 && \
-			get_value((*parser)->command[*i]))
-	{
-		new = ft_lstnew();
-		new2 = ft_lstnew();
-		new->cmd = ft_strdup((*parser)->command[*i]);
-		new2->cmd = ft_strdup((*parser)->command[*i]);
-		ft_lstaddback(env, &new);
-		ft_lstaddback(export, &new2);
-	}
+	handle_export_with_val(parser, i, env, export);
 }
 
 void	add_export_2(t_parser **parser, t_node **env, int *i)

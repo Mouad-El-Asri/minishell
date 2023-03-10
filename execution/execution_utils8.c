@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils8.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:36 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/06 15:21:53 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/10 16:36:29 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	do_exec_assign_to(t_parser **parser, t_vars *vars, \
 {
 	char	*temp;
 
-	if ((temp = check_if_builtin(parser)))
+	temp = check_if_builtin(parser);
+	if (temp)
 	{
 		if (vars->pid == 0)
 		{
@@ -52,7 +53,8 @@ int	do_exec_assign_to_2(t_parser **parser, t_vars *vars, \
 {
 	char	*temp;
 
-	if ((temp = check_if_builtin(parser)))
+	temp = check_if_builtin(parser);
+	if (temp)
 	{
 		if (vars->pid2 == 0)
 		{
@@ -93,4 +95,15 @@ void	handle_builtin_exit(t_parser **parser)
 			exit(ft_atoi((*parser)->command[i]));
 		}
 	}
+}
+
+void	check_add_sign(t_parser **parser, int *flag, int *ret, int *i)
+{
+	int			j;
+	t_parser	*temp;
+
+	j = 0;
+	temp = *parser;
+	expand_add_sign_check(parser, flag, ret, i);
+	*parser = temp;
 }

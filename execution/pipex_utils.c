@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:23:08 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/01 20:36:11 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/09 14:08:30 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,7 @@ char	*rap(char *s, char **env)
 	while (path[i])
 	{
 		if ((access(ft_strjoin(path[i], cmd), F_OK)) == 0)
-		{
 			return (ft_strjoin(path[i], cmd));
-		}
 		i++;
 	}
 	free(cmd);

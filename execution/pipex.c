@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 18:46:21 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/06 15:20:48 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/10 16:19:46 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,29 +45,15 @@ void	handle_left(int pid1, t_parser *parser, char **envp, int *fd)
 	if (pid1 == 0)
 	{
 		close(fd[0]);
+		if (parser->in == -1 || parser->out == -1)
+		{
+			close(fd[1]);
+			exit(1);
+		}
 		if (parser->in != 0)
 			dup2(parser->in, 0);
-		if (parser->command[0][0] == '.')
-		{
-			if (access((parser)->command[0], F_OK) != 0)
-				print_error((parser)->command[0][0], 1);
-			else if (access((parser)->command[0], X_OK) != 0)
-				print_error((parser)->command[0][0], 2);
-		}
-		else
-		{
-			parser->command[0] = rap(parser->command[0], envp);
-			if (access((parser)->command[0], F_OK) != 0)
-				print_error((parser)->command[0][0], 1);
-			else if (access((parser)->command[0], X_OK) != 0)
-				print_error((parser)->command[0][0], 2);
-			if (parser->out != 1)
-				dup2(parser->out, 1);
-			else
-				dup2(fd[1], 1);
-		}
-		if (execve(parser->command[0], parser->command, envp) == -1)
-			exit(1);
+		expand_handle_left(parser, fd, envp);
+		execve(parser->command[0], parser->command, envp);
 	}
 }
 
@@ -77,25 +63,14 @@ void	handle_right(int pid1, t_parser *parser, char **envp, int *fd)
 
 	if (pid1 == 0)
 	{
-		dup2(fd[0], 0);
+		if (parser->in != 0)
+			dup2(parser->in, 0);
+		else
+			dup2(fd[0], 0);
 		close(fd[1]);
 		if (parser->out != 1)
 			dup2(parser->out, 1);
-		if (parser->command[0][0] == '.')
-		{
-			if (access((parser)->command[0], F_OK) != 0)
-				print_error((parser)->command[0][0], 1);
-			else if (access((parser)->command[0], X_OK) != 0)
-				print_error((parser)->command[0][0], 2);
-		}
-		else
-		{
-			parser->command[0] = rap(parser->command[0], envp);
-			if (access((parser)->command[0], F_OK) != 0)
-				print_error((parser)->command[0][0], 1);
-			else if (access((parser)->command[0], X_OK) != 0)
-				print_error((parser)->command[0][0], 2);
-		}
+		expand_handle_right(parser, envp);
 		if (execve(parser->command[0], parser->command, envp) == -1)
 			exit(1);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:27:48 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/06 15:21:30 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/10 14:54:46 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	handle_builtin_unset(char *s, t_node **env, t_node **export)
 	set_target(env, &target, s);
 	if (target)
 		ft_lstdelone(env, target, del);
+	target = NULL;
 	set_target(export, &target, s);
 	if (target)
 		ft_lstdelone(export, target, del);
@@ -100,7 +101,6 @@ void	handle_builtin_echo(t_parser **parser, t_node *env)
 void	handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
 {
 	char	*tempo;
-	char	*temp;
 	char	*home;
 	int		i;
 
@@ -111,10 +111,9 @@ void	handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
 	if (!(*parser)->command[i] || \
 		ft_strncmp((*parser)->command[i], "~", 1) == 0)
 	{
-		if ((*parser)->command[i])
-			temp = malloc(sizeof(char) * ft_strlen((*parser)->command[i]));
 		home = ft_mygetenv(*env, "HOME");
-		redirect_to_home(parser, &home, &temp, &i);
+		redirect_to_home(parser, &home, &i);
+		free(home);
 	}
 	else if (ft_strncmp((*parser)->command[i], "-", \
 		ft_strlen((*parser)->command[i])) == 0)
@@ -126,4 +125,5 @@ void	handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
 	}
 	update_pwd(parser, env);
 	update_pwd(parser, export);
+	free(tempo);
 }
