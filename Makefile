@@ -6,7 +6,7 @@
 #    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/03/09 13:13:05 by ceddibao         ###   ########.fr        #
+#    Updated: 2023/03/10 21:31:43 by ceddibao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,6 +83,7 @@ SRCS = minishell_utils/count_words.c \
 	execution/execution_utils11.c \
 	execution/execution_utils12.c \
 	execution/execution_utils13.c \
+	execution/execution_utils14.c \
 	execution/builtins.c \
 	main.c
 

@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:26 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/07 19:00:48 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 18:22:11 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	set_target(t_node **env, t_node **target, char *s)
 		if (ft_strncmp(s, temp, what_length(s, temp)) == 0)
 		{
 			*target = *env;
+			free(temp);
 			break ;
 		}
 		free(temp);

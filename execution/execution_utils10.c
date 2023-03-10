@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 21:10:41 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 14:52:21 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 21:06:07 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	connect_and_handle(t_parser **parser, t_node **env, \
 	else if (ft_lstsize(*parser) > 2)
 	{
 		(*data)->num = ft_lstsize(*parser);
-		handle_multiple_pipes((*data), parser, env, export);
+		handle_multiple_pipes((*data), parser);
 	}
 	free((*data)->env_arr);
 }

@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:44:31 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 17:45:37 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 22:06:18 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	print_error(char c, int flag)
 void	handle_normal_pipe(t_parser **parser, t_node *envp, \
 		data *data, t_node **export)
 {
-	t_vars		vars;
-	int 		stat;
+	t_vars	vars;
+	int		stat;
 
 	check_piping_error(parser);
 	if (pipe(vars.fd) == -1)

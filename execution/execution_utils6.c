@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:30 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/10 14:47:29 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 22:27:59 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,7 @@ void	redirect_to_back(t_parser **parser, t_node **export, char **tempo)
 		(*export) = (*export)->next;
 	}
 	*export = tmp;
-	if (chdir(*tempo) != 0)
-	{
-		g_global_vars->status_code = 1;
-		ft_perror("cd: an error occurred while changing directory");
-	}
+	expand_redirect_to_back(tempo);
 }
 
 void	update_pwd(t_parser **parser, t_node **env)

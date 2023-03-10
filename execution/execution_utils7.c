@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:33 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/10 16:08:32 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 22:26:17 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	check_and_adjust(t_parser **parser)
 	if ((*parser)->command[0] == NULL)
 		exit(0);
 	if ((*parser)->in == -1 || (*parser)->out == -1)
-		exit(1) ;
+		exit(1);
 	if ((*parser)->in != 0)
 	{
 		dup2((*parser)->in, 0);

@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 20:34:49 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/09 21:15:16 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 22:27:44 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct node
 
 typedef struct vars
 {
+	int		temp_var;
 	int		pid;
 	int		printed;
 	int		i;
@@ -35,6 +36,7 @@ typedef struct vars
 	int		**fds_all;
 	t_node *env;
 	t_node *export;
+	int		ex_code;
 }	t_vars;
 
 typedef struct data
@@ -67,7 +69,7 @@ void	handle_normal_pipe(t_parser **parser, t_node *envp, \
 		data *data, t_node **export);
 void	handle_right(int pid1, t_parser *parser, char **envp, int *fd);
 void	handle_left(int pid1, t_parser *parser, char **envp, int *fd);
-void	handle_multiple_pipes(data *data, t_parser **parser, t_node **env, t_node **export);
+void	handle_multiple_pipes(data *data, t_parser **parser);
 void	handle_builtins(t_parser **parser, char *builtin, \
 		t_node **env, t_node **export);
 void	handle_builtin_export(t_node **env, t_node **export, \
@@ -143,7 +145,15 @@ void	expand_handle_right(t_parser *parser, char **envp);
 void	expand_check_wanna_add(int *i,  int *found, int *ret, int *flag);
 void	expand_is_exist(t_node **env, char *s, t_node *temp, int *ret);
 void	expand_if_exi_update(t_node **export, int *flag, char *s);
-void	expand_connect_and_handle(t_parser **parser, t_node **env, t_node **export, data **data)
-;
+void	expand_connect_and_handle(t_parser **parser, t_node **env, t_node **export, data **data);
+void	close_and_wait(int count, int *ex_code, int *pid, int **fds);
+void	alloc_pipe(int count, int **fds);
+void	handle_multiple_in_out(t_parser **parser, int **fds, t_vars *vars);
+void	check_if_special(t_parser **parser, t_vars *vars, int **fds);
+void	expand_m_child_exec(t_parser **parser, int **fds, t_vars *vars, data *data);
+void	fill_vars(t_parser **parser, t_vars *vars);
+void	increment_vars(t_parser **parser, t_vars *vars);
+void	update_env_export(t_parser **parser, t_node **env, t_node **export);
+void	expand_redirect_to_back(char **tempo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:27:48 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/10 14:54:46 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 22:20:16 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ void	handle_builtin_cd(t_parser **parser, t_node **env, t_node **export)
 		g_global_vars->status_code = 1;
 		ft_perror("cd: an error occurred while changing directory");
 	}
-	update_pwd(parser, env);
-	update_pwd(parser, export);
 	free(tempo);
+	update_env_export(parser, env, export);
 }

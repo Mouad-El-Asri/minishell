@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:34:06 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/08 22:16:10 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 22:23:54 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*get_value(char *s)
 	j = 0;
 	ret = (char *)malloc(ft_strlen(s) + 1);
 	if (contain_equal(s) == 0)
-		return (NULL);
+		return (free(ret), NULL);
 	while (s[i] != '=')
 		i++;
 	i++;

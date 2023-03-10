@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 18:46:21 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 17:42:32 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 22:05:55 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,6 @@ void	handle_left(int pid1, t_parser *parser, char **envp, int *fd)
 
 void	handle_right(int pid1, t_parser *parser, char **envp, int *fd)
 {
-	// int	stat;
-
 	if (pid1 == 0)
 	{
 		if (parser->in != 0)
@@ -71,8 +69,7 @@ void	handle_right(int pid1, t_parser *parser, char **envp, int *fd)
 		if (parser->out != 1)
 			dup2(parser->out, 1);
 		expand_handle_right(parser, envp);
-		
 		if (execve(parser->command[0], parser->command, envp) != 1)
-			exit(127);
+			exit(1);
 	}
 }
