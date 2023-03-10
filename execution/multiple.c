@@ -6,11 +6,40 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:41:03 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 17:00:46 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 17:48:30 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+extern t_global	*g_global_vars;
+
+// void expand_handle_m_pipes(int *count, int **fds,t_vars *vars)
+// {
+// 	int g;
+
+// 	g = 0;
+// 	count = data->num - 1;
+// 	fds = (int **)malloc(count * sizeof(int *));
+// 	vars = malloc(sizeof(t_vars));
+// 	while (g < count)
+// 		fds[g++] = (int *)malloc(sizeof(int) * 2);
+// 	i = 0;
+// 	c = 0;
+// 	pid = (int *)malloc(data->num * sizeof(int));
+// 	while (count)
+// 	{
+// 		if (pipe(fds[i]) != 0)
+// 		{
+// 			ft_perror("pipe system call error: failed to create pipe");
+// 			exit(1);
+// 		}
+// 		i++;
+// 		count--;
+// 	}
+// 	count = data->num - 1;	
+// }
+
 
 void	handle_multiple_pipes(data *data, t_parser **parser, t_node **env, t_node **export)
 {
@@ -23,6 +52,7 @@ void	handle_multiple_pipes(data *data, t_parser **parser, t_node **env, t_node *
 	int	g;
 	int	i;
 	int	c;
+	int	ex_code;
 	t_vars *vars;
 
 	count = data->num - 1;
@@ -123,7 +153,8 @@ void	handle_multiple_pipes(data *data, t_parser **parser, t_node **env, t_node *
 	i = 0;
 	while (i < data->num)
 	{
-		waitpid(pid[i], NULL, 0);
+		waitpid(pid[i], &ex_code, 0);
 		i++;
 	}
+	g_global_vars->status_code = WEXITSTATUS(ex_code);
 }

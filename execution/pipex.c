@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 18:46:21 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 16:19:46 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 17:42:32 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	handle_left(int pid1, t_parser *parser, char **envp, int *fd)
 		if (parser->in == -1 || parser->out == -1)
 		{
 			close(fd[1]);
-			exit(1);
+			exit(127);
 		}
 		if (parser->in != 0)
 			dup2(parser->in, 0);
@@ -59,7 +59,7 @@ void	handle_left(int pid1, t_parser *parser, char **envp, int *fd)
 
 void	handle_right(int pid1, t_parser *parser, char **envp, int *fd)
 {
-	int	stat;
+	// int	stat;
 
 	if (pid1 == 0)
 	{
@@ -71,9 +71,8 @@ void	handle_right(int pid1, t_parser *parser, char **envp, int *fd)
 		if (parser->out != 1)
 			dup2(parser->out, 1);
 		expand_handle_right(parser, envp);
-		if (execve(parser->command[0], parser->command, envp) == -1)
-			exit(1);
+		
+		if (execve(parser->command[0], parser->command, envp) != 1)
+			exit(127);
 	}
-	wait(&stat);
-	g_global_vars->status_code = WIFEXITED(stat);
 }

@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:44:31 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 16:12:29 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/10 17:45:37 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	handle_normal_pipe(t_parser **parser, t_node *envp, \
 		data *data, t_node **export)
 {
 	t_vars		vars;
+	int 		stat;
 
 	check_piping_error(parser);
 	if (pipe(vars.fd) == -1)
@@ -43,20 +44,21 @@ void	handle_normal_pipe(t_parser **parser, t_node *envp, \
 	vars.pid = fork();
 	if (vars.pid == -1)
 		(ft_perror("fork system call error: failed to create child process"), \
-		exit(1));
+		exit(127));
 	if (do_exec_assign_to(parser, &vars, envp, export) == 0)
 		handle_left(vars.pid, *parser, data->env_arr, vars.fd);
 	vars.pid2 = fork();
 	*parser = (*parser)->next;
 	if (vars.pid2 == -1)
 		(ft_perror("fork system call error: failed to create child process"), \
-		exit(1));
+		exit(127));
 	if (do_exec_assign_to_2(parser, &vars, envp, export) == 0)
 		handle_right(vars.pid2, *parser, data->env_arr, vars.fd);
 	close(vars.fd[1]);
 	close(vars.fd[0]);
-	waitpid(vars.pid, NULL, 0);
-	waitpid(vars.pid2, NULL, 0);
+	waitpid(vars.pid, &stat, 0);
+	waitpid(vars.pid2, &stat, 0);
+	g_global_vars->status_code = WEXITSTATUS(stat);
 }
 
 void	handle_first_child(int pid, t_parser **parser, char **envp, int **fds)
