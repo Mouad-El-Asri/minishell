@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 20:34:49 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/10 22:27:44 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/12 18:58:51 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,5 +155,8 @@ void	fill_vars(t_parser **parser, t_vars *vars);
 void	increment_vars(t_parser **parser, t_vars *vars);
 void	update_env_export(t_parser **parser, t_node **env, t_node **export);
 void	expand_redirect_to_back(char **tempo);
+void	check_quotes_error(t_parser **parser);
+void	check_exit_args(t_parser **parser);
+void	free_all(int *pid, t_vars *vars, data *data, int **fds);
 
 #endif

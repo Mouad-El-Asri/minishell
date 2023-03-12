@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 18:46:21 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 22:05:55 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/12 18:47:56 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,49 @@ void	handle_right(int pid1, t_parser *parser, char **envp, int *fd)
 		expand_handle_right(parser, envp);
 		if (execve(parser->command[0], parser->command, envp) != 1)
 			exit(1);
+	}
+}
+
+void	check_quotes_error(t_parser **parser)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 1;
+	while ((*parser)->command[i][j])
+	{
+		if ((*parser)->command[i][j] == '/')
+			(ft_perror("No such file or directory"), exit(127));
+		j++;
+	}
+	(ft_perror("Command not found"), exit(127));
+}
+
+void	check_exit_args(t_parser **parser)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	j = 0;
+	if ((*parser)->command[i] && (*parser)->command[i + 1])
+	{
+		while ((*parser)->command[i][j])
+		{
+			if (ft_isalpha((*parser)->command[i][j++]))
+				(ft_perror("exit: numeric argument required") \
+				, exit(1));
+		}
+		(ft_perror("exit: too many arguments"));
+	}
+	else
+	{
+		while ((*parser)->command[i] && (*parser)->command[i][j])
+		{
+			if (!ft_isdigit((*parser)->command[i][j++]))
+				(ft_perror("exit: numeric argument required"), exit(255));
+		}
+		exit(ft_atoi((*parser)->command[i]));
 	}
 }

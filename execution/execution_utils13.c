@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 21:59:45 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 22:01:32 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/12 19:00:50 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ extern t_global	*g_global_vars;
 
 void	check_access(t_parser **parser, data **data)
 {
+	if ((*parser)->command[0][0] == ' ')
+		check_quotes_error(parser);
 	if ((*parser)->command[0] && ((*parser)->command[0][0] == '.' || \
 			(*parser)->command[0][0] == '/'))
 	{
@@ -85,4 +87,19 @@ t_node **export, data **data)
 			(*parser) = (*parser)->next;
 		}
 	}
+}
+
+void	free_all(int *pid, t_vars *vars, data *data, int **fds)
+{
+	int	i;
+
+	i = 0;
+	free(pid);
+	free(vars);
+	while (i < data->num - 1)
+	{
+		free(fds[i]);
+		(i)++;
+	}
+	free(fds);
 }

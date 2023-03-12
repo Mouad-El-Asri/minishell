@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:36 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/10 16:36:29 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/12 18:45:01 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,23 +77,10 @@ void	handle_builtin_exit(t_parser **parser)
 	i = 1;
 	j = 0;
 	if ((*parser)->command[i] == NULL)
-	{
 		(ft_putstr_fd("exit\n", 1), exit(0));
-	}
 	else
 	{
-		if ((*parser)->command[i] && (*parser)->command[i + 1])
-			(ft_putstr_fd("exit: too many arguments\n", 2), exit(1));
-		else
-		{
-			while ((*parser)->command[i] && (*parser)->command[i][j])
-			{
-				if (!ft_isdigit((*parser)->command[i][j]))
-					(ft_perror("exit: numeric argument required"), exit(255));
-				j++;
-			}
-			exit(ft_atoi((*parser)->command[i]));
-		}
+		check_exit_args(parser);
 	}
 }
 

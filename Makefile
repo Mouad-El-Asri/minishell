@@ -6,7 +6,7 @@
 #    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/03/10 21:31:43 by ceddibao         ###   ########.fr        #
+#    Updated: 2023/03/12 18:54:59 by ceddibao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,7 +93,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	make -C minilibft
-	$(CC) $(CFLAGS) $(LFLAGS)  minilibft/minilibft.a $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(LFLAGS) minilibft/minilibft.a $(OBJS) -o $(NAME)
 
 clean :
 	$(RM) $(OBJS)
