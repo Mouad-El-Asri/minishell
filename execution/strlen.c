@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:44:31 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 22:06:18 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/12 22:18:54 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_error(char c, int flag)
 }
 
 void	handle_normal_pipe(t_parser **parser, t_node *envp, \
-		data *data, t_node **export)
+		t_data *data, t_node **export)
 {
 	t_vars	vars;
 	int		stat;
@@ -93,7 +93,7 @@ void	handle_sigkill(int sig)
 	kill(sig, SIGKILL);
 }
 
-void	handle_single_command(t_parser **parser, data **data)
+void	handle_single_command(t_parser **parser, t_data **data)
 {
 	int	pid;
 	int	exit_status;

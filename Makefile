@@ -3,30 +3,36 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
+#    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/03/12 20:48:37 by moel-asr         ###   ########.fr        #
+#    Updated: 2023/03/12 23:18:02 by ceddibao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-RE_PATH = ~/brew/opt/readline/
+RE_PATH = /goinfre/ceddibao/homebrew/opt/readline/
 
 LFLAGS = -lreadline -L $(RE_PATH)/lib -I $(RE_PATH)/include
 
 CFLAGS = -Wall -Wextra -Werror
 
-SRCS = minishell_utils/count_words.c \
+SRCS = minishell_utils/catch_eof.c \
+	minishell_utils/check_errors_and_redisplay.c \
+	minishell_utils/check_quotes_and_redisplay.c \
+	minishell_utils/count_words.c \
+	minishell_utils/free_minishell.c \
 	minishell_utils/free_parser.c \
 	minishell_utils/free_token.c \
 	minishell_utils/ft_free.c \
 	minishell_utils/ft_perror.c \
 	minishell_utils/sigint_handler.c \
 	minishell_utils/sigquit_handler.c \
+	minishell_utils/start_minishell.c \
 	lexer/advance_with_token.c \
 	lexer/create_token_list.c \
+	lexer/expand_dollar_sign_variable.c \
 	lexer/expand_variable.c \
 	lexer/init_lexer.c \
 	lexer/init_token.c \

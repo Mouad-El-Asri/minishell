@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils14.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 22:01:43 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/12 20:45:52 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/12 22:18:20 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	increment_vars(t_parser **parser, t_vars *vars)
 	(*parser) = (*parser)->next;
 }
 
-void	handle_multiple_pipes(data *data, t_parser **parser)
+void	handle_multiple_pipes(t_data *data, t_parser **parser)
 {
 	int		**fds;
 	int		*pid;

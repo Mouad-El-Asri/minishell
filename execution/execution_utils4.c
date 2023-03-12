@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:34:06 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/10 22:23:54 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/12 23:36:28 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,10 @@ void	matched_unset(t_parser **parser, t_node **env, t_node **export)
 	int	i;
 
 	i = 1;
-	if (!(*parser)->command[i] || \
-		ft_strncmp((*parser)->command[i], "=", 1) == 0 || \
+	if (!(*parser)->command[i])
+		return ;
+	if ((ft_isalpha((*parser)->command[i][0]) == 0 \
+	&& (*parser)->command[i][0] != '_') || \
 		ft_strlen((*parser)->command[i]) == 0)
 	{
 		ft_perror(ft_strjoin((*parser)->command[i], \

@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 21:10:41 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 21:06:07 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/12 22:17:53 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*check_if_builtin(t_parser **parser)
 }
 
 void	connect_and_handle(t_parser **parser, t_node **env, \
-		t_node **export, data **data)
+		t_node **export, t_data **data)
 {
 	signal(SIGKILL, handle_sigkill);
 	fill_env_arr(data, env);

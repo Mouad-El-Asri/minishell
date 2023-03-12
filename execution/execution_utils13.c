@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils13.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 21:59:45 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/12 20:47:01 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/12 22:20:44 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern t_global	*g_global_vars;
 
-void	check_access(t_parser **parser, data **data)
+void	check_access(t_parser **parser, t_data **data)
 {
 	if ((*parser)->command[0][0] == ' ')
 		check_quotes_error(parser);
@@ -69,7 +69,7 @@ void	expand_add_sign_check(t_parser **parser, int *flag, int *ret, int *i)
 }
 
 void	expand_connect_and_handle(t_parser **parser, t_node **env, \
-t_node **export, data **data)
+t_node **export, t_data **data)
 {
 	char	*ret;
 
@@ -89,7 +89,7 @@ t_node **export, data **data)
 	}
 }
 
-void	free_all(int *pid, t_vars *vars, data *data, int **fds)
+void	free_all(int *pid, t_vars *vars, t_data *data, int **fds)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 00:18:36 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 15:10:30 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/12 23:28:32 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,29 @@ extern t_global	*g_global_vars;
 
 void	check_env(t_parser **parser, t_node **env, int *found, int *i)
 {
-	char	*tempo;
-	char	*tempo2;
-	char	*val;
-	char	*final;
-	int		temp;
-	char	*oldval;
-	char	*newval;
-
-	temp = *i;
 	while (*env)
 	{
-		tempo = grab_keyname((*env)->cmd);
-		tempo2 = grab_keyname((*parser)->command[temp]);
-		if (ft_strncmp(tempo, tempo2, what_length(tempo, tempo2)) == 0)
+		g_global_vars->tempo = grab_keyname((*env)->cmd);
+		g_global_vars->tempo2 = grab_keyname((*parser)->command[*i]);
+		if (ft_strncmp(g_global_vars->tempo, g_global_vars->tempo2, \
+			what_length(g_global_vars->tempo, g_global_vars->tempo2)) == 0)
 		{
 			*found = 1;
-			val = get_value((*parser)->command[temp]);
-			oldval = get_value((*env)->cmd);
-			final = ft_strjoin(oldval, val);
-			free(oldval);
+			g_global_vars->val = get_value((*parser)->command[*i]);
+			g_global_vars->oldval = get_value((*env)->cmd);
+			g_global_vars->final = ft_strjoin(g_global_vars->oldval, \
+			g_global_vars->val);
+			free(g_global_vars->oldval);
 			free((*env)->cmd);
-			newval = ft_strjoin(tempo, "=");
-			(*env)->cmd = ft_strjoin(newval, final);
-			free(newval);
-			free(final);
-			free(val);
+			g_global_vars->newval = ft_strjoin(g_global_vars->tempo, "=");
+			(*env)->cmd = ft_strjoin(g_global_vars->newval, \
+			g_global_vars->final);
+			free(g_global_vars->newval);
+			free(g_global_vars->final);
+			free(g_global_vars->val);
 		}
-		free(tempo);
-		free(tempo2);
+		free(g_global_vars->tempo);
+		free(g_global_vars->tempo2);
 		*env = (*env)->next;
 	}
 }
@@ -52,35 +46,29 @@ void	check_env(t_parser **parser, t_node **env, int *found, int *i)
 void	check_export_exec(t_parser **parser, t_node **export, \
 int *found, int *i)
 {
-	char	*tempo;
-	char	*tempo2;
-	char	*val;
-	char	*final;
-	int		temp;
-	char	*oldval;
-	char	*newval;
-
-	temp = *i;
 	while (*export)
 	{
-		tempo = grab_keyname((*export)->cmd);
-		tempo2 = grab_keyname((*parser)->command[temp]);
-		if (ft_strncmp(tempo, tempo2, what_length(tempo, tempo2)) == 0)
+		g_global_vars->tempo = grab_keyname((*export)->cmd);
+		g_global_vars->tempo2 = grab_keyname((*parser)->command[*i]);
+		if (ft_strncmp(g_global_vars->tempo, g_global_vars->tempo2, \
+		what_length(g_global_vars->tempo, g_global_vars->tempo2)) == 0)
 		{
 			*found = 1;
-			val = get_value((*parser)->command[temp]);
-			oldval = get_value((*export)->cmd);
-			final = ft_strjoin(oldval, val);
-			free(oldval);
+			g_global_vars->val = get_value((*parser)->command[*i]);
+			g_global_vars->oldval = get_value((*export)->cmd);
+			g_global_vars->final = ft_strjoin(g_global_vars->oldval, \
+			g_global_vars->val);
+			free(g_global_vars->oldval);
 			free((*export)->cmd);
-			newval = ft_strjoin(tempo, "=");
-			(*export)->cmd = ft_strjoin(newval, final);
-			free(newval);
-			free(final);
-			free(val);
+			g_global_vars->newval = ft_strjoin(g_global_vars->tempo, "=");
+			(*export)->cmd = ft_strjoin(g_global_vars->newval, \
+			g_global_vars->final);
+			free(g_global_vars->newval);
+			free(g_global_vars->final);
+			free(g_global_vars->val);
 		}
-		free(tempo);
-		free(tempo2);
+		free(g_global_vars->tempo);
+		free(g_global_vars->tempo2);
 		*export = (*export)->next;
 	}
 }

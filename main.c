@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:15:00 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/10 14:05:18 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/12 23:13:43 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,13 @@ t_global	*g_global_vars;
 
 int	main(int argc, char **argv, char **env)
 {
-	char		*str;
-	t_lexer		*lexer;
-	t_token		*token;
-	t_parser	*parser;
 	t_node		*my_env;
 	t_node		*export;
-	data		*data;
-	t_parser	*temp;
 
 	(void)argc;
 	(void)argv;
-	data = malloc(sizeof(data));
 	g_global_vars = (t_global *)malloc(sizeof(t_global));
+	g_global_vars->data = (t_data *)malloc(sizeof(t_data));
 	if (*env)
 	{
 		fill_env(&my_env, env, 0);
@@ -40,70 +34,11 @@ int	main(int argc, char **argv, char **env)
 		export = NULL;
 	}
 	g_global_vars->env = my_env;
-	data->env_arr = NULL;
-	token = NULL;
+	g_global_vars->data->env_arr = NULL;
+	g_global_vars->token = NULL;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
-	str = readline("\x1B[36mminishell$\x1B[0m ");
-	if (str == NULL)
-	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		printf("exit\n");
-	}
-	while (str)
-	{
-		parser = NULL;
-		if (*str)
-			add_history(str);
-		if (check_quotes(str) == -1)
-		{
-			free(str);
-			str = readline("\x1B[36mminishell$\x1B[0m ");
-			if (str == NULL)
-			{
-				rl_on_new_line();
-				rl_replace_line("", 0);
-				rl_redisplay();
-				printf("exit\n");
-			}
-			continue ;
-		}
-		lexer = init_lexer(str);
-		token = create_token_list(lexer);
-		if (check_string_syntax_errors(token) == -1 || \
-			check_syntax_errors(token) == -1)
-		{
-			free_token(&token);
-			free(str);
-			free(lexer);
-			str = readline("\x1B[36mminishell$\x1B[0m ");
-			if (str == NULL)
-			{
-				rl_on_new_line();
-				rl_replace_line("", 0);
-				rl_redisplay();
-				printf("exit\n");
-			}
-			continue ;
-		}
-		parse_and_store_command(token, &parser);
-		temp = parser;
-		while (temp)
-			connect_and_handle(&temp, &my_env, &export, &data);
-		free_parser(&parser);
-		free_token(&token);
-		free(str);
-		free(lexer);
-		str = readline("\x1B[36mminishell$\x1B[0m ");
-		if (str == NULL)
-		{
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
-			printf("exit\n");
-		}
-	}
-	return (0);
+	g_global_vars->str = readline("\x1B[36mminishell$\x1B[0m ");
+	catch_eof(g_global_vars->str);
+	start_minishell(&my_env, &export);
 }

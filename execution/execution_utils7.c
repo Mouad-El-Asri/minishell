@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:33 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/10 22:26:17 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/12 22:17:32 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	if_exist_update_env(t_node **env, char *s, int *flag, t_node *temp)
 	return (0);
 }
 
-void	fill_env_arr(data **data, t_node **env)
+void	fill_env_arr(t_data **data, t_node **env)
 {
 	t_node	*tmp;
 	int		i;

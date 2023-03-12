@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 18:11:03 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/11 00:41:41 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/12 23:02:23 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_lexer_utils {
 
 t_token	*advance_with_token(t_lexer *lexer, t_token *token);
 t_token	*create_token_list(t_lexer *lexer);
+void	expand_dollar_sign_variable(t_lexer *lexer, char **c, char **s);
 char	*expand_variable(t_lexer *lexer);
 t_lexer	*init_lexer(char *content);
 t_token	*init_token(char *token_value, int token_type);
