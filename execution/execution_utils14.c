@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 22:01:43 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 22:31:48 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/11 21:23:54 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,15 @@ void	handle_multiple_pipes(data *data, t_parser **parser)
 	}
 	close_and_wait(data->num - 1, &vars->ex_code, pid, fds);
 	g_global_vars->status_code = WEXITSTATUS(vars->ex_code);
+	vars->i = 0;
+	free(pid);
+	free(vars);
+	while(vars->i < data->num - 1)
+	{
+		free(fds[vars->i]);
+		(vars->i)++;
+	}
+	free(fds);
 }
 
 void	fill_vars(t_parser **parser, t_vars *vars)
