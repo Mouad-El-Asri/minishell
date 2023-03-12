@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:12:14 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/06 23:33:20 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/11 00:44:06 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,30 +31,13 @@ t_token	*lexer_get_string(t_lexer *lexer)
 		if (is_env_variable(lexer) == 0 && (dollar_sign_count % 2))
 		{
 			c = expand_variable(lexer);
-			if (c[0])
-				c = ft_free(split_variable(c), c);
+			c = ft_free(split_variable(c), c);
 			s = ft_free(ft_strjoin(s, c), s);
-			if (c[0])
-				free(c);
+			free(c);
 			dollar_sign_count = 0;
 		}
 		else
-		{
-			if (lexer->c == '\'' || lexer->c == '"')
-			{
-				c = lexer_get_string_in_quotes(lexer, lexer->c);
-				s = ft_free(ft_strjoin(s, c), s);
-				free(c);
-				token_type = 1;
-			}
-			else
-			{
-				c = lexer_get_char_as_string(lexer);
-				s = ft_free(ft_strjoin(s, c), s);
-				free(c);
-				lexer_advance(lexer);
-			}
-		}
+			lexer_get_string_or_char(lexer, &s, &token_type);
 	}
 	token = init_token(s, token_type);
 	return (token);

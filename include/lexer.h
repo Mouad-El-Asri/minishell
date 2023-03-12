@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 18:11:03 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/04 23:22:06 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/11 00:41:41 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ typedef struct s_token {
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_lexer_utils {
+	char	character;
+	int		ds_count;
+	int		flag;
+}	t_lexer_utils;
+
 t_token	*advance_with_token(t_lexer *lexer, t_token *token);
 t_token	*create_token_list(t_lexer *lexer);
 char	*expand_variable(t_lexer *lexer);
@@ -45,8 +51,13 @@ void	lexer_advance(t_lexer *lexer);
 char	*lexer_get_char_as_string(t_lexer *lexer);
 t_token	*lexer_get_operator(t_lexer *lexer, int token_type);
 char	*lexer_get_string_in_quotes(t_lexer *lexer, char character);
+void	lexer_get_string_or_char(t_lexer *lexer, char **s, int *token_type);
 t_token	*lexer_get_string(t_lexer *lexer);
 t_token	*lexer_get_token(t_lexer *lexer);
+void	lexer_process_quotes_and_chars(t_lexer *lexer, \
+		t_lexer_utils *lexer_data);
+void	process_quoted_string_token(t_lexer *lexer, \
+		t_lexer_utils *lexer_data, char **s);
 int		skip_whitespace_backwards(t_lexer *lexer);
 void	skip_whitespace(t_lexer *lexer);
 char	*split_variable(char *s);

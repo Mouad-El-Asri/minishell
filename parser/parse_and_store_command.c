@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:40:40 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/05 23:36:49 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/11 00:48:01 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,29 @@
 
 void	parse_and_store_command(t_token *token, t_parser **parser)
 {
-	char		**command;
-	int			i;
-	int			j;
-	int			in;
-	int			out;
-	int			cmds_count;
-	int			heredoc_count;
+	t_parser_utils	parser_data;
 
 	if (!token)
 		return ;
-	i = 0;
-	cmds_count = commands_count(token);
-	heredoc_count = count_heredocs(token);
-	while (i < cmds_count)
+	parser_data.i = 0;
+	parser_data.cmds_count = commands_count(token);
+	parser_data.heredoc_count = count_heredocs(token);
+	while (parser_data.i++ < parser_data.cmds_count)
 	{
-		in = 0;
-		out = 1;
-		j = 0;
-		command = NULL;
-		command = (char **)malloc(sizeof(char *) * (get_cmd_size(token) + 1));
-		if (!command)
+		parser_data.in = 0;
+		parser_data.out = 1;
+		parser_data.j = 0;
+		parser_data.command = NULL;
+		parser_data.command = (char **)malloc(sizeof(char *) * \
+				(get_cmd_size(token) + 1));
+		if (!(parser_data.command))
 			return ;
-		while (token && token->token_value && token->e_token_type != 2)
-		{
-			if (ft_strcmp(token->token_value, "export") == 0 \
-				&& check_export(token) == -1)
-				break ;
-			while (token && ft_strcmp(token->token_value, "") == 0)
-				token = token->next;
-			if (!token || !token->token_value || token->e_token_type == 2)
-				break ;
-			if (check_token_type(token) == 0)
-				handle_operators_tokens(&token, &in, &out, &heredoc_count);
-			else
-				command[j++] = ft_strdup(token->token_value);
-			token = token->next;
-		}
-		if (command && *command)
-			command[j] = NULL;
-		parser_add_back(parser, init_parser(command, in, out));
+		parse_command_with_export_check(&token, &parser_data);
+		if (parser_data.command && *parser_data.command)
+			parser_data.command[parser_data.j] = NULL;
+		parser_add_back(parser, init_parser(parser_data.command, \
+		parser_data.in, parser_data.out));
 		if (token && token->e_token_type == 2)
 			token = token->next;
-		i++;
 	}
 }

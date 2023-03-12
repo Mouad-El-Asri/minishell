@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 16:26:10 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/06 23:35:47 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/11 00:45:09 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ char	*split_variable(char *s)
 		free(strs[i]);
 		i++;
 	}
+	free(strs);
 	return (str);
 }

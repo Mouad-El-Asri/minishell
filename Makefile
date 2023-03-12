@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
+#    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/03/12 18:54:59 by ceddibao         ###   ########.fr        #
+#    Updated: 2023/03/12 20:48:37 by moel-asr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-RE_PATH = /goinfre/ceddibao/homebrew/opt/readline/
+RE_PATH = ~/brew/opt/readline/
 
 LFLAGS = -lreadline -L $(RE_PATH)/lib -I $(RE_PATH)/include
 
@@ -36,8 +36,11 @@ SRCS = minishell_utils/count_words.c \
 	lexer/lexer_get_char_as_string.c \
 	lexer/lexer_get_operator.c \
 	lexer/lexer_get_string_in_quotes.c \
+	lexer/lexer_get_string_or_char.c \
 	lexer/lexer_get_string.c \
 	lexer/lexer_get_token.c \
+	lexer/lexer_process_quotes_and_chars.c \
+	lexer/process_quoted_string_token.c \
 	lexer/skip_whitespace_backwards.c \
 	lexer/skip_whitespace.c \
 	lexer/split_variable.c \
@@ -52,7 +55,9 @@ SRCS = minishell_utils/count_words.c \
 	parser/check_syntax_errors.c \
 	parser/check_token_type.c \
 	parser/commands_count.c \
+	parser/concatenate_chars_until_termination.c \
 	parser/count_heredocs.c \
+	parser/expand_heredoc_var_and_join.c \
 	parser/expand_heredoc_var_with_status.c \
 	parser/expand_heredoc_variable.c \
 	parser/get_char_as_string.c \
@@ -65,6 +70,7 @@ SRCS = minishell_utils/count_words.c \
 	parser/handle_output_redirection.c \
 	parser/init_parser.c \
 	parser/parse_and_store_command.c \
+	parser/parse_command_with_export_check.c \
 	parser/parser_add_back.c \
 	execution/strlen.c \
 	execution/pipex.c \
@@ -104,5 +110,8 @@ fclean : clean
 	make fclean -C minilibft
 
 re : fclean all
+
+run : re
+	./minishell
 
 .PHONY : clean fclean

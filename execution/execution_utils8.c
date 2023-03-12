@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils8.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:36 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/12 18:45:01 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/12 20:44:40 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,7 @@ void	handle_builtin_exit(t_parser **parser)
 	if ((*parser)->command[i] == NULL)
 		(ft_putstr_fd("exit\n", 1), exit(0));
 	else
-	{
 		check_exit_args(parser);
-	}
 }
 
 void	check_add_sign(t_parser **parser, int *flag, int *ret, int *i)

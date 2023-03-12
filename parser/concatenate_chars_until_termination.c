@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_heredoc_var_with_status.c                   :+:      :+:    :+:   */
+/*   concatenate_chars_until_termination.c              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/06 19:47:40 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/11 00:47:26 by moel-asr         ###   ########.fr       */
+/*   Created: 2023/03/07 19:17:33 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/03/07 19:35:42 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern t_global	*g_global_vars;
-
-void	expand_heredoc_var_with_status(char *s, char **var, int *i, int *flag)
+int	concatenate_chars_until_termination(char **str, char *s, int *i)
 {
-	(*flag) = 0;
-	while (s[++(*i)] && \
-	(ft_isalnum(s[(*i)]) || s[(*i)] == '_' || s[(*i)] == '?'))
+	char	*c;
+
+	c = NULL;
+	if (s[(*i)])
 	{
-		if (s[(*i)] == '?')
-		{
-			(*i)++;
-			(*flag) = 1;
-			(*var) = ft_free(ft_strjoin(*var, \
-			ft_itoa(g_global_vars->status_code)), (*var));
-			break ;
-		}
-		(*var) = ft_free(ft_strjoin((*var), \
-		get_char_as_string(s[(*i)])), (*var));
+		c = get_char_as_string(s[(*i)]);
+		(*str) = ft_free(ft_strjoin((*str), c), (*str));
+		free(c);
 	}
+	else
+		return (1);
+	return (0);
 }

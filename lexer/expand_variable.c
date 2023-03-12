@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 19:56:38 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/06 23:21:49 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/11 00:42:47 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ char	*expand_variable(t_lexer *lexer)
 	char	*str;
 
 	str = NULL;
+	c = NULL;
 	lexer_advance(lexer);
 	while (lexer->c && (ft_isalnum(lexer->c) || lexer->c == '_' || \
 			lexer->c == '?'))
@@ -36,9 +37,8 @@ char	*expand_variable(t_lexer *lexer)
 		lexer_advance(lexer);
 	}
 	c = ft_mygetenv(g_global_vars->env, str);
-	str = ft_free(c, str);
-	free(c);
-	if (str)
-		return (str);
-	return ("");
+	free(str);
+	if (c)
+		return (c);
+	return (ft_strdup(""));
 }

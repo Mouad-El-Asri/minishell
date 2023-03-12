@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 22:33:16 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/07 17:45:28 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/11 00:45:43 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,8 @@ char	*check_heredoc_variables(char *s)
 
 	str = NULL;
 	var = NULL;
-	i = -1;
 	ds_count = 0;
-	flag = 0;
+	i = -1;
 	while (s[++i])
 	{
 		if (s[i] == '$')
@@ -34,15 +33,11 @@ char	*check_heredoc_variables(char *s)
 		if (s[i] == '$' && (ds_count % 2) && \
 			(ft_isalnum(s[i + 1]) || s[i + 1] == '_' || s[i + 1] == '?'))
 		{
-			ds_count = 0;
 			expand_heredoc_var_with_status(s, &var, &i, &flag);
-			if (flag == 0)
-				str = expand_heredoc_variable(str, var);
-			else
-				str = ft_free(ft_strjoin(str, var), str);
+			ds_count = expand_heredoc_var_and_join(&str, var, &flag);
+			var = NULL;
 		}
-		str = ft_free(ft_strjoin(str, get_char_as_string(s[i])), str);
-		if (ft_strcmp(str, var) == 0)
+		if (concatenate_chars_until_termination(&str, s, &i))
 			break ;
 	}
 	return (str);
