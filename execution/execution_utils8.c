@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:36 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/12 20:44:40 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/12 23:56:55 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	handle_builtin_exit(t_parser **parser)
 	i = 1;
 	j = 0;
 	if ((*parser)->command[i] == NULL)
-		(ft_putstr_fd("exit\n", 1), exit(0));
+		(ft_putstr_fd("exit\n", 1), exit(g_global_vars->status_code));
 	else
 		check_exit_args(parser);
 }
