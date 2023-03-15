@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:07 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/09 14:03:54 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:04:17 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	isexist(t_node **env, char *s, t_node **export)
 
 int	check_wanna_add(t_parser **parser, t_node **env, t_node **export)
 {
+	t_node		*new;
 	int			found;
 	int			ret;
 	int			flag;
@@ -78,7 +79,20 @@ int	check_wanna_add(t_parser **parser, t_node **env, t_node **export)
 			check_export_exec(parser, export, &found, &i);
 			*export = tmp;
 			tmp = *env;
-			check_env(parser, env, &found, &i);
+			if (check_env(parser, env, &found, &i) == 0 && found == 1)
+			{
+				*env = tmp;
+				new = ft_lstnew();
+				g_global_vars->tempo = grab_keyname((*parser)->command[i]);
+				g_global_vars->val = get_value((*parser)->command[i]);
+				g_global_vars->newval = ft_strjoin(g_global_vars->tempo, "=");
+				free(g_global_vars->tempo);
+				g_global_vars->final = ft_strjoin(g_global_vars->newval, g_global_vars->val);
+				free(g_global_vars->val);
+				free(g_global_vars->newval);
+				new->cmd = ft_strdup(g_global_vars->final);
+				ft_lstaddback(env, &new);
+			}
 			*env = tmp;
 			if (found == 0)
 				do_add(parser, env, export, &i);

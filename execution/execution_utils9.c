@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 00:18:36 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/12 23:28:32 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/14 15:55:29 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 extern t_global	*g_global_vars;
 
-void	check_env(t_parser **parser, t_node **env, int *found, int *i)
+int	check_env(t_parser **parser, t_node **env, int *found, int *i)
 {
+	int	sign;
+
+	sign = 0;
 	while (*env)
 	{
 		g_global_vars->tempo = grab_keyname((*env)->cmd);
@@ -24,6 +27,7 @@ void	check_env(t_parser **parser, t_node **env, int *found, int *i)
 			what_length(g_global_vars->tempo, g_global_vars->tempo2)) == 0)
 		{
 			*found = 1;
+			sign = 1;
 			g_global_vars->val = get_value((*parser)->command[*i]);
 			g_global_vars->oldval = get_value((*env)->cmd);
 			g_global_vars->final = ft_strjoin(g_global_vars->oldval, \
@@ -41,6 +45,7 @@ void	check_env(t_parser **parser, t_node **env, int *found, int *i)
 		free(g_global_vars->tempo2);
 		*env = (*env)->next;
 	}
+	return (sign);
 }
 
 void	check_export_exec(t_parser **parser, t_node **export, \
@@ -100,9 +105,11 @@ t_node **env, t_node **export)
 {
 	t_node	*new;
 	t_node	*new2;
+	char	*temp;
 
+	temp = get_value((*parser)->command[*i]);
 	if (contain_equal((*parser)->command[*i]) == 1 && \
-			!get_value((*parser)->command[*i]))
+			!temp)
 	{
 		new = ft_lstnew();
 		new2 = ft_lstnew();
@@ -112,7 +119,7 @@ t_node **env, t_node **export)
 		ft_lstaddback(export, &new2);
 	}
 	else if (contain_equal((*parser)->command[*i]) == 1 && \
-			get_value((*parser)->command[*i]))
+			temp)
 	{
 		new = ft_lstnew();
 		new2 = ft_lstnew();
@@ -121,6 +128,7 @@ t_node **env, t_node **export)
 		ft_lstaddback(env, &new);
 		ft_lstaddback(export, &new2);
 	}
+	free(temp);
 }
 
 void	set_oldpwd_expand(t_parser **parser, t_node **export, int *flag)

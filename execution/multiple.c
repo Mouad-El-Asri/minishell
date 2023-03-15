@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:41:03 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/12 22:18:31 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 16:34:03 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,11 @@ void	alloc_pipe(int count, int **fds)
 	while (count)
 	{
 		if (pipe(fds[i]) != 0)
-			(ft_perror("pipe system call error: \
-			failed to create pipe"), exit(1));
+		{
+			ft_perror("pipe system call error: \
+			failed to create pipe");
+			return;
+		}
 		i++;
 		count--;
 	}
@@ -98,19 +101,28 @@ void	handle_multiple_in_out(t_parser **parser, int **fds, t_vars *vars)
 void	expand_m_child_exec(t_parser **parser, \
 int **fds, t_vars *vars, t_data *data)
 {
+	check_access(parser, &data);
 	(*parser)->command[0] = rap((*parser)->command[0], data->env_arr);
 	if (access((*parser)->command[0], F_OK) != 0)
 		print_error((*parser)->command[0][0], 1);
 	else if (access((*parser)->command[0], X_OK) != 0)
 		print_error((*parser)->command[0][0], 2);
 	handle_multiple_in_out(parser, fds, vars);
-	while (vars->temp_var)
+	if (vars->temp_var)
 	{
-		close(fds[vars->i - vars->temp_var][1]);
-		close(fds[vars->i - vars->temp_var][0]);
-		vars->temp_var--;
+		while (vars->temp_var)
+		{
+			close(fds[vars->i - vars->temp_var][1]);
+			close(fds[vars->i - vars->temp_var][0]);
+			vars->temp_var--;
+		}
+	}
+	else
+	{
+		close(fds[vars->i][0]);
+		close(fds[vars->i][1]);
 	}
 	vars->temp_var = vars->j;
 	execve((*parser)->command[0], (*parser)->command, data->env_arr);
-	exit(0);
+	exit(1);
 }

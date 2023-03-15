@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 21:37:09 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/10 21:59:18 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/14 14:58:23 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ void	expand_handle_left(t_parser *parser, int *fd, char **envp)
 			print_error((parser)->command[0][0], 1);
 		else if (access((parser)->command[0], X_OK) != 0)
 			print_error((parser)->command[0][0], 2);
+		if (parser->out != 1)
+			dup2(parser->out, 1);
+		else
+			dup2(fd[1], 1);
 	}
 	else
 	{
@@ -104,14 +108,16 @@ void	expand_if_exi_update(t_node **export, int *flag, char *s)
 		if (ft_strncmp(ks, cms, what_length(ks, cms)) == 0)
 		{
 			if (contain_equal(s) == 0)
+			{
 				*flag = -1;
+				double_free(&ks, &cms);
+			}
 			else
 			{
 				free((*export)->cmd);
 				(*export)->cmd = ft_strdup(s);
 				*flag = 1;
-				free(ks);
-				free(cms);
+				double_free(&ks, &cms);
 			}
 			break ;
 		}

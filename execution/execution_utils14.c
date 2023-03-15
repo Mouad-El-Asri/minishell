@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 22:01:43 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/12 22:18:20 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 16:32:50 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	handle_multiple_pipes(t_data *data, t_parser **parser)
 	int		**fds;
 	int		*pid;
 	t_vars	*vars;
+	int		i;
 
 	fds = (int **)malloc((data->num - 1) * sizeof(int *));
 	pid = (int *)malloc(data->num * sizeof(int));
@@ -34,16 +35,19 @@ void	handle_multiple_pipes(t_data *data, t_parser **parser)
 	fill_vars(parser, vars);
 	alloc_pipe(data->num - 1, fds);
 	pid[vars->i] = fork();
-	handle_first_child(pid[vars->i], parser, data->env_arr, fds);
+	handle_first_child(pid[vars->i], parser, data, fds);
 	(*parser) = (*parser)->next;
 	while (*parser)
 	{
-		if ((*parser)->next)
-			if (ft_strcmp("cat", vars->temp) == 0)
-				close(fds[vars->i][0]);
+		i = vars->i;
 		pid[vars->i + 1] = fork();
 		if (pid[vars->i + 1] == 0)
 			expand_m_child_exec(parser, fds, vars, data);
+		if (i)
+		{
+			close(fds[i][0]);
+			close(fds[i][1]);
+		}
 		increment_vars(parser, vars);
 	}
 	close_and_wait(data->num - 1, &vars->ex_code, pid, fds);

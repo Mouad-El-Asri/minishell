@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 20:34:49 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/12 23:25:51 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 16:32:45 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ char	*handle_path(char *path);
 void	print_error(char c, int flag);
 void	handle_normal_pipe(t_parser **parser, t_node *envp, \
 		t_data *data, t_node **export);
-void	handle_right(int pid1, t_parser *parser, char **envp, int *fd);
-void	handle_left(int pid1, t_parser *parser, char **envp, int *fd);
+void	handle_right(int pid1, t_parser *parser, t_data *data, int *fd);
+void	handle_left(int pid1, t_parser *parser, t_data *data, int *fd);
 void	handle_multiple_pipes(t_data *data, t_parser **parser);
 void	handle_builtins(t_parser **parser, char *builtin, \
 		t_node **env, t_node **export);
@@ -85,7 +85,7 @@ void	handle_builtin_cd(t_parser **parser, t_node **env, t_node **export);
 void	handle_builtin_env(t_parser **parser, t_node **env);
 void	fill_env(t_node **env, char **envp, int i);
 void	handle_builtin_echo(t_parser **parser, t_node *env);
-void	handle_first_child(int pid, t_parser **parser, char **envp, int **fds);
+void	handle_first_child(int pid, t_parser **parser, t_data *data, int **fds);
 void	handle_single_command(t_parser **parser, t_data **data);
 void	connect_and_handle(t_parser **parser, t_node **env, \
 		t_node **export, t_data **data);
@@ -130,7 +130,7 @@ int		do_exec_assign_to_2(t_parser **parser, t_vars *vars, \
 		t_node *envp, t_node **export);
 void	handle_builtin_exit(t_parser **parser);
 void	check_add_sign(t_parser **parser, int *flag, int *ret, int *i);
-void	check_env(t_parser **parser, t_node **env, int *found, int *i);
+int		check_env(t_parser **parser, t_node **env, int *found, int *i);
 void	check_export_exec(t_parser **parser, t_node **export, \
 		int *found, int *i);
 void	do_add(t_parser **parser, t_node **env, t_node **export, int *i);
