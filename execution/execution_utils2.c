@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:27:48 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/10 22:20:16 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/14 16:35:35 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ char	*handle_builtin_pwd(int flag, t_parser **parser)
 		ft_putstr_fd("\n", 1);
 	}
 	dup2(x, 1);
+	close(x);
 	return (cwd);
 }
 
@@ -88,6 +89,8 @@ void	handle_builtin_echo(t_parser **parser, t_node *env)
 	{
 		if ((*parser)->out != 1)
 		{
+			if ((*parser)->in == -1 || (*parser)->out == -1)
+				exit(0);
 			dup2((*parser)->out, 1);
 			close((*parser)->out);
 		}

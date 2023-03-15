@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   sigint_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/06 00:32:04 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/06 00:32:25 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/14 18:13:43 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+extern t_global	*g_global_vars;
 
 void	sigint_handler(int signum)
 {

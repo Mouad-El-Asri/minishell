@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 21:59:45 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/12 22:20:44 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 16:26:38 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ extern t_global	*g_global_vars;
 
 void	check_access(t_parser **parser, t_data **data)
 {
+	if ((*parser)->command[0] == NULL)
+		(ft_perror("Command not found"), exit(127));
 	if ((*parser)->command[0][0] == ' ')
 		check_quotes_error(parser);
 	if ((*parser)->command[0] && ((*parser)->command[0][0] == '.' || \

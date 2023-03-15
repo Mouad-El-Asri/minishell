@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 18:46:21 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/12 20:43:00 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/15 16:31:19 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,11 @@ char	*handle_path(char *path)
 	return (ret);
 }
 
-void	handle_left(int pid1, t_parser *parser, char **envp, int *fd)
+void	handle_left(int pid1, t_parser *parser, t_data *data, int *fd)
 {
 	if (pid1 == 0)
 	{
+		check_access(&parser, &data);
 		close(fd[0]);
 		if (parser->in == -1 || parser->out == -1)
 		{
@@ -52,15 +53,16 @@ void	handle_left(int pid1, t_parser *parser, char **envp, int *fd)
 		}
 		if (parser->in != 0)
 			dup2(parser->in, 0);
-		expand_handle_left(parser, fd, envp);
-		execve(parser->command[0], parser->command, envp);
+		expand_handle_left(parser, fd, data->env_arr);
+		execve(parser->command[0], parser->command, data->env_arr);
 	}
 }
 
-void	handle_right(int pid1, t_parser *parser, char **envp, int *fd)
+void	handle_right(int pid1, t_parser *parser, t_data *data, int *fd)
 {
 	if (pid1 == 0)
 	{
+		check_access(&parser, &data);
 		if (parser->in != 0)
 			dup2(parser->in, 0);
 		else
@@ -68,8 +70,8 @@ void	handle_right(int pid1, t_parser *parser, char **envp, int *fd)
 		close(fd[1]);
 		if (parser->out != 1)
 			dup2(parser->out, 1);
-		expand_handle_right(parser, envp);
-		if (execve(parser->command[0], parser->command, envp) != 1)
+		expand_handle_right(parser, data->env_arr);
+		if (execve(parser->command[0], parser->command, data->env_arr) != 1)
 			exit(1);
 	}
 }
