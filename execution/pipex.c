@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 18:46:21 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/15 16:31:19 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 20:57:34 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	handle_right(int pid1, t_parser *parser, t_data *data, int *fd)
 {
 	if (pid1 == 0)
 	{
+		//fprintf(stderr, "{%s---%d---%d}\n",(parser)->command[0], (parser)->in,(parser)->out);
 		check_access(&parser, &data);
 		if (parser->in != 0)
 			dup2(parser->in, 0);
@@ -113,9 +114,14 @@ void	check_exit_args(t_parser **parser)
 	{
 		while ((*parser)->command[i] && (*parser)->command[i][j])
 		{
+			if ((*parser)->command[i][j] == '-' && j == 0)
+				j++;
 			if (!ft_isdigit((*parser)->command[i][j++]))
 				(ft_perror("exit: numeric argument required"), exit(255));
 		}
+		printf("exit\n");
+		if ((*parser)->command[i][0] == '-')
+			exit(256 + ft_atoi((*parser)->command[i]));
 		exit(ft_atoi((*parser)->command[i]));
 	}
 }

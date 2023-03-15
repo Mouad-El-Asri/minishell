@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 21:10:41 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/12 22:17:53 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 20:51:41 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ char	*check_if_builtin(t_parser **parser)
 	i = 0;
 	if (cmp_with_builtins((*parser)->command[0]))
 	{
+		//fprintf(stderr, "{%s}\n", (*parser)->command[0]);
 		return ((*parser)->command[0]);
 	}
 	return (NULL);
