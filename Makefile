@@ -6,7 +6,7 @@
 #    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/03/15 20:37:22 by ceddibao         ###   ########.fr        #
+#    Updated: 2023/03/15 23:03:32 by ceddibao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ RE_PATH = /goinfre/ceddibao/homebrew/opt/readline/
 
 LFLAGS = -lreadline -L $(RE_PATH)/lib -I $(RE_PATH)/include
 
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror
 
 SRCS = minishell_utils/catch_eof.c \
 	minishell_utils/check_errors_and_redisplay.c \

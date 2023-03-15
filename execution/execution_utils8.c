@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils8.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:36 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/12 23:56:55 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/15 23:00:54 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	check_piping_error(t_parser **parser)
 	while (*parser)
 	{
 		if ((*parser)->in == -1 || (*parser)->out == -1)
-			return ;
+			break ;
 		*parser = (*parser)->next;
 	}
 	*parser = tmp;
@@ -41,6 +41,7 @@ int	do_exec_assign_to(t_parser **parser, t_vars *vars, \
 			dup2(vars->fd[1], 1);
 			close(vars->fd[1]);
 			handle_builtins(parser, temp, &envp, export);
+			printf("44 exitaaaaa\n");
 			exit(0);
 		}
 		return (1);
@@ -63,7 +64,7 @@ int	do_exec_assign_to_2(t_parser **parser, t_vars *vars, \
 			handle_builtins(parser, temp, &envp, export);
 			exit(0);
 		}
-		wait(NULL);
+		//wait(NULL);
 		return (1);
 	}
 	return (0);

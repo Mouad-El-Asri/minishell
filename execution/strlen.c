@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:44:31 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/15 17:57:38 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 22:59:00 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ void	handle_normal_pipe(t_parser **parser, t_node *envp, \
 	if (vars.pid == -1)
 		(ft_perror("fork system call error: failed to create child process"), \
 		exit(127));
-	if (do_exec_assign_to(parser, &vars, envp, export) == 0)
+	if (!vars.pid && do_exec_assign_to(parser, &vars, envp, export) == 0)
 		handle_left(vars.pid, *parser, data, vars.fd);
-	vars.pid2 = fork();
 	*parser = (*parser)->next;
+	vars.pid2 = fork();
 	if (vars.pid2 == -1)
 		(ft_perror("fork system call error: failed to create child process"), \
 		exit(127));
-	if (do_exec_assign_to_2(parser, &vars, envp, export) == 0)
+	if (!vars.pid2 && do_exec_assign_to_2(parser, &vars, envp, export) == 0)
 		handle_right(vars.pid2, *parser, data, vars.fd);
 	close(vars.fd[1]);
 	close(vars.fd[0]);

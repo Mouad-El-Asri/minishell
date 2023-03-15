@@ -6,7 +6,7 @@
 /*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 18:46:21 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/15 20:57:34 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 23:03:05 by ceddibao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	handle_left(int pid1, t_parser *parser, t_data *data, int *fd)
 {
 	if (pid1 == 0)
 	{
-		check_access(&parser, &data);
+		//check_access(&parser, &data);
 		close(fd[0]);
 		if (parser->in == -1 || parser->out == -1)
 		{
@@ -60,10 +60,15 @@ void	handle_left(int pid1, t_parser *parser, t_data *data, int *fd)
 
 void	handle_right(int pid1, t_parser *parser, t_data *data, int *fd)
 {
+	//fprintf(stderr, "{%d---%d}\n", parser->in, parser->out);
 	if (pid1 == 0)
 	{
-		//fprintf(stderr, "{%s---%d---%d}\n",(parser)->command[0], (parser)->in,(parser)->out);
-		check_access(&parser, &data);
+		if (parser->in == -1 || parser->out == -1)
+		{
+			close(fd[1]);
+			close(fd[0]);
+			exit(1);
+		}
 		if (parser->in != 0)
 			dup2(parser->in, 0);
 		else
