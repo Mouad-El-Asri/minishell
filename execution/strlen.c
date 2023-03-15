@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strlen.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 19:44:31 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/15 22:59:00 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 23:22:32 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	print_error(char c, int flag)
 	else if (flag == 2)
 	{
 		if (c == '.' || c == '/')
-			(ft_perror("permission denied"), exit(13));
+			(ft_perror("permission denied"), exit(126));
 		else
 			(ft_perror("command not found"), exit(127));
 	}
@@ -75,19 +75,12 @@ void	handle_first_child(int pid, t_parser **parser, t_data *data, int **fds)
 			close(fds[i][1]);
 			exit(1);
 		}
-		// dup2((*parser)->in, 0);
 		close(fds[i][0]);
 		dup2(fds[i][1], 1);
 		close(fds[i][1]);
-		// (*parser)->command[i] = rap((*parser)->command[i], data->env_arr);
-		// if (access((*parser)->command[i], F_OK) != 0)
-		// 	print_error((*parser)->command[i][0], 1);
-		// else if (access((*parser)->command[i], X_OK) != 0)
-		// 	print_error((*parser)->command[i][0], 2);
 		execve((*parser)->command[i], (*parser)->command, data->env_arr);
 		exit(1);
 	}
-	// close(fds[i][1]);
 }
 
 void	handle_sigkill(int sig)
@@ -99,29 +92,4 @@ void	handle_sigkill(int sig)
 void	handle_sigint(int sig)
 {
 	(void)sig;
-}
-
-void	handle_single_command(t_parser **parser, t_data **data)
-{
-	int	pid;
-	int	exit_status;
-	
-	pid = fork();
-	if (pid == -1)
-		(ft_perror("fork system call error: failed to create child process"), \
-		exit(1));
-	exit_status = 0;
-	if (pid == 0)
-	{
-		signal(SIGINT, sigint_handler);
-		signal(SIGKILL, handle_sigkill);
-		check_access(parser, data);
-		execve((*parser)->command[0], (*parser)->command, (*data)->env_arr);
-		exit(1);
-	}
-	wait(&exit_status);
-	if (WIFSIGNALED(exit_status))
-		g_global_vars->status_code = WTERMSIG(exit_status) + 128;
-	else
-		g_global_vars->status_code = WEXITSTATUS(exit_status);
 }

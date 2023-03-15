@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils8.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 00:28:36 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/15 23:00:54 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 23:19:33 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	do_exec_assign_to(t_parser **parser, t_vars *vars, \
 			dup2(vars->fd[1], 1);
 			close(vars->fd[1]);
 			handle_builtins(parser, temp, &envp, export);
-			printf("44 exitaaaaa\n");
 			exit(0);
 		}
 		return (1);
@@ -64,7 +63,6 @@ int	do_exec_assign_to_2(t_parser **parser, t_vars *vars, \
 			handle_builtins(parser, temp, &envp, export);
 			exit(0);
 		}
-		//wait(NULL);
 		return (1);
 	}
 	return (0);

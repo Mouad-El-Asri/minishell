@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiple.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/26 19:41:03 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/15 19:57:00 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/16 00:03:22 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ void	close_and_wait(int count, int *ex_code, int *pid, int **fds)
 
 void	alloc_pipe(int count, int **fds, int i)
 {
-		(void)count ;
-		fds[i] = (int *)malloc(sizeof(int) * 2);
-		if (pipe(fds[i]) != 0)
-		{
-			ft_perror("pipe system call error: \
-			failed to create pipe");
-			return;
-		}
+	(void)count ;
+	fds[i] = (int *)malloc(sizeof(int) * 2);
+	if (pipe(fds[i]) != 0)
+	{
+		ft_perror("pipe system call error: \
+		failed to create pipe");
+		return ;
+	}
 }
 
 void	check_if_special(t_parser **parser, t_vars *vars, int **fds)
@@ -60,12 +60,10 @@ void	check_if_special(t_parser **parser, t_vars *vars, int **fds)
 void	handle_multiple_in_out(t_parser **parser, int **fds, t_vars *vars)
 {
 	check_if_special(parser, vars, fds);
-	close(fds[vars->i][1]);
 	if ((*parser)->in != 0)
 		dup2((*parser)->in, 0);
 	else
 		dup2(fds[vars->i][0], 0);
-	close(fds[vars->i][0]);
 	if ((*parser)->next && (*parser)->out == 1)
 	{
 		close(fds[vars->i + 1][0]);
@@ -88,7 +86,7 @@ void	handle_multiple_in_out(t_parser **parser, int **fds, t_vars *vars)
 }
 
 void	expand_m_child_exec(t_parser **parser, \
-int **fds, t_vars *vars, t_data *data)
+		int **fds, t_vars *vars, t_data *data)
 {
 	check_access(parser, &data);
 	(*parser)->command[0] = rap((*parser)->command[0], data->env_arr);
@@ -97,20 +95,6 @@ int **fds, t_vars *vars, t_data *data)
 	else if (access((*parser)->command[0], X_OK) != 0)
 		print_error((*parser)->command[0][0], 2);
 	handle_multiple_in_out(parser, fds, vars);
-	// if (vars->temp_var)
-	// {
-	// 	while (vars->temp_var)
-	// 	{
-	// 		close(fds[vars->i - vars->temp_var][1]);
-	// 		close(fds[vars->i - vars->temp_var][0]);
-	// 		vars->temp_var--;
-	// 	}
-	// }
-	// else
-	// {
-	// 	close(fds[vars->i][0]);
-	// 	close(fds[vars->i][1]);
-	// }
 	vars->temp_var = vars->j;
 	execve((*parser)->command[0], (*parser)->command, data->env_arr);
 	exit(1);

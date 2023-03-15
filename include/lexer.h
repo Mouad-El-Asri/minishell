@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 18:11:03 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/12 23:02:23 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/16 00:15:58 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ typedef struct s_lexer_utils {
 	int		ds_count;
 	int		flag;
 }	t_lexer_utils;
+
+typedef struct s_lexer_get_string_utils {
+	char	*s;
+	char	*c;
+	t_token	*token;
+	int		dollar_sign_count;
+	int		token_type;
+}	t_lexer_get_string_utils;
 
 t_token	*advance_with_token(t_lexer *lexer, t_token *token);
 t_token	*create_token_list(t_lexer *lexer);

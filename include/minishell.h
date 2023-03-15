@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:07:39 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/12 23:17:47 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 22:13:45 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 void	rl_replace_line(const char *text, int clear_undo);
 void	rl_clear_history(void);
 void	catch_eof(char *str);
+void	catch_heredoc_eof(char *heredoc);
 int		check_errors_and_redisplay(t_lexer *lexer);
 int		check_quotes_and_redisplay(void);
 int		count_words(char *str);

@@ -3,22 +3,23 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+         #
+#    By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/05 17:07:31 by moel-asr          #+#    #+#              #
-#    Updated: 2023/03/15 23:03:32 by ceddibao         ###   ########.fr        #
+#    Updated: 2023/03/15 22:44:58 by moel-asr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-RE_PATH = /goinfre/ceddibao/homebrew/opt/readline/
+RE_PATH = ~/brew/opt/readline/
 
 LFLAGS = -lreadline -L $(RE_PATH)/lib -I $(RE_PATH)/include
 
 CFLAGS = -Wall -Wextra -Werror
 
 SRCS = minishell_utils/catch_eof.c \
+	minishell_utils/catch_heredoc_eof.c \
 	minishell_utils/check_errors_and_redisplay.c \
 	minishell_utils/check_quotes_and_redisplay.c \
 	minishell_utils/count_words.c \
@@ -58,6 +59,7 @@ SRCS = minishell_utils/catch_eof.c \
 	parser/check_operators_syntax_errors.c \
 	parser/check_quotes.c \
 	parser/check_string_syntax_errors.c \
+	parser/check_syntax_errors_plus.c \
 	parser/check_syntax_errors.c \
 	parser/check_token_type.c \
 	parser/commands_count.c \
@@ -79,6 +81,7 @@ SRCS = minishell_utils/catch_eof.c \
 	parser/parse_command_with_export_check.c \
 	parser/parser_add_back.c \
 	execution/strlen.c \
+	execution/handle_single_command.c \
 	execution/pipex.c \
 	execution/pipex_utils.c \
 	execution/multiple.c \

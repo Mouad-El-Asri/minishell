@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils10.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/09 21:10:41 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/15 22:53:10 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 23:18:56 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,8 @@ char	*check_if_builtin(t_parser **parser)
 	int	i;
 
 	i = 0;
-	// pri÷ntf("(%p)\n", (*parser));
 	if (cmp_with_builtins((*parser)->command[i]))
-	{
 		return ((*parser)->command[i]);
-	}
 	return (NULL);
 }
 

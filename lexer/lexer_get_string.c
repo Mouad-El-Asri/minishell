@@ -3,39 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_get_string.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 20:12:14 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/12 21:51:25 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/16 00:17:35 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+extern t_global	*g_global_vars;
+
 t_token	*lexer_get_string(t_lexer *lexer)
 {
-	char	*s;
-	char	*c;
-	t_token	*token;
-	int		dollar_sign_count;
-	int		token_type;
+	t_lexer_get_string_utils	vars;
 
-	s = NULL;
-	c = NULL;
-	dollar_sign_count = 0;
-	token_type = 0;
+	vars.s = NULL;
+	vars.c = NULL;
+	vars.dollar_sign_count = 0;
+	vars.token_type = 0;
 	while (is_not_special_char(lexer->c))
 	{
 		if (lexer->c == '$')
-			dollar_sign_count++;
-		if (is_env_variable(lexer) == 0 && (dollar_sign_count % 2))
+			vars.dollar_sign_count++;
+		if (is_env_variable(lexer) == 0 && (vars.dollar_sign_count % 2) && \
+			g_global_vars->heredoc_flag == 0)
 		{
-			expand_dollar_sign_variable(lexer, &c, &s);
-			dollar_sign_count = 0;
+			g_global_vars->variable_flag = 1;
+			expand_dollar_sign_variable(lexer, &vars.c, &vars.s);
+			vars.dollar_sign_count = 0;
 		}
 		else
-			lexer_get_string_or_char(lexer, &s, &token_type);
+			lexer_get_string_or_char(lexer, &vars.s, &vars.token_type);
 	}
-	token = init_token(s, token_type);
-	return (token);
+	g_global_vars->heredoc_flag = 0;
+	vars.token = init_token(vars.s, vars.token_type);
+	return (vars.token);
 }

@@ -6,11 +6,13 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 19:58:01 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/11 00:43:16 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/15 20:39:08 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+extern t_global	*g_global_vars;
 
 char	*lexer_get_string_in_quotes(t_lexer *lexer, char character)
 {
@@ -29,5 +31,6 @@ char	*lexer_get_string_in_quotes(t_lexer *lexer, char character)
 		process_quoted_string_token(lexer, &lexer_data, &s);
 		lexer_process_quotes_and_chars(lexer, &lexer_data);
 	}
+	g_global_vars->heredoc_flag = 0;
 	return (s);
 }

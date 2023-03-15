@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 18:46:21 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/15 23:03:05 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/16 00:00:30 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	handle_left(int pid1, t_parser *parser, t_data *data, int *fd)
 {
 	if (pid1 == 0)
 	{
-		//check_access(&parser, &data);
 		close(fd[0]);
 		if (parser->in == -1 || parser->out == -1)
 		{
@@ -60,7 +59,6 @@ void	handle_left(int pid1, t_parser *parser, t_data *data, int *fd)
 
 void	handle_right(int pid1, t_parser *parser, t_data *data, int *fd)
 {
-	//fprintf(stderr, "{%d---%d}\n", parser->in, parser->out);
 	if (pid1 == 0)
 	{
 		if (parser->in == -1 || parser->out == -1)
@@ -105,28 +103,6 @@ void	check_exit_args(t_parser **parser)
 
 	i = 1;
 	j = 0;
-	if ((*parser)->command[i] && (*parser)->command[i + 1])
-	{
-		while ((*parser)->command[i][j])
-		{
-			if (ft_isalpha((*parser)->command[i][j++]))
-				(ft_perror("exit: numeric argument required") \
-				, exit(1));
-		}
-		(ft_perror("exit: too many arguments"));
-	}
-	else
-	{
-		while ((*parser)->command[i] && (*parser)->command[i][j])
-		{
-			if ((*parser)->command[i][j] == '-' && j == 0)
-				j++;
-			if (!ft_isdigit((*parser)->command[i][j++]))
-				(ft_perror("exit: numeric argument required"), exit(255));
-		}
-		printf("exit\n");
-		if ((*parser)->command[i][0] == '-')
-			exit(256 + ft_atoi((*parser)->command[i]));
-		exit(ft_atoi((*parser)->command[i]));
-	}
+	check_overflows(parser, &i);
+	handle_all_of_exit(parser, &i, &j);
 }

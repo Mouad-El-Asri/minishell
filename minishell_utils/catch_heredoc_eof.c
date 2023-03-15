@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_ambiguous_redirect.c                         :+:      :+:    :+:   */
+/*   catch_heredoc_eof.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/17 22:33:51 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/15 21:48:38 by moel-asr         ###   ########.fr       */
+/*   Created: 2023/03/15 22:12:21 by moel-asr          #+#    #+#             */
+/*   Updated: 2023/03/15 22:13:30 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-extern t_global	*g_global_vars;
-
-int	check_ambiguous_redirect(t_token *token)
+void	catch_heredoc_eof(char *heredoc)
 {
-	if (((token->e_token_type == 0 || token->e_token_type == 1) && \
-		g_global_vars->variable_flag == 1) \
-		&& (count_words(token->token_value) >= 2 \
-		|| !ft_strcmp(token->token_value, "")))
+	if (heredoc == NULL)
 	{
-		g_global_vars->status_code = 1;
-		return (ft_perror("ambiguous redirect"));
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
-	return (0);
 }

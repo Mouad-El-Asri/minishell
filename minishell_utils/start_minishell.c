@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start_minishell.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/12 22:28:11 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/14 15:49:01 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 20:35:04 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	start_minishell(t_node **my_env, t_node **export)
 	t_lexer		*lexer;
 	t_parser	*parser;
 
+	g_global_vars->variable_flag = 0;
 	while (g_global_vars->str)
 	{
 		parser = NULL;

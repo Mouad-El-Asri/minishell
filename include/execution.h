@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/01 20:34:49 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/15 17:33:40 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/16 00:13:28 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,18 @@ typedef struct s_data
 	int		**fds;
 }	t_data;
 
+typedef struct s_multiple_pipes_utils {
+	int		**fds;
+	int		*pid;
+	t_vars	*vars;
+}	t_multiple_pipes_utils;
+
+typedef struct s_export_with_val_utils {
+	t_node	*new;
+	t_node	*new2;
+	char	*temp;
+}	t_export_with_val_utils;
+
 typedef struct s_global
 {
 	char		*str;
@@ -64,6 +76,8 @@ typedef struct s_global
 	char		*final;
 	char		*oldval;
 	char		*newval;
+	int			heredoc_flag;
+	int			variable_flag;
 }	t_global;
 
 char	*ft_mygetenv(t_node *env, char *s);
@@ -90,6 +104,7 @@ void	handle_single_command(t_parser **parser, t_data **data);
 void	connect_and_handle(t_parser **parser, t_node **env, \
 		t_node **export, t_data **data);
 int		ft_lstsize(t_parser *parser);
+void	expand_check_env(t_parser **parser, t_node **env, int *i);
 char	*handle_builtin_pwd(int flag, t_parser **parser);
 void	handle_builtin_unset(char *s, t_node **env, t_node **export);
 int		ft_llsize(t_node *head);
@@ -166,5 +181,10 @@ void	expand_redirect_to_back(char **tempo);
 void	check_quotes_error(t_parser **parser);
 void	check_exit_args(t_parser **parser);
 void	free_all(int *pid, t_vars *vars, t_data *data, int **fds);
+void	handle_single_command(t_parser **parser, t_data **data);
+void	check_env_to_change(t_node **env, t_parser **parser, \
+		int *i, t_node *tmp);
+void	check_overflows(t_parser **parser, int *i);
+void	handle_all_of_exit(t_parser **parser, int *i, int *j);
 
 #endif

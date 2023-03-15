@@ -6,7 +6,7 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 21:58:38 by moel-asr          #+#    #+#             */
-/*   Updated: 2023/03/11 00:42:11 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/15 22:48:36 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,25 @@ typedef struct s_parser_utils {
 	int			heredoc_count;
 }	t_parser_utils;
 
+typedef struct s_heredoc_utils {
+	int	in;
+	int	pipe_fd[2];
+	int	pid;
+}	t_heredoc_utils;
+
+typedef struct s_check_quotes_utils {
+	int		i;
+	char	quote;
+	int		is_valid;
+}	t_check_quotes_utils;
+
 int			check_ambiguous_redirect(t_token *token);
 int			check_export(t_token *token);
 char		*check_heredoc_variables(char *str);
 int			check_operators_syntax_errors(t_token *token);
 int			check_quotes(char *str);
 int			check_string_syntax_errors(t_token *token);
+int			check_syntax_errors_plus(t_token *token);
 int			check_syntax_errors(t_token *token);
 int			check_token_type(t_token *token);
 int			commands_count(t_token *token);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils9.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 00:18:36 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/14 15:55:29 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/16 00:14:07 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,7 @@ int	check_env(t_parser **parser, t_node **env, int *found, int *i)
 		{
 			*found = 1;
 			sign = 1;
-			g_global_vars->val = get_value((*parser)->command[*i]);
-			g_global_vars->oldval = get_value((*env)->cmd);
-			g_global_vars->final = ft_strjoin(g_global_vars->oldval, \
-			g_global_vars->val);
-			free(g_global_vars->oldval);
-			free((*env)->cmd);
-			g_global_vars->newval = ft_strjoin(g_global_vars->tempo, "=");
-			(*env)->cmd = ft_strjoin(g_global_vars->newval, \
-			g_global_vars->final);
-			free(g_global_vars->newval);
-			free(g_global_vars->final);
-			free(g_global_vars->val);
+			expand_check_env(parser, env, i);
 		}
 		free(g_global_vars->tempo);
 		free(g_global_vars->tempo2);
@@ -49,7 +38,7 @@ int	check_env(t_parser **parser, t_node **env, int *found, int *i)
 }
 
 void	check_export_exec(t_parser **parser, t_node **export, \
-int *found, int *i)
+		int *found, int *i)
 {
 	while (*export)
 	{
@@ -101,34 +90,32 @@ void	do_add(t_parser **parser, t_node **env, t_node **export, int *i)
 }
 
 void	handle_export_with_val(t_parser **parser, int *i, \
-t_node **env, t_node **export)
+		t_node **env, t_node **export)
 {
-	t_node	*new;
-	t_node	*new2;
-	char	*temp;
+	t_export_with_val_utils	vars;
 
-	temp = get_value((*parser)->command[*i]);
+	vars.temp = get_value((*parser)->command[*i]);
 	if (contain_equal((*parser)->command[*i]) == 1 && \
-			!temp)
+			!vars.temp)
 	{
-		new = ft_lstnew();
-		new2 = ft_lstnew();
-		new->cmd = ft_strdup((*parser)->command[*i]);
-		new2->cmd = ft_strdup((*parser)->command[*i]);
-		ft_lstaddback(env, &new);
-		ft_lstaddback(export, &new2);
+		vars.new = ft_lstnew();
+		vars.new2 = ft_lstnew();
+		vars.new->cmd = ft_strdup((*parser)->command[*i]);
+		vars.new2->cmd = ft_strdup((*parser)->command[*i]);
+		ft_lstaddback(env, &vars.new);
+		ft_lstaddback(export, &vars.new2);
 	}
 	else if (contain_equal((*parser)->command[*i]) == 1 && \
-			temp)
+			vars.temp)
 	{
-		new = ft_lstnew();
-		new2 = ft_lstnew();
-		new->cmd = ft_strdup((*parser)->command[*i]);
-		new2->cmd = ft_strdup((*parser)->command[*i]);
-		ft_lstaddback(env, &new);
-		ft_lstaddback(export, &new2);
+		vars.new = ft_lstnew();
+		vars.new2 = ft_lstnew();
+		vars.new->cmd = ft_strdup((*parser)->command[*i]);
+		vars.new2->cmd = ft_strdup((*parser)->command[*i]);
+		ft_lstaddback(env, &vars.new);
+		ft_lstaddback(export, &vars.new2);
 	}
-	free(temp);
+	free(vars.temp);
 }
 
 void	set_oldpwd_expand(t_parser **parser, t_node **export, int *flag)

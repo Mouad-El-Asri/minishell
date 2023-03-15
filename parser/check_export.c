@@ -6,11 +6,13 @@
 /*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/05 16:41:57 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/06 15:43:13 by moel-asr         ###   ########.fr       */
+/*   Updated: 2023/03/15 20:35:59 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+extern t_global	*g_global_vars;
 
 int	check_export(t_token *token)
 {
@@ -31,10 +33,10 @@ int	check_export(t_token *token)
 		token = token->next;
 	}
 	i = flag;
-	while (i)
+	while (i--)
 	{
+		g_global_vars->status_code = 1;
 		ft_perror("export: `': not a valid identifier");
-		i--;
 	}
 	if ((count == 0 && flag == 0) || count)
 		return (0);

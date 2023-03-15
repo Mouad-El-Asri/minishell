@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils14.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 22:01:43 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/15 18:01:38 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 23:01:59 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,40 +24,30 @@ void	increment_vars(t_parser **parser, t_vars *vars)
 
 void	handle_multiple_pipes(t_data *data, t_parser **parser)
 {
-	int		**fds;
-	int		*pid;
-	t_vars	*vars;
-	//int		i;
+	t_multiple_pipes_utils	utils;
 
-	fds = (int **)malloc((data->num - 1) * sizeof(int *));
-	pid = (int *)malloc(data->num * sizeof(int));
-	vars = malloc(sizeof(t_vars));
-	fill_vars(parser, vars);
-	alloc_pipe(data->num - 1, fds, 0);
-	pid[vars->i] = fork();
-	handle_first_child(pid[vars->i], parser, data, fds);
+	utils.fds = (int **)malloc((data->num - 1) * sizeof(int *));
+	utils.pid = (int *)malloc(data->num * sizeof(int));
+	utils.vars = malloc(sizeof(t_vars));
+	fill_vars(parser, utils.vars);
+	alloc_pipe(data->num - 1, utils.fds, 0);
+	utils.pid[utils.vars->i] = fork();
+	handle_first_child(utils.pid[utils.vars->i], parser, data, utils.fds);
 	(*parser) = (*parser)->next;
 	while (*parser)
 	{
-		//i = vars->i;
 		if ((*parser)->next)
-			alloc_pipe(data->num - 1, fds, vars->i + 1);
-		pid[vars->i + 1] = fork();
-		if (pid[vars->i + 1] == 0)
-			expand_m_child_exec(parser, fds, vars, data);
-		close(fds[vars->i][0]);
-		close(fds[vars->i][1]);
-		// if (i)
-		// {
-		// 	close(fds[i][0]);
-		// 	close(fds[i][1]);
-		// }
-		increment_vars(parser, vars);
+			alloc_pipe(data->num - 1, utils.fds, utils.vars->i + 1);
+		utils.pid[utils.vars->i + 1] = fork();
+		if (utils.pid[utils.vars->i + 1] == 0)
+			expand_m_child_exec(parser, utils.fds, utils.vars, data);
+		close(utils.fds[utils.vars->i][0]);
+		close(utils.fds[utils.vars->i][1]);
+		increment_vars(parser, utils.vars);
 	}
-	close_and_wait(data->num - 1, &vars->ex_code, pid, fds);
-
-	g_global_vars->status_code = WEXITSTATUS(vars->ex_code);
-	free_all(pid, vars, data, fds);
+	close_and_wait(data->num - 1, &utils.vars->ex_code, utils.pid, utils.fds);
+	g_global_vars->status_code = WEXITSTATUS(utils.vars->ex_code);
+	free_all(utils.pid, utils.vars, data, utils.fds);
 }
 
 void	fill_vars(t_parser **parser, t_vars *vars)

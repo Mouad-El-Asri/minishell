@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils13.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ceddibao <ceddibao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: moel-asr <moel-asr@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 21:59:45 by ceddibao          #+#    #+#             */
-/*   Updated: 2023/03/15 20:44:42 by ceddibao         ###   ########.fr       */
+/*   Updated: 2023/03/15 23:55:47 by moel-asr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ extern t_global	*g_global_vars;
 
 void	check_access(t_parser **parser, t_data **data)
 {
-	// if ((*parser)->command[0] == NULL)
-	// 	(ft_perror("Command not found"), exit(127));
 	if ((*parser)->command[0][0] == ' ')
 		check_quotes_error(parser);
 	if ((*parser)->command[0] && ((*parser)->command[0][0] == '.' || \
